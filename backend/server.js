@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
@@ -9,6 +10,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(morgan(process.env.NODE_ENV === "development" ? "dev" : "combined"));
+
 app.use("/api/auth", require("./routes/authRoutes"));
 //app.use('/api/tasks', require('./routes/taskRoutes'));
 

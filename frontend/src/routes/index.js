@@ -1,7 +1,7 @@
-import Login from "./pages/Login";
-import Profile from "./pages/Profile";
-import Register from "./pages/Register";
-import Tasks from "./pages/Tasks";
+import Login from "../pages/Login";
+import Profile from "../pages/Profile";
+import Register from "../pages/Register";
+import Tasks from "../pages/Tasks";
 
 export const publicRoutes = [
     {

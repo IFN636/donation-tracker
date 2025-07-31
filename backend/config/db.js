@@ -1,6 +1,8 @@
 // config/db.js
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
+dotenv.config();
 // Set strictQuery explicitly to suppress the warning
 //mongoose.set('strictQuery', true);
 
