@@ -1,15 +1,15 @@
-const express = require("express");
-const morgan = require("morgan");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const connectDB = require("./config/db");
+import cors from "cors";
+import { config } from "dotenv";
+import express, { json } from "express";
+import morgan from "morgan";
+import connectDB from "./config/db";
 
-dotenv.config();
+config();
 
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(json());
 app.use(morgan(process.env.NODE_ENV === "development" ? "dev" : "combined"));
 
 app.use("/api/auth", require("./routes/authRoutes"));
@@ -23,4 +23,4 @@ if (require.main === module) {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 
-module.exports = app;
+export default app;

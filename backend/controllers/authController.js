@@ -1,19 +1,19 @@
-const User = require("../models/User");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+import { compare } from "bcrypt";
+import { sign } from "jsonwebtoken";
+import { create, findById, findOne } from "../models/User";
 
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+    return sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
 const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
     try {
-        const userExists = await User.findOne({ email });
+        const userExists = await findOne({ email });
         if (userExists)
             return res.status(400).json({ message: "User already exists" });
 
-        const user = await User.create({ name, email, password });
+        const user = await create({ name, email, password });
         res.status(201).json({
             id: user.id,
             name: user.name,
@@ -28,8 +28,8 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.findOne({ email });
-        if (user && (await bcrypt.compare(password, user.password))) {
+        const user = await findOne({ email });
+        if (user && (await compare(password, user.password))) {
             res.json({
                 id: user.id,
                 name: user.name,
@@ -46,7 +46,7 @@ const loginUser = async (req, res) => {
 
 const getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
+        const user = await findById(req.user.id);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -64,7 +64,7 @@ const getProfile = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
+        const user = await findById(req.user.id);
         if (!user) return res.status(404).json({ message: "User not found" });
 
         const { name, email, university, address } = req.body;
@@ -87,4 +87,4 @@ const updateUserProfile = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, updateUserProfile, getProfile };
+export default { registerUser, loginUser, updateUserProfile, getProfile };
