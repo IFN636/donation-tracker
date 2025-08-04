@@ -1,19 +1,19 @@
 import { compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
-import { create, findById, findOne } from "../models/User";
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 const generateToken = (id) => {
-    return sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
     try {
-        const userExists = await findOne({ email });
+        const userExists = await User.findOne({ email });
         if (userExists)
             return res.status(400).json({ message: "User already exists" });
 
-        const user = await create({ name, email, password });
+        const user = await User.create({ name, email, password });
         res.status(201).json({
             id: user.id,
             name: user.name,
@@ -25,10 +25,10 @@ const registerUser = async (req, res) => {
     }
 };
 
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await findOne({ email });
+        const user = await User.findOne({ email });
         if (user && (await compare(password, user.password))) {
             res.json({
                 id: user.id,
@@ -44,12 +44,10 @@ const loginUser = async (req, res) => {
     }
 };
 
-const getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
     try {
-        const user = await findById(req.user.id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
 
         res.status(200).json({
             name: user.name,
@@ -62,9 +60,9 @@ const getProfile = async (req, res) => {
     }
 };
 
-const updateUserProfile = async (req, res) => {
+export const updateUserProfile = async (req, res) => {
     try {
-        const user = await findById(req.user.id);
+        const user = await User.findById(req.user.id);
         if (!user) return res.status(404).json({ message: "User not found" });
 
         const { name, email, university, address } = req.body;
@@ -86,5 +84,3 @@ const updateUserProfile = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-export default { registerUser, loginUser, updateUserProfile, getProfile };
