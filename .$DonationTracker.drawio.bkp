@@ -1,0 +1,32 @@
+<mxfile host="Electron" modified="2025-08-02T02:10:06.774Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.4.7 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="w_IxD_u0eSOV8qCnI8WM" version="24.4.7" type="device" pages="3">
+  <diagram id="yArKEzquSE3qU4hALgER" name="Requirements">
+    <mxGraphModel dx="898" dy="28" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ILAQhi6HJ7L6skhEG0P3-1" value="&lt;p style=&quot;margin:0px;margin-top:4px;margin-left:7px;text-align:left;&quot;&gt;&lt;b&gt;req&lt;/b&gt;&lt;/p&gt;" style="html=1;shape=mxgraph.sysml.package;overflow=fill;labelX=64.59;strokeWidth=2;align=center;" parent="1" vertex="1">
+          <mxGeometry x="-800" y="40" width="800" height="760" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Blocks" id="3R9UtdNPaxBSzpcxHGdz">
+    <mxGraphModel dx="2160" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="-yeJq83-wPSK7Np0B1dC-2" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&amp;lt;&amp;lt;block&amp;gt;&amp;gt;&lt;br/&gt;{encapsulated}&lt;br/&gt;&lt;b&gt;Block1&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;font-size:10px;margin:0px;text-align:center;&quot;&gt;&lt;i&gt;constraints&lt;/i&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;text-align:left;&quot;&gt;{x &amp;gt; y}&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;font-size:10px;margin:0px;text-align:center;&quot;&gt;&lt;i&gt;operations&lt;/i&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;text-align:left;&quot;&gt;operation1 (p1 : Type1) : Type2&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;font-size:10px;margin:0px;text-align:center;&quot;&gt;&lt;i&gt;parts&lt;/i&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;text-align:left;&quot;&gt;property1 : Block2&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;font-size:10px;margin:0px;text-align:center;&quot;&gt;&lt;i&gt;references&lt;/i&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;text-align:left;&quot;&gt;property2 : Block3 [0..*] {ordered}&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;font-size:10px;margin:0px;text-align:center;&quot;&gt;&lt;i&gt;values&lt;/i&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;text-align:left;&quot;&gt;property3 : Integer = 99 {readOnly}&lt;br/&gt;property4 : Real = 10.0&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;font-size:10px;margin:0px;text-align:center;&quot;&gt;&lt;i&gt;properties&lt;/i&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;text-align:left;&quot;&gt;property5 : Type1&lt;/p&gt;" style="shape=rect;html=1;overflow=fill;verticalAlign=top;align=left;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="-120" y="180" width="220" height="340" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="x-UZ8G6LPC9GP4lzRSNs" name="Parametric">
+    <mxGraphModel dx="1434" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
