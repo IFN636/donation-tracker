@@ -1,8 +1,11 @@
 import axios from "axios";
 
+const baseURL =
+    process.env.NODE_ENV === "development"
+        ? "http://localhost:5001"
+        : "http://54.252.197.144:5001";
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:5001", // local
-    //baseURL: 'http://3.26.96.188:5001', // live
+    baseURL: baseURL,
     headers: { "Content-Type": "application/json" },
 });
 

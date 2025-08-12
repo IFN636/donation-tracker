@@ -45,9 +45,12 @@ const Register = () => {
             toast.success("Registration successful. Please log in.");
             navigate("/login");
         } catch (error) {
-            toast.error("Registration failed. Please try again.");
             if (error?.response?.data?.errorType === "validation") {
+                toast.error("Registration failed. Please try again.");
                 setValidationErrors(error?.response?.data?.validationErrors);
+                return;
+            } else {
+                toast.error(error.response.data.message);
             }
         }
     };
