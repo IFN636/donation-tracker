@@ -1,8 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import axiosInstance from "../axiosConfig";
+import { useAuth } from "../context/AuthContext";
+import { toFullIsoFromDatetimeLocal } from "../utils/datetime";
 import DateTimeSelector from "./DateTimeSelector";
 import FileUploadForm from "./FileUploadForm";
+import ShowInputError from "./ShowInputError";
+
+export const createFundingNeedSchema = z.object({
+    title: z
+        .string()
+        .trim()
+        .min(2, { message: "Title must be at least 2 characters" }),
+    description: z
+        .string()
+        .trim()
+        .min(2, { message: "Description must be at least 2 characters" }),
+    goalAmount: z.coerce.number({
+        invalid_type_error: "Amount must be a number",
+    }),
+    currency: z
+        .string()
+        .refine((v) => v === "AUD", { message: "Invalid currency" }),
+    deadline: z.string().datetime({ message: "Invalid deadline date" }),
+    imageUrl: z.string().url({ message: "Invalid image URL" }),
+});
 
 const FundingNeedForm = () => {
+    const [errors, setErrors] = useState({});
+    const [validationErrors, setValidationErrors] = useState([]);
+
+    const { isAuthenticated, user, getAccessToken } = useAuth();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -15,9 +46,48 @@ const FundingNeedForm = () => {
         imageUrl: "",
     });
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const result = createFundingNeedSchema.safeParse(formData);
+            if (!result.success) {
+                toast.error("Funding need creation failed. Please try again.");
+                const { fieldErrors, formErrors } = result.error.flatten();
+                setErrors({
+                    ...fieldErrors,
+                    form: formErrors[0] || "",
+                });
+                return;
+            }
+            await axiosInstance.post("/api/funding-needs", formData, {
+                headers: { Authorization: `Bearer ${getAccessToken()}` },
+            });
+
+            toast.success("Funding need created successfully.");
+            navigate("/");
+        } catch (error) {
+            if (error?.response?.data?.errorType === "validation") {
+                toast.error("Funding need creation failed.");
+                setValidationErrors(error?.response?.data?.validationErrors);
+                return;
+            } else {
+                toast.error(error?.response?.data?.message);
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate("/login");
+        }
+    }, [isAuthenticated, navigate]);
+
     return (
         <div className="max-w-md mx-auto mt-20">
-            <form className="bg-gray-50 p-8 shadow-lg rounded-2xl max-w-md mx-auto border border-gray-200">
+            <form
+                className="bg-gray-50 p-8 shadow-lg rounded-2xl max-w-md mx-auto border border-gray-200"
+                onSubmit={handleSubmit}
+            >
                 <h1 className="text-3xl font-bold mb-8 text-center text-gray-900">
                     Create Funding Need
                 </h1>
@@ -42,6 +112,11 @@ const FundingNeedForm = () => {
                             }
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
                         />
+                        <ShowInputError
+                            name="title"
+                            errors={errors}
+                            validationErrors={validationErrors}
+                        />
                     </div>
                     <div>
                         <label
@@ -61,6 +136,11 @@ const FundingNeedForm = () => {
                                 }))
                             }
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                        />
+                        <ShowInputError
+                            name="description"
+                            errors={errors}
+                            validationErrors={validationErrors}
                         />
                     </div>
                     <div>
@@ -82,6 +162,11 @@ const FundingNeedForm = () => {
                                 }))
                             }
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                        />
+                        <ShowInputError
+                            name="goalAmount"
+                            errors={errors}
+                            validationErrors={validationErrors}
                         />
                     </div>
                     <div>
@@ -105,23 +190,41 @@ const FundingNeedForm = () => {
                         >
                             <option value="AUD">AUD</option>
                         </select>
+                        <ShowInputError
+                            name="currency"
+                            errors={errors}
+                            validationErrors={validationErrors}
+                        />
                     </div>
                     <DateTimeSelector
-                        onChange={(e) =>
+                        onChange={(e) => {
                             setFormData((prev) => ({
                                 ...prev,
-                                deadline: e.target.value,
-                            }))
-                        }
+                                deadline: toFullIsoFromDatetimeLocal(
+                                    e.target.value
+                                ),
+                            }));
+                        }}
+                    />
+                    <ShowInputError
+                        name="deadline"
+                        errors={errors}
+                        validationErrors={validationErrors}
                     />
 
                     <FileUploadForm
-                        onUploadSuccess={(images) =>
+                        onUploadSuccess={(images) => {
+                            console.log(images);
                             setFormData((prev) => ({
                                 ...prev,
-                                imageUrl: images[0],
-                            }))
-                        }
+                                imageUrl: images.data[0],
+                            }));
+                        }}
+                    />
+                    <ShowInputError
+                        name="imageUrl"
+                        errors={errors}
+                        validationErrors={validationErrors}
                     />
 
                     <div className="flex justify-between gap-3">

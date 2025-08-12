@@ -64,3 +64,18 @@ export const uploadMultipleFilesValidation = [
         }
     }),
 ];
+
+export const createFundingNeedValidation = [
+    body("title")
+        .trim()
+        .isLength({ min: 2 })
+        .withMessage("Title must be at least 2 characters"),
+    body("description")
+        .trim()
+        .isLength({ min: 2 })
+        .withMessage("Description must be at least 2 characters"),
+    body("goalAmount").isNumeric().withMessage("Amount must be a number"),
+    body("currency").isIn(["AUD"]).withMessage("Invalid currency"),
+    body("deadline").isISO8601().withMessage("Invalid deadline date"),
+    body("imageUrl").isURL().withMessage("Invalid image URL"),
+];

@@ -16,11 +16,8 @@ const Navbar = () => {
                 Donation App
             </Link>
             <div>
-                {user ? (
+                {user !== null ? (
                     <>
-                        <Link to="/tasks" className="mr-4">
-                            CRUD
-                        </Link>
                         <Link to="/profile" className="mr-4">
                             Profile
                         </Link>

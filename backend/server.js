@@ -5,6 +5,7 @@ import morgan from "morgan";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
+import fundingNeedRoutes from "./routes/fundingNeedRoutes.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(morgan(process.env.NODE_ENV === "development" ? "dev" : "combined"));
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/files", fileRoutes);
+app.use("/api/funding-needs", fundingNeedRoutes);
 
 // Export the app object for testing
 // If the file is run directly, start the server
