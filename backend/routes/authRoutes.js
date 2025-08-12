@@ -7,7 +7,7 @@ import {
 } from "../controllers/authController.js";
 import { authRequired } from "../middleware/authMiddleware.js";
 import { validationMiddleware } from "../middleware/validationMiddleware.js";
-import { registerValidation } from "../utils/validation.js";
+import { loginValidation, registerValidation } from "../utils/validation.js";
 const router = Router();
 
 router.post(
@@ -16,7 +16,7 @@ router.post(
     validationMiddleware,
     registerUser
 );
-router.post("/login", loginUser);
+router.post("/login", loginValidation, validationMiddleware, loginUser);
 router.get("/profile", authRequired, getProfile);
 router.put("/profile", authRequired, updateUserProfile);
 

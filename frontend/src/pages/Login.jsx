@@ -1,24 +1,60 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import z from "zod";
 import axiosInstance from "../axiosConfig";
+import ShowInputError from "../components/ShowInputError";
+
+import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
+
+const loginSchema = z.object({
+    email: z.string().trim().email("Please enter a valid email address"),
+    password: z
+        .string()
+        .min(8, "Password must be at least 8 characters")
+        .regex(/[A-Z]/, "Password needs at least 1 uppercase letter")
+        .regex(/[a-z]/, "Password needs at least 1 lowercase letter")
+        .regex(/\d/, "Password needs at least 1 number"),
+});
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: "", password: "" });
+
+    const [errors, setErrors] = useState({});
+    const [validationErrors, setValidationErrors] = useState([]);
+
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const result = loginSchema.safeParse(formData);
+            if (!result.success) {
+                toast.error("Login failed. Please try again.");
+                const { fieldErrors, formErrors } = result.error.flatten();
+                setErrors({
+                    ...fieldErrors,
+                    form: formErrors[0] || "",
+                });
+                return;
+            }
+
             const response = await axiosInstance.post(
                 "/api/auth/login",
                 formData
             );
             login(response.data);
+            toast.success("Login successful.");
             navigate("/tasks");
         } catch (error) {
-            alert("Login failed. Please try again.");
+            if (error?.response?.data?.errorType === "validation") {
+                toast.error("Login failed. Please try again.");
+                setValidationErrors(error?.response?.data?.validationErrors);
+                return;
+            } else {
+                toast.error(error.response.data.message);
+            }
         }
     };
 
@@ -52,6 +88,11 @@ const Login = () => {
                             }
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
                         />
+                        <ShowInputError
+                            name={"email"}
+                            validationErrors={validationErrors}
+                            errors={errors}
+                        />
                     </div>
                     <div>
                         <label
@@ -63,7 +104,7 @@ const Login = () => {
                         <input
                             id="password"
                             type="password"
-                            placeholder="Choose a strong password"
+                            placeholder="Enter your password"
                             value={formData.password}
                             onChange={(e) =>
                                 setFormData({
@@ -72,6 +113,11 @@ const Login = () => {
                                 })
                             }
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                        />
+                        <ShowInputError
+                            name={"password"}
+                            validationErrors={validationErrors}
+                            errors={errors}
                         />
                     </div>
                 </div>
