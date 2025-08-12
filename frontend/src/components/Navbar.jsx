@@ -11,9 +11,9 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-green-600 text-white p-4 flex justify-between items-center">
+        <nav className="text-black p-4 flex justify-between items-center border-b border-gray-200">
             <Link to="/" className="text-2xl font-bold">
-                Your apps name
+                Donation App
             </Link>
             <div>
                 {user ? (
@@ -38,7 +38,7 @@ const Navbar = () => {
                         </Link>
                         <Link
                             to="/register"
-                            className="bg-green-500 px-4 py-2 rounded hover:bg-green-700"
+                            className="bg-green-600 py-2 rounded-lg hover:bg-green-700 font-bold px-6"
                         >
                             Register
                         </Link>

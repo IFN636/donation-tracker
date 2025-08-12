@@ -28,6 +28,10 @@ const fundingNeedSchema = new Schema({
     deadline: {
         type: Date,
     },
+    imageUrl: {
+        type: String,
+        default: "https://via.placeholder.com/150",
+    },
     status: {
         type: String,
         enum: ["active", "completed", "cancelled"],
