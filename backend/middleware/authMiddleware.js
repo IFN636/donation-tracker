@@ -22,3 +22,15 @@ export const authRequired = async (req, res, next) => {
         res.status(401).json({ message: "Not authorized, no token" });
     }
 };
+
+export const requiredRoles = (...roles) => {
+    return (req, res, next) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            return res.status(403).json({
+                status: "error",
+                message: "Access denied",
+            });
+        }
+        next();
+    };
+};
