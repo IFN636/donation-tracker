@@ -46,7 +46,7 @@ const Login = () => {
             );
             login(response.data);
             toast.success("Login successful.");
-            navigate("/tasks");
+            navigate("/");
         } catch (error) {
             if (error?.response?.data?.errorType === "validation") {
                 toast.error("Login failed. Please try again.");
