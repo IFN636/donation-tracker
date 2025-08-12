@@ -2,6 +2,7 @@ import Login from "../pages/Login";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
 import Tasks from "../pages/Tasks";
+import CreationFundingNeed from "../pages/fundraisers/CreationFundingNeed";
 
 export const publicRoutes = [
     {
@@ -19,5 +20,9 @@ export const publicRoutes = [
     {
         path: "/tasks",
         element: Tasks,
+    },
+    {
+        path: "/fundraisers/creation",
+        element: CreationFundingNeed,
     },
 ];
