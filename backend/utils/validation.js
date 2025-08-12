@@ -40,3 +40,27 @@ export const loginValidation = [
         .matches(/\d/)
         .withMessage("Password needs at least 1 number"),
 ];
+
+export const uploadMultipleFilesValidation = [
+    body().custom((value, { req }) => {
+        const files = req.files;
+        if (!files) {
+            throw new Error("Files are required");
+        }
+        if (files.length === 0) {
+            throw new Error("Files are required");
+        }
+        for (const file of files) {
+            if (file.size > 1024 * 1024 * 10) {
+                throw new Error("File size must be less than 10MB");
+            }
+            if (
+                file.mimetype !== "image/jpeg" &&
+                file.mimetype !== "image/png"
+            ) {
+                throw new Error("File must be a JPEG or PNG image");
+            }
+            return true;
+        }
+    }),
+];

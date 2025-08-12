@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DateTimeSelector from "./DateTimeSelector";
+import FileUploadForm from "./FileUploadForm";
 
 const FundingNeedForm = () => {
     const [formData, setFormData] = useState({
@@ -110,6 +111,15 @@ const FundingNeedForm = () => {
                             setFormData((prev) => ({
                                 ...prev,
                                 deadline: e.target.value,
+                            }))
+                        }
+                    />
+
+                    <FileUploadForm
+                        onUploadSuccess={(images) =>
+                            setFormData((prev) => ({
+                                ...prev,
+                                imageUrl: images[0],
                             }))
                         }
                     />
