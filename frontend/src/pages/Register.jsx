@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
 import axiosInstance from "../axiosConfig";
+import ShowInputError from "../components/ShowInputError";
 
 const registerSchema = z.object({
     name: z.string().trim().min(2, "Name must be at least 2 characters"),
@@ -21,6 +22,7 @@ const Register = () => {
         password: "",
     });
     const [errors, setErrors] = useState({});
+    const [validationErrors, setValidationErrors] = useState([]);
 
     const navigate = useNavigate();
 
@@ -36,10 +38,17 @@ const Register = () => {
                 });
                 return;
             }
-            await axiosInstance.post("/api/auth/register", formData);
+            const res = await axiosInstance.post(
+                "/api/auth/register",
+                formData
+            );
+            console.log(res);
             alert("Registration successful. Please log in.");
             navigate("/login");
         } catch (error) {
+            if (error?.response?.data?.errorType === "validation") {
+                setValidationErrors(error?.response?.data?.validationErrors);
+            }
             alert("Registration failed. Please try again.");
         }
     };
@@ -74,11 +83,11 @@ const Register = () => {
                             }
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
                         />
-                        {errors.name && (
-                            <p className="text-red-600 text-sm">
-                                {errors.name[0]}
-                            </p>
-                        )}
+                        <ShowInputError
+                            name={"name"}
+                            validationErrors={validationErrors}
+                            errors={errors}
+                        />
                     </div>
                     <div>
                         <label
@@ -100,11 +109,11 @@ const Register = () => {
                             }
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
                         />
-                        {errors.email && (
-                            <p className="text-red-600 text-sm">
-                                {errors.email[0]}
-                            </p>
-                        )}
+                        <ShowInputError
+                            name={"email"}
+                            validationErrors={validationErrors}
+                            errors={errors}
+                        />
                     </div>
                     <div>
                         <label
@@ -126,11 +135,11 @@ const Register = () => {
                             }
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
                         />
-                        {errors.password && (
-                            <p className="text-red-600 text-sm">
-                                {errors.password[0]}
-                            </p>
-                        )}
+                        <ShowInputError
+                            name={"password"}
+                            validationErrors={validationErrors}
+                            errors={errors}
+                        />
                     </div>
                 </div>
                 <button
