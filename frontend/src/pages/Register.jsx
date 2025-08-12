@@ -33,6 +33,7 @@ const Register = () => {
         try {
             const result = registerSchema.safeParse(formData);
             if (!result.success) {
+                toast.error("Registration failed. Please try again.");
                 const { fieldErrors, formErrors } = result.error.flatten();
                 setErrors({
                     ...fieldErrors,
@@ -44,10 +45,10 @@ const Register = () => {
             toast.success("Registration successful. Please log in.");
             navigate("/login");
         } catch (error) {
+            toast.error("Registration failed. Please try again.");
             if (error?.response?.data?.errorType === "validation") {
                 setValidationErrors(error?.response?.data?.validationErrors);
             }
-            toast.error("Registration failed. Please try again.");
         }
     };
 
