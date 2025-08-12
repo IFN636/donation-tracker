@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { createFundingNeed } from "../controllers/fundingNeedController.js";
+import {
+    createFundingNeed,
+    getFundingNeeds,
+} from "../controllers/fundingNeedController.js";
 import { authRequired, requiredRoles } from "../middleware/authMiddleware.js";
 import { validationMiddleware } from "../middleware/validationMiddleware.js";
 import { createFundingNeedValidation } from "../utils/validation.js";
@@ -14,5 +17,6 @@ router.post(
     validationMiddleware,
     createFundingNeed
 );
+router.get("/", getFundingNeeds);
 
 export default router;

@@ -1,7 +1,8 @@
+import CreationFundingNeed from "../pages/fundraisers/CreationFundingNeed";
+import HomePage from "../pages/HomePage";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
-import CreationFundingNeed from "../pages/fundraisers/CreationFundingNeed";
 
 export const publicRoutes = [
     {
@@ -19,5 +20,9 @@ export const publicRoutes = [
     {
         path: "/fundraisers/creation",
         element: CreationFundingNeed,
+    },
+    {
+        path: "/",
+        element: HomePage,
     },
 ];
