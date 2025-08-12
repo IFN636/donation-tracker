@@ -32,7 +32,7 @@ const FundingNeedForm = () => {
     const [errors, setErrors] = useState({});
     const [validationErrors, setValidationErrors] = useState([]);
 
-    const { isAuthenticated, user, getAccessToken } = useAuth();
+    const { isAuthenticated, getAccessToken } = useAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: "",
