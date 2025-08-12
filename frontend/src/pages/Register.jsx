@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
 import axiosInstance from "../axiosConfig";
+
+import { toast } from "react-toastify";
 import ShowInputError from "../components/ShowInputError";
 
 const registerSchema = z.object({
@@ -38,18 +40,14 @@ const Register = () => {
                 });
                 return;
             }
-            const res = await axiosInstance.post(
-                "/api/auth/register",
-                formData
-            );
-            console.log(res);
-            alert("Registration successful. Please log in.");
+            await axiosInstance.post("/api/auth/register", formData);
+            toast.success("Registration successful. Please log in.");
             navigate("/login");
         } catch (error) {
             if (error?.response?.data?.errorType === "validation") {
                 setValidationErrors(error?.response?.data?.validationErrors);
             }
-            alert("Registration failed. Please try again.");
+            toast.error("Registration failed. Please try again.");
         }
     };
 
