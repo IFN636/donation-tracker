@@ -80,7 +80,7 @@ export const getFundingNeedById = async (req, res) => {
         }
         res.status(200).json({
             success: true,
-            fundingNeed,
+            data: fundingNeed,
         });
     } catch (error) {
         res.status(500).json({
