@@ -15,29 +15,42 @@ import {
     Tag,
     Typography,
 } from "antd";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axiosInstance from "../../axiosConfig";
+import { formatAmount, progressPercentage } from "../../utils";
+import { beautifyDate } from "../../utils/datetime";
 
 const { Title, Text, Paragraph } = Typography;
 
 const FundingNeedDetail = () => {
     const { id } = useParams();
+    const [fundingNeed, setFundingNeed] = useState(null);
 
     const handleDonate = () => {
-        // TODO: Implement donation functionality
         console.log("Donate button clicked for funding need:", id);
     };
+
+    useEffect(() => {
+        const fetchFundingNeed = async () => {
+            const response = await axiosInstance.get(
+                `/api/funding-needs/${id}`
+            );
+            setFundingNeed(response.data.data);
+        };
+        fetchFundingNeed();
+    }, [id]);
 
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="max-w-6xl mx-auto px-4 py-8">
-                {/* Hero Section */}
                 <Card
                     className="mb-8 overflow-hidden"
                     style={{ borderRadius: "24px" }}
                 >
                     <div className="relative">
                         <img
-                            src="https://via.placeholder.com/1200x400"
+                            src={fundingNeed?.imageUrl}
                             alt="Funding Need"
                             className="w-full h-96 object-cover"
                         />
@@ -46,18 +59,21 @@ const FundingNeedDetail = () => {
                                 color="green"
                                 className="text-sm font-semibold"
                             >
-                                30d left
+                                {Math.ceil(
+                                    (new Date(fundingNeed?.deadline) -
+                                        new Date()) /
+                                        (1000 * 60 * 60 * 24)
+                                )}
+                                d left
                             </Tag>
                         </div>
                     </div>
 
                     <div className="p-8">
                         <Row gutter={32}>
-                            {/* Main Content */}
                             <Col xs={24} lg={16}>
                                 <Title level={1} className="mb-4">
-                                    Help Build Clean Water Wells in Rural
-                                    Communities
+                                    {fundingNeed?.title}
                                 </Title>
 
                                 <Space className="mb-6">
@@ -68,7 +84,7 @@ const FundingNeedDetail = () => {
                                     />
                                     <div>
                                         <Text strong className="block">
-                                            John Doe
+                                            {fundingNeed?.createdBy?.name}
                                         </Text>
                                         <Text
                                             type="secondary"
@@ -81,26 +97,11 @@ const FundingNeedDetail = () => {
 
                                 <div className="mb-8">
                                     <Paragraph className="text-gray-700 leading-relaxed">
-                                        Access to clean water is a fundamental
-                                        human right, yet millions of people in
-                                        rural communities around the world still
-                                        lack this basic necessity. Our mission
-                                        is to build sustainable water wells that
-                                        will provide clean, safe drinking water
-                                        to communities in need.
-                                    </Paragraph>
-                                    <Paragraph className="text-gray-700 leading-relaxed">
-                                        Each well we build can serve up to 500
-                                        people and will be maintained by trained
-                                        local technicians. Your contribution
-                                        will directly impact families, children,
-                                        and entire communities by providing them
-                                        with reliable access to clean water.
+                                        {fundingNeed?.description}
                                     </Paragraph>
                                 </div>
                             </Col>
 
-                            {/* Funding Progress Sidebar */}
                             <Col xs={24} lg={8}>
                                 <Card
                                     className="sticky top-8"
@@ -112,18 +113,27 @@ const FundingNeedDetail = () => {
                                     <div className="mb-6">
                                         <div className="flex justify-between items-center mb-2">
                                             <Text className="text-2xl font-bold text-green-600">
-                                                $15,750
+                                                {formatAmount(
+                                                    fundingNeed?.currentAmount
+                                                )}
                                             </Text>
                                             <Text
                                                 type="secondary"
                                                 className="text-sm"
                                             >
-                                                of $25,000 goal
+                                                of{" "}
+                                                {formatAmount(
+                                                    fundingNeed?.goalAmount
+                                                )}{" "}
+                                                goal
                                             </Text>
                                         </div>
 
                                         <Progress
-                                            percent={63}
+                                            percent={progressPercentage(
+                                                fundingNeed?.currentAmount,
+                                                fundingNeed?.goalAmount
+                                            )}
                                             strokeColor={{
                                                 "0%": "#10b981",
                                                 "100%": "#059669",
@@ -137,7 +147,12 @@ const FundingNeedDetail = () => {
                                         >
                                             <Col span={12}>
                                                 <Text className="text-2xl font-bold text-gray-800 block">
-                                                    63%
+                                                    {Math.ceil(
+                                                        (fundingNeed?.currentAmount /
+                                                            fundingNeed?.goalAmount) *
+                                                            100
+                                                    )}{" "}
+                                                    %
                                                 </Text>
                                                 <Text
                                                     type="secondary"
@@ -171,8 +186,19 @@ const FundingNeedDetail = () => {
                                             backgroundColor: "#059669",
                                             borderColor: "#059669",
                                         }}
+                                        disabled={
+                                            progressPercentage(
+                                                fundingNeed?.currentAmount,
+                                                fundingNeed?.goalAmount
+                                            ) >= 100
+                                        }
                                     >
-                                        Donate Now
+                                        {progressPercentage(
+                                            fundingNeed?.currentAmount,
+                                            fundingNeed?.goalAmount
+                                        ) < 100
+                                            ? "Donate Now"
+                                            : "Funded"}
                                     </Button>
 
                                     <Space
@@ -187,7 +213,11 @@ const FundingNeedDetail = () => {
                                                     Campaign ends:
                                                 </Text>
                                             </Space>
-                                            <Text strong>Dec 31, 2024</Text>
+                                            <Text strong>
+                                                {beautifyDate(
+                                                    fundingNeed?.deadline
+                                                )}
+                                            </Text>
                                         </div>
                                         <div className="flex justify-between">
                                             <Space>
@@ -205,9 +235,7 @@ const FundingNeedDetail = () => {
                     </div>
                 </Card>
 
-                {/* Updates, Comments & Leaderboard Section */}
                 <Row gutter={32}>
-                    {/* Recent Updates */}
                     <Col xs={24} lg={8}>
                         <Card
                             title="Recent Updates"

@@ -21,13 +21,13 @@ const Navbar = () => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 backgroundColor: "white",
-                borderBottom: "1px solid #f0f0f0",
+                borderBottom: "1px solid #10b981",
                 padding: "0 24px",
                 height: "64px",
             }}
         >
             <Link to="/">
-                <Title level={3} style={{ margin: 0, color: "#1890ff" }}>
+                <Title level={3} style={{ margin: 0, color: "#059669" }}>
                     Donation App
                 </Title>
             </Link>
@@ -35,19 +35,45 @@ const Navbar = () => {
                 {user !== null ? (
                     <>
                         <Link to="/profile">
-                            <Button type="text">Profile</Button>
+                            <Button type="text" style={{ color: "#059669" }}>
+                                Profile
+                            </Button>
                         </Link>
-                        <Button onClick={handleLogout} type="primary" danger>
+                        <Button
+                            onClick={handleLogout}
+                            type="primary"
+                            danger
+                            style={{
+                                backgroundColor: "#dc2626",
+                                borderColor: "#dc2626",
+                            }}
+                        >
                             Logout
                         </Button>
                     </>
                 ) : (
                     <>
                         <Link to="/login">
-                            <Button type="default">Login</Button>
+                            <Button
+                                type="default"
+                                style={{
+                                    borderColor: "#10b981",
+                                    color: "#059669",
+                                }}
+                            >
+                                Login
+                            </Button>
                         </Link>
                         <Link to="/register">
-                            <Button type="primary">Get Started</Button>
+                            <Button
+                                type="primary"
+                                style={{
+                                    backgroundColor: "#059669",
+                                    borderColor: "#059669",
+                                }}
+                            >
+                                Get Started
+                            </Button>
                         </Link>
                     </>
                 )}
