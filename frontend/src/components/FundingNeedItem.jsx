@@ -1,5 +1,12 @@
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Card, Progress, Tag, Typography } from "antd";
+import { Link } from "react-router-dom";
+
+const { Title, Text } = Typography;
+
 const FundingNeedItem = ({ fundingNeed }) => {
     const {
+        _id,
         title,
         goalAmount,
         currentAmount = 0,
@@ -26,82 +33,117 @@ const FundingNeedItem = ({ fundingNeed }) => {
         }).format(amount);
     };
 
+    const getStatusColor = () => {
+        if (isExpired) return "red";
+        if (daysLeft <= 7) return "orange";
+        return "green";
+    };
+
+    const getStatusText = () => {
+        if (isExpired) return "Expired";
+        return `${daysLeft}d left`;
+    };
+
     return (
-        <div className="bg-white cursor-pointer rounded-3xl shadow-md border border-green-100 overflow-hidden hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1">
-            <div className="relative">
-                <img
-                    src={imageUrl}
-                    alt={title}
-                    className="w-full h-52 object-cover"
-                />
-                <div className="absolute top-3 right-3">
-                    <span
-                        className={`px-3 py-2 rounded-full text-xs font-semibold ${
-                            isExpired
-                                ? "bg-red-500 text-white"
-                                : daysLeft <= 7
-                                ? "bg-orange-500 text-white"
-                                : "bg-green-500 text-white"
-                        }`}
-                    >
-                        {isExpired ? "Expired" : `${daysLeft}d left`}
-                    </span>
-                </div>
-            </div>
-
-            <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3 line-clamp-2 h-14">
-                    {title}
-                </h3>
-
-                <div className="mb-4">
-                    <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs text-green-600 uppercase tracking-wide">
-                            {status === "completed"
-                                ? "Completed"
-                                : "In Progress"}
-                        </span>
-                        <span className="text-xs font-bold text-green-700">
-                            {Math.round(progressPercentage)}%
-                        </span>
+        <Link to={`/fundraisers/${_id}`}>
+            <Card
+                hoverable
+                className="h-full"
+                style={{ borderRadius: "24px" }}
+                cover={
+                    <div className="relative">
+                        <img
+                            src={imageUrl}
+                            alt={title}
+                            className="w-full h-52 object-cover rounded-t-2xl"
+                        />
+                        <div className="absolute top-3 right-3">
+                            <Tag
+                                color={getStatusColor()}
+                                className="font-semibold"
+                            >
+                                {getStatusText()}
+                            </Tag>
+                        </div>
                     </div>
-                    <div className="w-full bg-green-100 rounded-full h-2">
-                        <div
-                            className="bg-gradient-to-r from-green-500 to-emerald-600 h-2 rounded-full transition-all duration-500"
-                            style={{ width: `${progressPercentage}%` }}
-                        ></div>
-                    </div>
-                </div>
+                }
+            >
+                <div className="space-y-4">
+                    <Title level={4} className="mb-3 line-clamp-2 h-14">
+                        {title}
+                    </Title>
 
-                <div className="flex justify-between items-center mb-4">
                     <div>
-                        <p className="text-xs text-green-500 uppercase tracking-wide">
-                            Raised
-                        </p>
-                        <p className="text-base font-bold text-gray-800">
-                            {formatAmount(currentAmount)}
-                        </p>
+                        <div className="flex justify-between items-center mb-2">
+                            <Tag
+                                color={
+                                    status === "completed" ? "green" : "blue"
+                                }
+                                className="text-xs uppercase"
+                            >
+                                {status === "completed"
+                                    ? "Completed"
+                                    : "In Progress"}
+                            </Tag>
+                            <Text strong className="text-green-700">
+                                {Math.round(progressPercentage)}%
+                            </Text>
+                        </div>
+                        <Progress
+                            percent={progressPercentage}
+                            strokeColor={{
+                                "0%": "#10b981",
+                                "100%": "#059669",
+                            }}
+                            showInfo={false}
+                        />
                     </div>
-                    <div className="text-right">
-                        <p className="text-xs text-green-500 uppercase tracking-wide">
-                            Goal
-                        </p>
-                        <p className="text-base font-bold text-gray-800">
-                            {formatAmount(goalAmount)}
-                        </p>
-                    </div>
-                </div>
 
-                <div className="flex justify-between items-center pt-3 border-t border-green-100">
-                    <div className="text-xs text-gray-500">
-                        Created by{" "}
-                        <span className="font-medium text-green-700">
-                            {createdBy?.name || "Anonymous"}
-                        </span>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <Text
+                                type="secondary"
+                                className="text-xs uppercase block"
+                            >
+                                Raised
+                            </Text>
+                            <Text strong className="text-base">
+                                {formatAmount(currentAmount)}
+                            </Text>
+                        </div>
+                        <div className="text-right">
+                            <Text
+                                type="secondary"
+                                className="text-xs uppercase block"
+                            >
+                                Goal
+                            </Text>
+                            <Text strong className="text-base">
+                                {formatAmount(goalAmount)}
+                            </Text>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                        <div className="flex items-center space-x-2">
+                            <Avatar
+                                size="small"
+                                src={createdBy?.avatar}
+                                icon={<UserOutlined />}
+                            />
+                            <div>
+                                <Text type="secondary" className="text-xs">
+                                    Created by{" "}
+                                </Text>
+                                <Text strong className="text-xs text-green-700">
+                                    {createdBy?.name || "Anonymous"}
+                                </Text>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </Card>
+        </Link>
     );
 };
 

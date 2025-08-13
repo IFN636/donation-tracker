@@ -65,3 +65,28 @@ export const getFundingNeeds = async (req, res) => {
         });
     }
 };
+
+export const getFundingNeedById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const fundingNeed = await FundingNeed.findById(id).populate(
+            "createdBy"
+        );
+        if (!fundingNeed) {
+            return res.status(404).json({
+                success: false,
+                message: "Funding need not found",
+            });
+        }
+        res.status(200).json({
+            success: true,
+            fundingNeed,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to get funding need by id",
+            error: error.message,
+        });
+    }
+};

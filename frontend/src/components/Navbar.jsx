@@ -1,5 +1,9 @@
+import { Button, Layout, Space, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+
+const { Header } = Layout;
+const { Title } = Typography;
 
 const Navbar = () => {
     const { user, logout } = useAuth();
@@ -11,38 +15,44 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="text-black p-4 flex justify-between items-center border-b border-gray-200">
-            <Link to="/" className="text-2xl font-bold">
-                Donation App
+        <Header
+            style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                backgroundColor: "white",
+                borderBottom: "1px solid #f0f0f0",
+                padding: "0 24px",
+                height: "64px",
+            }}
+        >
+            <Link to="/">
+                <Title level={3} style={{ margin: 0, color: "#1890ff" }}>
+                    Donation App
+                </Title>
             </Link>
-            <div>
+            <Space size="middle">
                 {user !== null ? (
                     <>
-                        <Link to="/profile" className="mr-4">
-                            Profile
+                        <Link to="/profile">
+                            <Button type="text">Profile</Button>
                         </Link>
-                        <button
-                            onClick={handleLogout}
-                            className="bg-red-500 px-4 py-2 rounded hover:bg-red-700"
-                        >
+                        <Button onClick={handleLogout} type="primary" danger>
                             Logout
-                        </button>
+                        </Button>
                     </>
                 ) : (
                     <>
-                        <Link to="/login" className="mr-4">
-                            Login
+                        <Link to="/login">
+                            <Button type="default">Login</Button>
                         </Link>
-                        <Link
-                            to="/register"
-                            className="bg-green-600 py-2 rounded-lg hover:bg-green-700 font-bold px-6"
-                        >
-                            Register
+                        <Link to="/register">
+                            <Button type="primary">Get Started</Button>
                         </Link>
                     </>
                 )}
-            </div>
-        </nav>
+            </Space>
+        </Header>
     );
 };
 

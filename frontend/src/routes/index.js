@@ -1,4 +1,5 @@
 import CreationFundingNeed from "../pages/fundraisers/CreationFundingNeed";
+import FundingNeedDetail from "../pages/fundraisers/FundingNeedDetail";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
@@ -24,5 +25,9 @@ export const publicRoutes = [
     {
         path: "/",
         element: HomePage,
+    },
+    {
+        path: "/fundraisers/:id",
+        element: FundingNeedDetail,
     },
 ];

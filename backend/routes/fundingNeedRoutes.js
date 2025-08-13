@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     createFundingNeed,
+    getFundingNeedById,
     getFundingNeeds,
 } from "../controllers/fundingNeedController.js";
 import { authRequired, requiredRoles } from "../middleware/authMiddleware.js";
@@ -18,5 +19,6 @@ router.post(
     createFundingNeed
 );
 router.get("/", getFundingNeeds);
+router.get("/:id", getFundingNeedById);
 
 export default router;
