@@ -169,6 +169,7 @@ const HomePage = () => {
                         <select
                             value={`${sortBy}-${sortOrder}`}
                             onChange={(e) => {
+                                // eslint-disable-next-line no-unused-vars
                                 const [field, order] =
                                     e.target.value.split("-");
                                 handleSortChange(field);
