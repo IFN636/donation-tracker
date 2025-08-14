@@ -20,6 +20,11 @@ const fundingNeedSchema = new Schema({
         default: 0,
         min: 0,
     },
+    backers: {
+        type: Number,
+        default: 0,
+        min: 0,
+    },
     currency: {
         type: String,
         default: "AUD",

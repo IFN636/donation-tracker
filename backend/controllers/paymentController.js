@@ -98,6 +98,7 @@ export const webhookStripe = async (req, res) => {
 
                 const fundingNeed = await FundingNeed.findById(fundingNeedId);
                 fundingNeed.currentAmount += amount;
+                fundingNeed.backers += 1;
                 if (fundingNeed.currentAmount >= fundingNeed.goalAmount) {
                     fundingNeed.status = "completed";
                 }

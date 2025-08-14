@@ -166,7 +166,7 @@ const FundingNeedDetail = () => {
                                             </Col>
                                             <Col span={12}>
                                                 <Text className="text-2xl font-bold text-gray-800 block">
-                                                    127
+                                                    {fundingNeed?.backers}
                                                 </Text>
                                                 <Text
                                                     type="secondary"
