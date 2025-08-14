@@ -23,7 +23,8 @@
         "mongoose": "^8.17.0",
         "morgan": "^1.10.1",
         "multer": "^2.0.2",
-        "request": "^2.88.2"
+        "request": "^2.88.2",
+        "stripe": "^18.4.0"
     },
     "devDependencies": {
         "esm": "^3.2.25",

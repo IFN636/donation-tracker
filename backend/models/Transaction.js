@@ -7,13 +7,13 @@ const TransactionSchema = new Schema(
             ref: "Donation",
             index: true,
         },
-        fundingNeed: {
+        fundingNeedId: {
             type: Schema.Types.ObjectId,
             ref: "FundingNeed",
             index: true,
         },
 
-        paymentIntentId: { type: String, required: true, unique: true },
+        checkoutSessionId: { type: String, required: true, unique: true },
         chargeId: { type: String },
         customerId: { type: String },
         paymentMethodId: { type: String },
@@ -21,6 +21,7 @@ const TransactionSchema = new Schema(
         status: {
             type: String,
             enum: [
+                "pending",
                 "requires_action",
                 "processing",
                 "succeeded",

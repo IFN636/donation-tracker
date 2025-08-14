@@ -101,15 +101,19 @@ export const getDonorsByFundingNeedId = async (req, res) => {
         sortOrder = "desc",
     } = req.query;
     const skip = (page - 1) * limit;
+    console.log(fundingNeedId);
     try {
-        const donors = await Donation.find({ fundingNeedId })
+        const donors = await Donation.find({ fundingNeedId: fundingNeedId })
             .skip(skip)
             .limit(limit)
             .sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 });
+        const total = await Donation.countDocuments({
+            fundingNeedId: fundingNeedId,
+        });
         res.status(200).json({
             success: true,
             data: donors,
-            total: donors.length,
+            total,
             page,
             limit,
         });

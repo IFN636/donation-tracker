@@ -1,20 +1,29 @@
+import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { json } from "express";
+import express from "express";
 import morgan from "morgan";
 import { connectDB } from "./config/db.js";
+import { webhookStripe } from "./controllers/paymentController.js";
 import authRoutes from "./routes/authRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
 import fundingNeedRoutes from "./routes/fundingNeedRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 dotenv.config();
 
 const app = express();
-
 connectDB();
 
 app.use(cors());
-app.use(json());
+
+app.post(
+    "/webhook/stripe",
+    bodyParser.raw({ type: "application/json" }),
+    webhookStripe
+);
+
+app.use(express.json());
 
 //Logging
 app.use(morgan(process.env.NODE_ENV === "development" ? "dev" : "combined"));
@@ -23,6 +32,7 @@ app.use(morgan(process.env.NODE_ENV === "development" ? "dev" : "combined"));
 app.use("/api/auth", authRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/funding-needs", fundingNeedRoutes);
+app.use("/api/payment", paymentRoutes);
 
 // Export the app object for testing
 // If the file is run directly, start the server
