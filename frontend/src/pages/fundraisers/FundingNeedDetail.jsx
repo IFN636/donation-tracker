@@ -18,6 +18,8 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../axiosConfig";
+import DonationInputModal from "../../components/DonationInputModal";
+import DonorsList from "../../components/DonorsList";
 import { formatAmount, progressPercentage } from "../../utils";
 import { beautifyDate } from "../../utils/datetime";
 
@@ -26,9 +28,10 @@ const { Title, Text, Paragraph } = Typography;
 const FundingNeedDetail = () => {
     const { id } = useParams();
     const [fundingNeed, setFundingNeed] = useState(null);
+    const [donationModalOpen, setDonationModalOpen] = useState(false);
 
     const handleDonate = () => {
-        console.log("Donate button clicked for funding need:", id);
+        setDonationModalOpen(true);
     };
 
     useEffect(() => {
@@ -200,6 +203,13 @@ const FundingNeedDetail = () => {
                                             ? "Donate Now"
                                             : "Funded"}
                                     </Button>
+                                    <DonationInputModal
+                                        fundingNeedId={id}
+                                        open={donationModalOpen}
+                                        onCancel={() =>
+                                            setDonationModalOpen(false)
+                                        }
+                                    />
 
                                     <Space
                                         direction="vertical"
@@ -336,7 +346,6 @@ const FundingNeedDetail = () => {
                         </Card>
                     </Col>
 
-                    {/* Top Donors Leaderboard */}
                     <Col xs={24} lg={8}>
                         <Card
                             title="Top Donors"
@@ -347,117 +356,7 @@ const FundingNeedDetail = () => {
                                 className="w-full"
                                 size="large"
                             >
-                                <div className="flex items-center gap-3">
-                                    <Avatar
-                                        style={{ backgroundColor: "#faad14" }}
-                                        size={32}
-                                    >
-                                        1
-                                    </Avatar>
-                                    <Avatar
-                                        src="https://via.placeholder.com/40x40"
-                                        size={40}
-                                        icon={<UserOutlined />}
-                                    />
-                                    <div className="flex-1">
-                                        <Text strong className="block">
-                                            Emily Rodriguez
-                                        </Text>
-                                        <Text className="text-green-600 font-semibold">
-                                            $2,500
-                                        </Text>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <Avatar
-                                        style={{ backgroundColor: "#8c8c8c" }}
-                                        size={32}
-                                    >
-                                        2
-                                    </Avatar>
-                                    <Avatar
-                                        src="https://via.placeholder.com/40x40"
-                                        size={40}
-                                        icon={<UserOutlined />}
-                                    />
-                                    <div className="flex-1">
-                                        <Text strong className="block">
-                                            David Thompson
-                                        </Text>
-                                        <Text className="text-green-600 font-semibold">
-                                            $1,800
-                                        </Text>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <Avatar
-                                        style={{ backgroundColor: "#fa8c16" }}
-                                        size={32}
-                                    >
-                                        3
-                                    </Avatar>
-                                    <Avatar
-                                        src="https://via.placeholder.com/40x40"
-                                        size={40}
-                                        icon={<UserOutlined />}
-                                    />
-                                    <div className="flex-1">
-                                        <Text strong className="block">
-                                            Lisa Wang
-                                        </Text>
-                                        <Text className="text-green-600 font-semibold">
-                                            $1,200
-                                        </Text>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <Avatar
-                                        style={{
-                                            backgroundColor: "#d9d9d9",
-                                            color: "#595959",
-                                        }}
-                                        size={32}
-                                    >
-                                        4
-                                    </Avatar>
-                                    <Avatar
-                                        src="https://via.placeholder.com/40x40"
-                                        size={40}
-                                        icon={<UserOutlined />}
-                                    />
-                                    <div className="flex-1">
-                                        <Text strong className="block">
-                                            James Miller
-                                        </Text>
-                                        <Text className="text-green-600 font-semibold">
-                                            $950
-                                        </Text>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <Avatar
-                                        style={{
-                                            backgroundColor: "#d9d9d9",
-                                            color: "#595959",
-                                        }}
-                                        size={32}
-                                    >
-                                        5
-                                    </Avatar>
-                                    <Avatar
-                                        src="https://via.placeholder.com/40x40"
-                                        size={40}
-                                        icon={<UserOutlined />}
-                                    />
-                                    <div className="flex-1">
-                                        <Text strong className="block">
-                                            Anna Foster
-                                        </Text>
-                                        <Text className="text-green-600 font-semibold">
-                                            $750
-                                        </Text>
-                                    </div>
-                                </div>
+                                <DonorsList fundingNeedId={id} />
                             </Space>
                             <Divider />
                             <Text
