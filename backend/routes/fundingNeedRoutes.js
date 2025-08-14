@@ -21,6 +21,6 @@ router.post(
 );
 router.get("/", getFundingNeeds);
 router.get("/:id", getFundingNeedById);
-router.get("/:id/donors", getDonorsByFundingNeedId);
+router.get("/:fundingNeedId/donors", getDonorsByFundingNeedId);
 
 export default router;

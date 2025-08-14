@@ -1,5 +1,6 @@
 import { Button, Layout, Space, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 
 const { Header } = Layout;
@@ -32,6 +33,22 @@ const Navbar = () => {
                 </Title>
             </Link>
             <Space size="middle">
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        if (!user) {
+                            toast.error(
+                                "Please login to create a funding need"
+                            );
+                            navigate("/login");
+                            return;
+                        }
+                        navigate("/fundraisers/creation");
+                    }}
+                >
+                    Create Funding Need
+                </Button>
+
                 {user !== null ? (
                     <>
                         <Link to="/profile">

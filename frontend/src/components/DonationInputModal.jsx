@@ -1,9 +1,13 @@
 import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
+import { toast } from "react-toastify";
+import axiosInstance from "../axiosConfig";
+import { useAuth } from "../context/AuthContext";
 
 const DonationInputModal = ({ open, onCancel, fundingNeedId }) => {
     const [form] = Form.useForm();
+    const { getAccessToken } = useAuth();
 
-    const handleSubmit = (values) => {
+    const handleSubmit = async (values) => {
         const { amount, paymentMethod, anonymous } = values;
         const donation = {
             amount,
@@ -12,7 +16,23 @@ const DonationInputModal = ({ open, onCancel, fundingNeedId }) => {
             fundingNeedId,
         };
 
-        console.log(donation);
+        try {
+            const response = await axiosInstance.post(
+                "/api/payment/create-checkout-session",
+                donation,
+                {
+                    headers: {
+                        Authorization: `Bearer ${getAccessToken()}`,
+                    },
+                }
+            );
+            const data = response.data;
+            if (data.success) {
+                window.location.href = data.data.url;
+            }
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
     };
 
     return (
