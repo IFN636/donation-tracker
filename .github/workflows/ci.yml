@@ -48,13 +48,20 @@ jobs:
           yarn install
 
       # Install dependencies for frontend
-      - name: Install Frontend Dependencies
+      - name: Install & Build Frontend (CRA)
         working-directory: ./frontend
         run: |
           df -h
-          sudo rm -rf ./build
-          yarn install
+          rm -rf ./build
+          yarn install --frozen-lockfile
+          echo "PRE-BUILD CHECK:"
+          node -e "console.log('REACT_APP_API_URL=', process.env.REACT_APP_API_URL)"
           yarn run build
+          echo "POST-BUILD VERIFY:"
+          grep -R "3.24.15.154:5001" build/ || (echo "❌ Not found in bundle" && exit 1)
+        env:
+          NODE_ENV: production
+          REACT_APP_API_URL: http://3.24.15.154:5001
 
       # Run backend tests
       - name: Run Backend Tests
