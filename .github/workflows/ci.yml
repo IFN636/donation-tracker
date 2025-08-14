@@ -53,11 +53,8 @@ jobs:
         run: |
           df -h
           sudo rm -rf ./build
-          echo "REACT_APP_API_URL=http://3.24.15.154:5001"
           yarn install
           yarn run build
-        env:
-          REACT_APP_API_URL: http://3.24.15.154:5001
 
       # Run backend tests
       - name: Run Backend Tests
