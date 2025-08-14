@@ -30,7 +30,7 @@ export const createCheckoutSession = async (req, res) => {
                             name: "Donation",
                             description: "Thank you for your support",
                         },
-                        unit_amount: amount,
+                        unit_amount: amount * 100,
                     },
                     quantity: 1,
                 },
@@ -66,7 +66,6 @@ export const webhookStripe = async (req, res) => {
     let event = req.body;
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
     if (endpointSecret) {
-        // Get the signature sent by Stripe
         const signature = req.headers["stripe-signature"];
         try {
             event = stripe.webhooks.constructEvent(
@@ -82,11 +81,10 @@ export const webhookStripe = async (req, res) => {
             return res.sendStatus(400);
         }
 
-        // Handle the event
         switch (event.type) {
             case "checkout.session.completed":
                 const session = event.data.object;
-                const amount = session.amount_total;
+                const amount = session.amount_total / 100;
                 const metadata = session.metadata;
                 const fundingNeedId = metadata.fundingNeedId;
                 const checkoutSessionId = session.id;
@@ -95,6 +93,8 @@ export const webhookStripe = async (req, res) => {
                 const name = metadata.name;
                 const email = metadata.email;
                 const currency = metadata.currency;
+
+                console.log(amount);
 
                 const fundingNeed = await FundingNeed.findById(fundingNeedId);
                 fundingNeed.currentAmount += amount;

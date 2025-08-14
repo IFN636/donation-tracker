@@ -35,6 +35,8 @@ const Navbar = () => {
             <Space size="middle">
                 <Button
                     type="primary"
+                    color="cyan"
+                    variant="outlined"
                     onClick={() => {
                         if (!user) {
                             toast.error(
@@ -46,7 +48,7 @@ const Navbar = () => {
                         navigate("/fundraisers/creation");
                     }}
                 >
-                    Create Funding Need
+                    Launch a Fundraiser
                 </Button>
 
                 {user !== null ? (
@@ -58,12 +60,8 @@ const Navbar = () => {
                         </Link>
                         <Button
                             onClick={handleLogout}
-                            type="primary"
-                            danger
-                            style={{
-                                backgroundColor: "#dc2626",
-                                borderColor: "#dc2626",
-                            }}
+                            color="danger"
+                            variant="outlined"
                         >
                             Logout
                         </Button>
