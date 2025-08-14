@@ -50,13 +50,13 @@ jobs:
       # Install dependencies for frontend
       - name: Install Frontend Dependencies
         working-directory: ./frontend
-        env:
-          NODE_ENV: production
         run: |
           df -h
           sudo rm -rf ./build
           yarn install
           yarn run build
+        env:
+          REACT_APP_API_URL: http://3.24.15.154:5001
 
       # Run backend tests
       - name: Run Backend Tests
