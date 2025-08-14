@@ -79,7 +79,11 @@ const FundingNeedItem = ({ fundingNeed }) => {
                                 color={
                                     status === "completed" ? "green" : "blue"
                                 }
-                                className="text-xs uppercase"
+                                className="text-xs"
+                                style={{
+                                    borderRadius: "12px",
+                                    padding: "2px 10px",
+                                }}
                             >
                                 {status === "completed"
                                     ? "Completed"

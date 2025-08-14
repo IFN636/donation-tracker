@@ -1,3 +1,4 @@
+import Donation from "../models/Donation.js";
 import FundingNeed from "../models/FundingNeed.js";
 
 export const createFundingNeed = async (req, res) => {
@@ -87,6 +88,35 @@ export const getFundingNeedById = async (req, res) => {
             success: false,
             message: "Failed to get funding need by id",
             error: error.message,
+        });
+    }
+};
+
+export const getDonorsByFundingNeedId = async (req, res) => {
+    const { fundingNeedId } = req.params;
+    const {
+        page = 1,
+        limit = 10,
+        sortBy = "amount",
+        sortOrder = "desc",
+    } = req.query;
+    const skip = (page - 1) * limit;
+    try {
+        const donors = await Donation.find({ fundingNeedId })
+            .skip(skip)
+            .limit(limit)
+            .sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 });
+        res.status(200).json({
+            success: true,
+            data: donors,
+            total: donors.length,
+            page,
+            limit,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
         });
     }
 };

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     createFundingNeed,
+    getDonorsByFundingNeedId,
     getFundingNeedById,
     getFundingNeeds,
 } from "../controllers/fundingNeedController.js";
@@ -20,5 +21,6 @@ router.post(
 );
 router.get("/", getFundingNeeds);
 router.get("/:id", getFundingNeedById);
+router.get("/:id/donors", getDonorsByFundingNeedId);
 
 export default router;
