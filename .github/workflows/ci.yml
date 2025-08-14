@@ -37,7 +37,7 @@ jobs:
           echo "Secret 2 is: $JWT_SECRET"
           echo "Secret 3 is: $PORT"
 
-      - run: pm2 stop all
+      - run: pm2 stop all || true
 
       # Install dependencies for backend
       - name: Install Backend Dependencies
@@ -71,6 +71,25 @@ jobs:
           touch .env
           echo "${{ secrets.PROD }}" > .env
 
-      - run: pm2 start all
+      - name: Check and start PM2 backend
+        run: |
+          if pm2 show backend > /dev/null 2>&1; then
+            echo "PM2 process 'backend' is already running"
+            pm2 start all
+          else
+            echo "No PM2 process named 'backend' found. Starting..."
+            pm2 start "npm run start" --name="backend"
+          fi
 
+      - name: Check and start PM2 front-end
+        run: |
+          if pm2 show Frontend > /dev/null 2>&1; then
+            echo "PM2 process 'backend' is already running"
+            pm2 start all
+          else
+            echo "No PM2 process named 'Frontend' found. Starting..."
+            pm2 serve build/ 3000 --name "Frontend" --spa
+          fi
+
+      - run: pm2 save
       - run: pm2 restart all
