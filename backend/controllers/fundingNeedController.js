@@ -101,7 +101,6 @@ export const getDonorsByFundingNeedId = async (req, res) => {
         sortOrder = "desc",
     } = req.query;
     const skip = (page - 1) * limit;
-    console.log(fundingNeedId);
     try {
         const donors = await Donation.find({ fundingNeedId: fundingNeedId })
             .skip(skip)
