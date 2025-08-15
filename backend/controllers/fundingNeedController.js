@@ -70,7 +70,6 @@ export const getFundingNeeds = async (req, res) => {
 export const getFundingNeedById = async (req, res) => {
     const { id } = req.params;
     try {
-        console.log(id);
         const fundingNeed = await FundingNeed.findById(id).populate(
             "createdBy"
         );
@@ -83,7 +82,7 @@ export const getFundingNeedById = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            data: data,
+            data: fundingNeed,
         });
     } catch (error) {
         res.status(500).json({
