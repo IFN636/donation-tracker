@@ -1,92 +1,211 @@
-**Assessment 1 (Total Marks **20**)**
+# Full-Stack CRUD Application Development with DevOps Practices
 
-Assignment: **Software requirements analysis and design (**Full-Stack CRUD Application Development with DevOps Practices**)**
+**Assessment 1 (Total Marks: 20)**
+
+This project demonstrates a full-stack CRUD application built with Node.js, React.js, and MongoDB, implementing industry best practices including project management, version control, and CI/CD deployment.
 
 ---
 
-**Objective**
+## Table of Contents
 
-You have been provided with a starter project that includes user authentication using Node.js, React.js, and MongoDB. Your task is to extend this application by implementing CRUD (Create, Read, Update, Delete) operations of different featuresfor a real-world application of your choice, while following industry best practices such as:
+-   [Project Overview](#project-overview)
+-   [Features](#features)
+-   [Technology Stack](#technology-stack)
+-   [Project Setup Instructions](#project-setup-instructions)
+-   [Live Application](#live-application)
+-   [Project Management](#project-management)
+-   [CI/CD Pipeline](#cicd-pipeline)
+-   [Architecture](#architecture)
+
+---
+
+## Project Overview
+
+This application extends a starter authentication project to include comprehensive CRUD operations for [Your Chosen Application Type]. The project follows software engineering best practices including:
 
 -   **Project Management with JIRA**
--   **Requirement Diagram**, **Block Definition Diagram (**BDD), Parametric Diagram using**SysML**
--   **Version Control using GitHub**
+-   **System Modeling with SysML** (Requirement Diagram, Block Definition Diagram, Parametric Diagram)
+-   **Version Control with GitHub**
 -   **CI/CD Integration for Automated Deployment**
 
----
-
-**GitHub link of the starter project: **[https://github.com/rajuiit/sdlapps](https://github.com/rajuiit/sdlapps)
+**Base Project:** [https://github.com/rajuiit/sdlapps](https://github.com/rajuiit/sdlapps)
 
 ---
 
-**Requirement**
+## Features
 
-1. **Choose a Real-World Application**
-
-We will send you an email to choose a Real-World project. If you face any difficulties in choosing your project, please contact your tutor.
-
-2. **Project Design with SysML and Project Management with JIRA**
-
--   Draw a requirements diagram, Block Definition Diagram (BDD), and Parametric Diagram based on your project (Connect all functional features).
--   Create a JIRA project and define:
-    -   Epic
-    -   User Stories (features required in your app)
-    -   Child issues or Subtasks (breaking down development work)
-    -   Sprint Implementation (organizing work into milestones)
--   Provide your JIRA board URL in the project README.
-
-**3. Backend Development (Node.js + Express + MongoDB)**
-
--   Set up and configure the MongoDB database connection.
--   Implement various backend functions for handling application data.Ensure that all functions are compatible with an Application Programming Interface (API) structure(Follow existing patterns used in the Task Manager App where applicable).
--   Implement CRUD operations forcreating, reading, updating, and deleting records for each functionality.
-
-4. **Frontend Development (React.js)**
-
--   Create a user-friendly interface to interact with your API endpoint (Follow task manager app).
--   Implement different forms for adding, updating, and deleting records.
--   Display data using tables, cards, or lists (Follow how we showed data in task manager app, try to implement better visualization for the frontend.)
-
-**5. Authentication & Authorization** (Prerequisite Task)
-
--   Ensure only authenticated users can access and perform CRUD operations. (Already developed in your project)
--   Use JWT (JSON Web Tokens) for user authentication (Use the task manager one from .env file).
-
-**6. GitHub Version Control & Branching Strategy**
-
--   Use GitHub for version control and maintain:
--   main branch (stable production-ready code)
--   Feature branches for each new feature
--   Follow proper commit messages and pull request (PR) for code reviews.
-
-**7. CI/CD Pipeline Setup**
-
--   Implement a CI/CD pipeline using GitHub Actions to:
--   Automatically run tests on every commit/pull request (Optional).
--   Deploy the backend to AWS. (Use the QUT provided EC2 instance)
--   Deploy the frontend to AWS.
--   Document your CI/CD workflow in the README.
+-   ✅ User Authentication & Authorization (JWT)
+-   ✅ CRUD Operations for [Feature 1]
+-   ✅ CRUD Operations for [Feature 2]
+-   ✅ CRUD Operations for [Feature 3]
+-   ✅ Responsive Frontend Interface
+-   ✅ RESTful API Backend
+-   ✅ MongoDB Database Integration
+-   ✅ Automated CI/CD Pipeline
+-   ✅ AWS Cloud Deployment
 
 ---
 
-**Submission Requirements**
+## Technology Stack
 
-**A report **contains** the following (Provide screenshots as evidence for each implemented task. **The screenshot should **contain** your username** from JIRA, GITHUB, and AWS**):
+**Frontend:**
 
--   **JIRA Project **Management**(Provide screenshots in the **report o**f at least two epics**, **including user story, sub**t**a**sks**. **Please **don’t** provide **the **U**ser Authentication** epic**.**Provide your JIRA Board URL in the report and README file as well.**Through the JIRA Board, we will systematically review the completeness of the project features, organised under Epics, User Stories, and Sub-tasks.**
--   Requirement diagram, Block Definition Diagram (BDD), Parametric Diagram (Using project features).
--   **GitHub Repository (backend/ and frontend/)** link. We will **review** your code implementation, which you followed from the task description. We will also **review** your commits, main branch, feature branches, and pull requests. **(**Please note that the authorisation** (Log In, Registration)** is the prerequisite for backend development.**)**
--   CI/CD pipeline details step by step screenshot.
--   README.md with:
--   Project setup instructions.
--   Public URL of your project.
--   Provide a project-specific username and password if we need to access your dashboard.
+-   React.js
+-   HTML5/CSS3
+-   JavaScript (ES6+)
+
+**Backend:**
+
+-   Node.js
+-   Express.js
+-   MongoDB
+-   JWT Authentication
+
+**Online Payment Integration:**
+
+-   Stripe API Sandbox
+
+**Testing Credit Cards (Stripe):**
+
+-   Visa: `4242 4242 4242 4242`
+-   Visa (debit): `4000 0566 5566 5556`
+-   Mastercard: `5555 5555 5555 4444`
+-   American Express: `3782 8224 6310 005`
+-   Declined Card: `4000 0000 0000 0002`
+-   CVC: Any 3 digits (4 for Amex)
+-   Expiry: Any future date
+
+**DevOps:**
+
+-   GitHub Actions (CI/CD)
+-   AWS EC2 (Backend Deployment)
+-   AWS S3/CloudFront (Frontend Deployment)
+
+**Project Management:**
+
+-   JIRA
+-   SysML Diagrams
 
 ---
 
-**Assessment Criteria:**
+## Project Setup Instructions
 
--   Clarity and completeness of Jira board and SysML models.
--   Adherence to Git best practices and practical contributions.
--   Successful implementation, deploymentand CI/CD pipeline.
--   Problem-solving skills and the ability to go beyond basic requirements.
+### Prerequisites
+
+-   Node.js (v14 or higher)
+-   MongoDB (local or Atlas)
+-   Git
+-   AWS Account (for deployment)
+
+### Local Development Setup
+
+1. **Clone the Repository**
+
+    ```bash
+    git clone https://github.com/khangdev20/donation-tracker.git
+    cd ./donation-tracker
+    ```
+
+2. **Backend Setup**
+
+    ```bash
+    cd backend
+    npm install
+    ```
+
+3. **Environment Configuration**
+   Create a `.env` file in the backend directory:
+
+    ```env
+    MONGO_URI=mongodb+srv://lenhutkhangvo:mongodbpassword@ifn636-qut.vuzlwj6.mongodb.net/donation-tracker?retryWrites=true&w=majority&appName=ifn636-qut
+    JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
+    BLOB_READ_WRITE_TOKEN=vercel_blob_rw_AqdIitkxZXaMO31W_nlgGg8mr2zuc2alUVNKbGTC3ckacRh
+    STRIPE_SECRET_KEY=sk_test_51Qq3GpQejYquv8g2ofjABASW3PoOIg3v0DQnEoLVOa31Lj8ATfQP5XJReR7zduFhXnAOL6RZ6rtRDS23W8PPbO2700OTerfU0J
+    STRIPE_WEBHOOK_SECRET=whsec_NFlGB7kqv21VjSdPCncwDamrwNGZmCwK
+    CLIENT_URL=http://localhost:3000
+    PORT=5001
+    ```
+
+4. **Database Setup**
+
+    - Install MongoDB locally or use MongoDB Atlas
+    - Update the `MONGODB_URI` in your `.env` file
+
+5. **Packages Installation**
+
+    ```bash
+    npm run install-all
+    ```
+
+6. **Start Backend and Frontend Concurrently**
+
+    ```bash
+    npm start
+    for development
+    npm run dev
+    ```
+
+7. **Access the Application**
+    - Frontend: `http://localhost:3000`
+    - Backend API: `http://localhost:5001`
+
+### Production Deployment
+
+The application is automatically deployed via GitHub Actions CI/CD pipeline when changes are pushed to the main branch.
+
+---
+
+## Live Application
+
+🌐 **Public URL:** http://3.24.15.154/
+
+### Test Credentials
+
+For assessment and demonstration purposes, you can use the following credentials:
+
+**Username:** `testing1@example.com`  
+**Password:** `Testing@123`
+
+_Note: These are test credentials created specifically for assessment purposes._
+
+---
+
+## Project Management
+
+### JIRA Board
+
+**JIRA Project URL:** [Your JIRA Board URL]
+
+The project is organized into:
+
+-   **Epics:** Major feature groups
+-   **User Stories:** Individual features and requirements
+-   **Subtasks:** Detailed development tasks
+-   **Sprints:** Organized development cycles
+
+### SysML Diagrams
+
+-   Requirements Diagram
+-   Block Definition Diagram (BDD)
+-   Parametric Diagram
+
+## CI/CD Pipeline
+
+The project implements automated CI/CD using GitHub Actions:
+
+1. **Continuous Integration:**
+
+    - Automated testing on pull requests
+    - Code quality checks
+    - Build verification
+
+2. **Continuous Deployment:**
+    - Backend deployment to AWS EC2
+    - Frontend deployment to AWS S3/CloudFront
+    - Environment-specific configurations
+
+**Pipeline Status:** [![CI/CD Pipeline](https://github.com/[username]/[repository]/workflows/CI-CD/badge.svg)](https://github.com/[username]/[repository]/actions)
+
+---
+
+## Architecture
