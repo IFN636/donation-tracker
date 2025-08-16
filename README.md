@@ -174,7 +174,7 @@ _Note: These are test credentials created specifically for assessment purposes._
 
 ### JIRA Board
 
-**JIRA Project URL:** [Your JIRA Board URL]
+**JIRA Project URL:** https://ifn636-ses2.atlassian.net/jira/software/projects/ODT/boards
 
 The project is organized into:
 
@@ -204,7 +204,7 @@ The project implements automated CI/CD using GitHub Actions:
     - Frontend deployment to AWS S3/CloudFront
     - Environment-specific configurations
 
-**Pipeline Status:** [![CI/CD Pipeline](https://github.com/[username]/[repository]/workflows/CI-CD/badge.svg)](https://github.com/[username]/[repository]/actions)
+**Pipeline Status:** [![CI/CD Pipeline](https://github.com/khangdev20/donation-tracker/workflows/CI-CD/badge.svg)](https://github.com/khangdev20/donation-tracker/actions)
 
 ---
 
