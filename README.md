@@ -51,7 +51,6 @@ This application extends a starter authentication project to include comprehensi
 **Frontend:**
 
 -   React.js
--   HTML5/CSS3
 -   JavaScript (ES6+)
 
 **Backend:**
@@ -79,7 +78,6 @@ This application extends a starter authentication project to include comprehensi
 
 -   GitHub Actions (CI/CD)
 -   AWS EC2 (Backend Deployment)
--   AWS S3/CloudFront (Frontend Deployment)
 
 **Project Management:**
 
@@ -99,45 +97,49 @@ This application extends a starter authentication project to include comprehensi
 
 ### Local Development Setup
 
-1. **Clone the Repository**
+1.  **Clone the Repository**
 
     ```bash
     git clone https://github.com/khangdev20/donation-tracker.git
     cd ./donation-tracker
     ```
 
-2. **Backend Setup**
+2.  **Backend Setup**
 
     ```bash
     cd backend
     npm install
     ```
 
-3. **Environment Configuration**
-   Create a `.env` file in the backend directory: ⚠️Serect Keys here are only for testing
+3.  **Environment Configuration**
+    Create a `.env` file in the backend directory:
 
-    ```env
-    MONGO_URI=mongodb+srv://lenhutkhangvo:mongodbpassword@ifn636-qut.vuzlwj6.mongodb.net/donation-tracker?retryWrites=true&w=majority&appName=ifn636-qut
-    JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
-    BLOB_READ_WRITE_TOKEN=vercel_blob_rw_AqdIitkxZXaMO31W_nlgGg8mr2zuc2alUVNKbGTC3ckacRh
-    STRIPE_SECRET_KEY=sk_test_51Qq3GpQejYquv8g2ofjABASW3PoOIg3v0DQnEoLVOa31Lj8ATfQP5XJReR7zduFhXnAOL6RZ6rtRDS23W8PPbO2700OTerfU0J
-    STRIPE_WEBHOOK_SECRET=whsec_NFlGB7kqv21VjSdPCncwDamrwNGZmCwK
-    CLIENT_URL=http://localhost:3000
-    PORT=5001
-    ```
+    > ⚠️ **Warning** ⚠️  
+    > The **Secret Keys / Credentials** in this repository are for **testing purposes only**.  
+    > ❌ Do **NOT** use them in a **production** environment.
 
-4. **Database Setup**
+        ```env
+        MONGO_URI=mongodb+srv://lenhutkhangvo:mongodbpassword@ifn636-qut.vuzlwj6.mongodb.net/donation-tracker?retryWrites=true&w=majority&appName=ifn636-qut
+        JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
+        BLOB_READ_WRITE_TOKEN=vercel_blob_rw_AqdIitkxZXaMO31W_nlgGg8mr2zuc2alUVNKbGTC3ckacRh
+        STRIPE_SECRET_KEY=sk_test_51Qq3GpQejYquv8g2ofjABASW3PoOIg3v0DQnEoLVOa31Lj8ATfQP5XJReR7zduFhXnAOL6RZ6rtRDS23W8PPbO2700OTerfU0J
+        STRIPE_WEBHOOK_SECRET=whsec_NFlGB7kqv21VjSdPCncwDamrwNGZmCwK
+        CLIENT_URL=http://localhost:3000
+        PORT=5001
+        ```
 
-    - Install MongoDB locally or use MongoDB Atlas
-    - Update the `MONGODB_URI` in your `.env` file
+4.  **Database Setup**
 
-5. **Packages Installation**
+    -   Install MongoDB locally or use MongoDB Atlas
+    -   Update the `MONGODB_URI` in your `.env` file
+
+5.  **Packages Installation**
 
     ```bash
     npm run install-all
     ```
 
-6. **Start Backend and Frontend Concurrently**
+6.  **Start Backend and Frontend Concurrently**
 
     ```bash
     npm start
@@ -145,9 +147,9 @@ This application extends a starter authentication project to include comprehensi
     npm run dev
     ```
 
-7. **Access the Application**
-    - Frontend: `http://localhost:3000`
-    - Backend API: `http://localhost:5001`
+7.  **Access the Application**
+    -   Frontend: `http://localhost:3000`
+    -   Backend API: `http://localhost:5001`
 
 ### Production Deployment
 
@@ -201,7 +203,6 @@ The project implements automated CI/CD using GitHub Actions:
 
 2. **Continuous Deployment:**
     - Backend deployment to AWS EC2
-    - Frontend deployment to AWS S3/CloudFront
     - Environment-specific configurations
 
 **Pipeline Status:** [![CI/CD Pipeline](https://github.com/khangdev20/donation-tracker/workflows/CI-CD/badge.svg)](https://github.com/khangdev20/donation-tracker/actions)
