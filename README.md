@@ -120,8 +120,8 @@ This application extends a starter authentication project to include comprehensi
     MONGO_URI=mongodb+srv://lenhutkhangvo:mongodbpassword@ifn636-qut.vuzlwj6.mongodb.net/donation-tracker?retryWrites=true&w=majority&appName=ifn636-qut
     JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
     BLOB_READ_WRITE_TOKEN=vercel_blob_rw_AqdIitkxZXaMO31W_nlgGg8mr2zuc2alUVNKbGTC3ckacRh
-    STRIPE_SECRET_KEY=sk_test_51Qq3GpQejYquv8g2ofjABASW3PoOIg3v0DQnEoLVOa31Lj8ATfQP5XJReR7zduFhXnAOL6RZ6rtRDS23W8PPbO2700OTerfU0J
-    STRIPE_WEBHOOK_SECRET=whsec_NFlGB7kqv21VjSdPCncwDamrwNGZmCwK
+    STRIPE_SECRET_KEY=<stripe-serect-key>
+    STRIPE_WEBHOOK_SECRET=<stripe-webhook-serect-key>
     CLIENT_URL=http://localhost:3000
     PORT=5001
     ```
