@@ -19,6 +19,8 @@ export const createCheckoutSession = async (req, res) => {
             currency: currency,
         };
 
+        const redirectUrl = `${process.env.CLIENT_URL}/fundraisers/${fundingNeedId}`;
+
         const checkoutSession = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
             mode: "payment",
@@ -37,8 +39,8 @@ export const createCheckoutSession = async (req, res) => {
             ],
             metadata: metadata,
             customer_email: user.email || undefined,
-            success_url: `${process.env.CLIENT_URL}`,
-            cancel_url: `${process.env.CLIENT_URL}`,
+            success_url: `${redirectUrl}?status=success&tranid=${checkoutSession.id}`,
+            cancel_url: `${redirectUrl}?status=cancel&tranid=${checkoutSession.id}`,
         });
 
         await Transaction.create({
