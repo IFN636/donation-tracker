@@ -21,7 +21,7 @@ This project demonstrates a full-stack CRUD application built with Node.js, Reac
 
 ## Project Overview
 
-This application extends a starter authentication project to include comprehensive CRUD operations for [Your Chosen Application Type]. The project follows software engineering best practices including:
+This application extends a starter authentication project to include comprehensive CRUD operations for fundraising campaigns and donations. The project follows software engineering best practices including:
 
 -   **Project Management with JIRA**
 -   **System Modeling with SysML** (Requirement Diagram, Block Definition Diagram, Parametric Diagram)
@@ -35,9 +35,9 @@ This application extends a starter authentication project to include comprehensi
 ## Features
 
 -   ✅ User Authentication & Authorization (JWT)
--   ✅ CRUD Operations for [Feature 1]
--   ✅ CRUD Operations for [Feature 2]
--   ✅ CRUD Operations for [Feature 3]
+-   ✅ Funding Need Management (CRUD)
+-   ✅ Donation Management
+-   ✅ Stripe Payment Integration
 -   ✅ Responsive Frontend Interface
 -   ✅ RESTful API Backend
 -   ✅ MongoDB Database Integration
@@ -207,6 +207,23 @@ The project implements automated CI/CD using GitHub Actions:
 
 **Pipeline Status:** [![CI/CD Pipeline](https://github.com/khangdev20/donation-tracker/workflows/CI-CD/badge.svg)](https://github.com/khangdev20/donation-tracker/actions)
 
----
-
 ## Architecture
+
+The application follows a **3-tier MERN architecture**:
+
+-   **Frontend (Client Layer):** Built with **React.js**, providing a responsive user interface for authentication, funding needs, and donations.
+-   **Backend (Application Layer):** Implemented with **Node.js & Express.js**, exposing RESTful APIs for CRUD operations, authentication, and payment handling.
+-   **Database (Data Layer):** **MongoDB** stores users, fundraising campaigns, and donation records.
+
+**Deployment:**
+
+-   **Frontend** runs locally or can be hosted on cloud platforms.
+-   **Backend** is deployed on **AWS EC2**, connected to **MongoDB Atlas**.
+-   **Stripe API** integrates payment processing.
+-   **CI/CD** is handled via **GitHub Actions**, automating testing and deployment.
+
+## Reflection
+
+-   Learned the importance of creating **diagrams**, especially **parametric diagrams**, to clarify system architecture and data flows.
+-   Faced an issue with **AWS EC2**: the instance stopped every night, causing the **public IP** to change.
+-   Solved it by assigning an **Elastic IP**, ensuring a **static address** and reliable access to the application.
