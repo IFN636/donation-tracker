@@ -176,7 +176,7 @@ _Note: These are test credentials created specifically for assessment purposes._
 
 ### JIRA Board
 
-**JIRA Project URL:** https://ifn636-ses2.atlassian.net/jira/software/projects/ODT/boards
+**JIRA Project URL:** https://ifn636-ses2.atlassian.net/jira/software/projects/ODT/boards/34
 
 The project is organized into:
 
