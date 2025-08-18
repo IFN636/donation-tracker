@@ -4,6 +4,7 @@ import FundingNeed from "../models/FundingNeed.js";
 import Transaction from "../models/Transaction.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 export const createCheckoutSession = async (req, res) => {
     const { amount, currency = "aud", fundingNeedId, isAnonymous } = req.body;
     const user = req.user;
@@ -39,8 +40,8 @@ export const createCheckoutSession = async (req, res) => {
             ],
             metadata: metadata,
             customer_email: user.email || undefined,
-            success_url: `${redirectUrl}?status=success&tranid=${checkoutSession.id}`,
-            cancel_url: `${redirectUrl}?status=cancel&tranid=${checkoutSession.id}`,
+            success_url: redirectUrl,
+            cancel_url: redirectUrl,
         });
 
         await Transaction.create({
