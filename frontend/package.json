@@ -9,6 +9,7 @@
         "antd": "^5.27.0",
         "axios": "^1.3.4",
         "clsx": "^2.1.1",
+        "donation-tracker": "file:..",
         "lucide-react": "^0.539.0",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
