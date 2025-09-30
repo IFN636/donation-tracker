@@ -5,6 +5,7 @@ import express from "express";
 import morgan from "morgan";
 import { connectDB } from "./config/db.js";
 import PaymentController from "./controllers/paymentController.js";
+import { initEventSubscribers } from "./events/bus.js";
 import authRoutes from "./routes/authRoutes.js";
 import campaignRoutes from "./routes/campaignRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
@@ -14,6 +15,7 @@ dotenv.config();
 
 const app = express();
 connectDB();
+initEventSubscribers();
 
 app.use(cors());
 
