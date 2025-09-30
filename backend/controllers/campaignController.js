@@ -1,3 +1,4 @@
+import CampaignFactory from "../factories/CampaignFactory.js";
 import Campaign from "../models/Campaign.js";
 import CampaignRepository from "../repositories/CampaignRepository.js";
 import DonationRepository from "../repositories/donationRepository.js";
@@ -9,19 +10,11 @@ class CampaignController {
     }
 
     async createCampaign(req, res) {
-        const { title, description, goalAmount, currency, deadline, imageUrl } =
-            req.body;
-
         try {
-            const campaign = await this._campaignRepository.create({
-                title,
-                description,
-                goalAmount,
-                currency,
-                deadline,
-                imageUrl,
-                createdBy: req.user.id,
-            });
+            const campaignData = CampaignFactory.fromRequest(req.body);
+            const campaign = await this._campaignRepository.create(
+                campaignData
+            );
             res.status(201).json({
                 success: true,
                 message: "Campaign created successfully",
