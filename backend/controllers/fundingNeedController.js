@@ -1,15 +1,19 @@
-import Donation from "../models/Donation.js";
 import FundingNeed from "../models/FundingNeed.js";
-
-export const getFundingNeedById = async (req, res) => {};
+import DonationRepository from "../repositories/donationRepository.js";
+import FundingNeedRepository from "../repositories/fundingNeedRepository.js";
 
 class FundingNeedController {
+    constructor() {
+        this._fundingNeedRepository = new FundingNeedRepository();
+        this._donationRepository = new DonationRepository();
+    }
+
     async createFundingNeed(req, res) {
         const { title, description, goalAmount, currency, deadline, imageUrl } =
             req.body;
 
         try {
-            const fundingNeed = await FundingNeed.create({
+            const fundingNeed = await this._fundingNeedRepository.create({
                 title,
                 description,
                 goalAmount,
@@ -43,16 +47,17 @@ class FundingNeedController {
 
         try {
             const [fundingNeeds, total] = await Promise.all([
-                FundingNeed.find({
-                    title: { $regex: search, $options: "i" },
-                })
-                    .populate("createdBy")
-                    .skip((page - 1) * limit)
-                    .limit(limit)
-                    .sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 }),
-                FundingNeed.countDocuments({
-                    title: { $regex: search, $options: "i" },
-                }),
+                this._fundingNeedRepository.find(
+                    {
+                        title: { $regex: search, $options: "i" },
+                    },
+                    {
+                        populate: "createdBy",
+                        skip: (page - 1) * limit,
+                        limit: limit,
+                        sort: { [sortBy]: sortOrder === "asc" ? 1 : -1 },
+                    }
+                ),
             ]);
             res.status(200).json({
                 success: true,
@@ -106,11 +111,12 @@ class FundingNeedController {
         } = req.query;
         const skip = (page - 1) * limit;
         try {
-            const donors = await Donation.find({ fundingNeedId: fundingNeedId })
+            const donors = await this._donationRepository
+                .find({ fundingNeedId: fundingNeedId })
                 .skip(skip)
                 .limit(limit)
                 .sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 });
-            const total = await Donation.countDocuments({
+            const total = await this._donationRepository.countDocuments({
                 fundingNeedId: fundingNeedId,
             });
             res.status(200).json({
@@ -129,4 +135,4 @@ class FundingNeedController {
     }
 }
 
-export default FundingNeedController;
+export default new FundingNeedController();

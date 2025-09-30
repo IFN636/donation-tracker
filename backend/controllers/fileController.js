@@ -1,7 +1,7 @@
 import { put } from "@vercel/blob";
 
 class FileController {
-    async uploadFiles(red, res) {
+    async uploadFiles(req, res) {
         try {
             const files = req.files;
 
@@ -40,4 +40,4 @@ class FileController {
     }
 }
 
-export default FileController;
+export default new FileController();

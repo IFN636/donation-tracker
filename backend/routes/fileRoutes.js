@@ -5,7 +5,6 @@ import { validationMiddleware } from "../middleware/validationMiddleware.js";
 import { uploadMultipleFilesValidation } from "../utils/validation.js";
 
 const router = Router();
-const fileController = new FileController();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -14,7 +13,7 @@ router.post(
     upload.array("files", 10),
     uploadMultipleFilesValidation,
     validationMiddleware,
-    fileController.uploadFiles.bind(fileController)
+    FileController.uploadFiles.bind(FileController)
 );
 
 export default router;

@@ -151,4 +151,4 @@ class PaymentController {
     }
 }
 
-export default PaymentController;
+export default new PaymentController();

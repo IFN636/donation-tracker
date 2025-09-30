@@ -5,7 +5,6 @@ import { validationMiddleware } from "../middleware/validationMiddleware.js";
 import { createFundingNeedValidation } from "../utils/validation.js";
 
 const router = Router();
-const fundingNeedController = new FundingNeedController();
 
 router.post(
     "/",
@@ -13,19 +12,19 @@ router.post(
     requiredRoles("user", "admin"),
     createFundingNeedValidation,
     validationMiddleware,
-    fundingNeedController.createFundingNeed.bind(fundingNeedController)
+    FundingNeedController.createFundingNeed.bind(FundingNeedController)
 );
 router.get(
     "/",
-    fundingNeedController.getFundingNeeds.bind(fundingNeedController)
+    FundingNeedController.getFundingNeeds.bind(FundingNeedController)
 );
 router.get(
     "/:id",
-    fundingNeedController.getFundingNeedById.bind(fundingNeedController)
+    FundingNeedController.getFundingNeedById.bind(FundingNeedController)
 );
 router.get(
     "/:fundingNeedId/donors",
-    fundingNeedController.getDonorsByFundingNeedId.bind(fundingNeedController)
+    FundingNeedController.getDonorsByFundingNeedId.bind(FundingNeedController)
 );
 
 export default router;

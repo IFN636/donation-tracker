@@ -5,29 +5,29 @@ import { validationMiddleware } from "../middleware/validationMiddleware.js";
 import { loginValidation, registerValidation } from "../utils/validation.js";
 const router = Router();
 
-const authController = new AuthController();
+// const authController = new AuthController();
 
 router.post(
     "/register",
     registerValidation,
     validationMiddleware,
-    authController.registerUser.bind(authController)
+    AuthController.registerUser.bind(AuthController)
 );
 router.post(
     "/login",
     loginValidation,
     validationMiddleware,
-    authController.loginUser.bind(authController)
+    AuthController.loginUser.bind(AuthController)
 );
 router.get(
     "/profile",
     authRequired,
-    authController.getProfile.bind(authController)
+    AuthController.getProfile.bind(AuthController)
 );
 router.put(
     "/profile",
     authRequired,
-    authController.updateProfile.bind(authController)
+    AuthController.updateProfile.bind(AuthController)
 );
 
 export default router;

@@ -17,12 +17,10 @@ connectDB();
 
 app.use(cors());
 
-const paymentController = new PaymentController();
-
 app.post(
     "/webhook/stripe",
     bodyParser.raw({ type: "application/json" }),
-    paymentController.webhookStripe.bind(paymentController)
+    PaymentController.webhookStripe.bind(PaymentController)
 );
 
 app.use(express.json());
