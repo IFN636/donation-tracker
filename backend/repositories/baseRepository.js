@@ -20,11 +20,11 @@ class BaseRepository {
     }
 
     async findWithPagination(filter, page, limit, options) {
-        const skip = (page - 1) * limit;
+        const skip = 1;
 
         const [data, total] = await Promise.all([
             this._model.find(filter, null, { ...options, skip, limit }),
-            this.countDocuments(filter),
+            this.count(filter),
         ]);
 
         const totalPages = Math.ceil(total / limit);

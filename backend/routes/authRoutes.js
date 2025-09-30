@@ -5,8 +5,6 @@ import { validationMiddleware } from "../middleware/validationMiddleware.js";
 import { loginValidation, registerValidation } from "../utils/validation.js";
 const router = Router();
 
-// const authController = new AuthController();
-
 router.post(
     "/register",
     registerValidation,

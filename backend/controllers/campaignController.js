@@ -1,19 +1,19 @@
-import FundingNeed from "../models/FundingNeed.js";
+import Campaign from "../models/Campaign.js";
+import CampaignRepository from "../repositories/CampaignRepository.js";
 import DonationRepository from "../repositories/donationRepository.js";
-import FundingNeedRepository from "../repositories/fundingNeedRepository.js";
 
-class FundingNeedController {
+class CampaignController {
     constructor() {
-        this._fundingNeedRepository = new FundingNeedRepository();
+        this._campaignRepository = new CampaignRepository();
         this._donationRepository = new DonationRepository();
     }
 
-    async createFundingNeed(req, res) {
+    async createCampaign(req, res) {
         const { title, description, goalAmount, currency, deadline, imageUrl } =
             req.body;
 
         try {
-            const fundingNeed = await this._fundingNeedRepository.create({
+            const campaign = await this._campaignRepository.create({
                 title,
                 description,
                 goalAmount,
@@ -24,19 +24,19 @@ class FundingNeedController {
             });
             res.status(201).json({
                 success: true,
-                message: "Funding need created successfully",
-                fundingNeed,
+                message: "Campaign created successfully",
+                campaign,
             });
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: "Failed to create funding need",
+                message: "Failed to create campaign",
                 error: error.message,
             });
         }
     }
 
-    async getFundingNeeds(req, res) {
+    async getCampaigns(req, res) {
         const {
             page = 1,
             limit = 10,
@@ -46,8 +46,8 @@ class FundingNeedController {
         } = req.query;
 
         try {
-            const [fundingNeeds, total] = await Promise.all([
-                this._fundingNeedRepository.find(
+            const [campaigns, total] = await Promise.all([
+                this._campaignRepository.find(
                     {
                         title: { $regex: search, $options: "i" },
                     },
@@ -64,60 +64,61 @@ class FundingNeedController {
                 total,
                 page,
                 limit,
-                data: fundingNeeds,
+                data: campaigns,
             });
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: "Failed to get funding needs",
+                message: "Failed to get campaigns",
                 error: error.message,
             });
         }
     }
 
-    async getFundingNeedById(req, res) {
+    async getCampaignById(req, res) {
         const { id } = req.params;
         try {
-            const fundingNeed = await FundingNeed.findById(id).populate(
-                "createdBy"
-            );
-            if (!fundingNeed) {
+            const campaign = await Campaign.findById(id).populate("createdBy");
+            if (!campaign) {
                 return res.status(404).json({
                     success: false,
-                    message: "Funding need not found",
+                    message: "Campaign not found",
                 });
             }
 
             res.status(200).json({
                 success: true,
-                data: fundingNeed,
+                data: campaign,
             });
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: "Failed to get funding need by id",
+                message: "Failed to get campaign by id",
                 error: error.message,
             });
         }
     }
 
-    async getDonorsByFundingNeedId(req, res) {
-        const { fundingNeedId } = req.params;
+    async getDonorsByCampaignId(req, res) {
+        const { campaignId } = req.params;
         const {
             page = 1,
             limit = 10,
             sortBy = "amount",
             sortOrder = "desc",
         } = req.query;
-        const skip = (page - 1) * limit;
         try {
-            const donors = await this._donationRepository
-                .find({ fundingNeedId: fundingNeedId })
-                .skip(skip)
-                .limit(limit)
-                .sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 });
-            const total = await this._donationRepository.countDocuments({
-                fundingNeedId: fundingNeedId,
+            const donors = await this._donationRepository.findWithPagination(
+                { campaignId: campaignId },
+                page,
+                limit,
+                {
+                    populate: "donor",
+                    sort: { [sortBy]: sortOrder === "asc" ? 1 : -1 },
+                }
+            );
+            const total = await this._donationRepository.count({
+                campaignId: campaignId,
             });
             res.status(200).json({
                 success: true,
@@ -135,4 +136,4 @@ class FundingNeedController {
     }
 }
 
-export default new FundingNeedController();
+export default new CampaignController();

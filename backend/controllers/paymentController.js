@@ -1,6 +1,6 @@
 import Stripe from "stripe";
+import Campaign from "../models/Campaign.js";
 import Donation from "../models/Donation.js";
-import FundingNeed from "../models/FundingNeed.js";
 import Transaction from "../models/Transaction.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -105,9 +105,7 @@ class PaymentController {
 
                     console.log(amount);
 
-                    const fundingNeed = await FundingNeed.findById(
-                        fundingNeedId
-                    );
+                    const fundingNeed = await Campaign.findById(fundingNeedId);
                     fundingNeed.currentAmount += amount;
                     fundingNeed.backers += 1;
                     if (fundingNeed.currentAmount >= fundingNeed.goalAmount) {
