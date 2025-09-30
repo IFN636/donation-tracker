@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import { connectDB } from "./config/db.js";
-import { webhookStripe } from "./controllers/paymentController.js";
+import PaymentController from "./controllers/paymentController.js";
 import authRoutes from "./routes/authRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
 import fundingNeedRoutes from "./routes/fundingNeedRoutes.js";
@@ -17,10 +17,12 @@ connectDB();
 
 app.use(cors());
 
+const paymentController = new PaymentController();
+
 app.post(
     "/webhook/stripe",
     bodyParser.raw({ type: "application/json" }),
-    webhookStripe
+    paymentController.webhookStripe.bind(paymentController)
 );
 
 app.use(express.json());

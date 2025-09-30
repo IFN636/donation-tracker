@@ -1,15 +1,11 @@
 import { Router } from "express";
-import {
-    createFundingNeed,
-    getDonorsByFundingNeedId,
-    getFundingNeedById,
-    getFundingNeeds,
-} from "../controllers/fundingNeedController.js";
+import FundingNeedController from "../controllers/fundingNeedController.js";
 import { authRequired, requiredRoles } from "../middleware/authMiddleware.js";
 import { validationMiddleware } from "../middleware/validationMiddleware.js";
 import { createFundingNeedValidation } from "../utils/validation.js";
 
 const router = Router();
+const fundingNeedController = new FundingNeedController();
 
 router.post(
     "/",
@@ -17,10 +13,19 @@ router.post(
     requiredRoles("user", "admin"),
     createFundingNeedValidation,
     validationMiddleware,
-    createFundingNeed
+    fundingNeedController.createFundingNeed.bind(fundingNeedController)
 );
-router.get("/", getFundingNeeds);
-router.get("/:id", getFundingNeedById);
-router.get("/:fundingNeedId/donors", getDonorsByFundingNeedId);
+router.get(
+    "/",
+    fundingNeedController.getFundingNeeds.bind(fundingNeedController)
+);
+router.get(
+    "/:id",
+    fundingNeedController.getFundingNeedById.bind(fundingNeedController)
+);
+router.get(
+    "/:fundingNeedId/donors",
+    fundingNeedController.getDonorsByFundingNeedId.bind(fundingNeedController)
+);
 
 export default router;
