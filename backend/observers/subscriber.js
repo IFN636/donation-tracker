@@ -3,7 +3,9 @@ export function subscribeToEvent(subject, eventType, fn) {
 }
 
 export function initEventSubscribers(subject) {
-    // Example subscription
+    subscribeToEvent(subject, "DONATION_CREATED", (data) => {
+        console.log("Global event triggered", data);
+    });
     subscribeToEvent(subject, "DONATION_CREATED", (data) => {
         console.log("Global event triggered", data);
     });

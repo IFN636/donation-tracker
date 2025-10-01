@@ -1,12 +1,4 @@
 import jwt from "jsonwebtoken";
-class PasswordUtils {
-    static hashPassword(password) {
-        // Implement password hashing logic here
-    }
-    static comparePassword(plainPassword, hashedPassword) {
-        // Implement password comparison logic here
-    }
-}
 
 class JwtUtils {
     static generateToken(id) {
@@ -18,4 +10,4 @@ class JwtUtils {
     }
 }
 
-export { JwtUtils, PasswordUtils };
+export { JwtUtils };

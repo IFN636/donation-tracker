@@ -202,7 +202,7 @@ const CampaignDetail = () => {
                                             : "Funded"}
                                     </Button>
                                     <DonationInputModal
-                                        fundingNeedId={id}
+                                        campaignId={id}
                                         open={donationModalOpen}
                                         onCancel={() =>
                                             setDonationModalOpen(false)

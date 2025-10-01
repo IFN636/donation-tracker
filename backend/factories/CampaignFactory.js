@@ -1,3 +1,5 @@
+import Campaign from "../entities/Campaign.js";
+
 class CampaignFactory {
     static fromRequest(body) {
         const {
@@ -8,8 +10,8 @@ class CampaignFactory {
             deadline,
             imageUrl,
             createdBy,
-            createdAt,
-            updatedAt,
+            createdAt = new Date(),
+            updatedAt = new Date(),
         } = body;
         return {
             title: title.trim(),
@@ -22,6 +24,10 @@ class CampaignFactory {
             createdAt: createdAt,
             updatedAt: updatedAt,
         };
+    }
+
+    static create(data) {
+        return new Campaign(data);
     }
 }
 

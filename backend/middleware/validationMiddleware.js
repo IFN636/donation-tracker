@@ -1,8 +1,7 @@
 import { validationResult } from "express-validator";
-import { Middleware } from "./Middleware.js";
 
-class ValidationMiddleware extends Middleware {
-    static async handler(req, res, next) {
+const validationMiddleware = async (req, res, next) => {
+    try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const validationErrors = errors.array().map((error) => ({
@@ -16,8 +15,10 @@ class ValidationMiddleware extends Middleware {
                 errorType: "validation",
             });
         }
-        return next();
+        return await next();
+    } catch (error) {
+        return next(error);
     }
-}
+};
 
-export default ValidationMiddleware;
+export default validationMiddleware;

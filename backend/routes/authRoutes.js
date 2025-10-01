@@ -6,27 +6,23 @@ import { loginValidation, registerValidation } from "../utils/validation.js";
 
 const router = Router();
 
+router.get(
+    "/profile",
+    authRequiredMiddleware,
+    AuthController.getProfile.bind(AuthController)
+);
+
 router.post(
     "/register",
     registerValidation,
-    validationMiddleware.handler,
+    validationMiddleware,
     AuthController.registerUser.bind(AuthController)
 );
 router.post(
     "/login",
     loginValidation,
-    validationMiddleware.handler,
+    validationMiddleware,
     AuthController.loginUser.bind(AuthController)
-);
-router.get(
-    "/profile",
-    authRequiredMiddleware.handler,
-    AuthController.getProfile.bind(AuthController)
-);
-router.put(
-    "/profile",
-    authRequiredMiddleware.handler,
-    AuthController.updateProfile.bind(AuthController)
 );
 
 export default router;

@@ -1,11 +1,14 @@
 import { Router } from "express";
 import PaymentController from "../controllers/paymentController.js";
-import authRequiredMiddleware from "../middlewares/authRequiredMiddleware.js";
+import authRequired from "../middlewares/authRequiredMiddleware.js";
+import validationMiddleware from "../middlewares/validationMiddleware.js";
+
 const router = Router();
 
 router.post(
     "/create-checkout-session",
-    authRequiredMiddleware.handler,
+    authRequired,
+    validationMiddleware,
     PaymentController.createCheckoutSession.bind(PaymentController)
 );
 

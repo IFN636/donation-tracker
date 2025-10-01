@@ -1,6 +1,7 @@
 import CampaignFactory from "../factories/CampaignFactory.js";
 import Campaign from "../models/Campaign.js";
-import CampaignRepository from "../repositories/CampaignRepository.js";
+import CampaignRepositoryProxy from "../proxies/CampaignRepositoryProxy.js";
+import CampaignRepository from "../repositories/campaignRepository.js";
 import DonationRepository from "../repositories/donationRepository.js";
 
 class CampaignController {
@@ -11,10 +12,18 @@ class CampaignController {
 
     async createCampaign(req, res) {
         try {
-            const campaignData = CampaignFactory.fromRequest(req.body);
-            const campaign = await this._campaignRepository.create(
-                campaignData
+            const campaignData = CampaignFactory.fromRequest({
+                ...req.body,
+                createdBy: req.user.id,
+            });
+
+            // Use proxy to enforce business rules
+            const campaignRepositoryProxy = new CampaignRepositoryProxy(
+                this._campaignRepository,
+                req.user
             );
+
+            const campaign = await campaignRepositoryProxy.create(campaignData);
             res.status(201).json({
                 success: true,
                 message: "Campaign created successfully",
@@ -101,22 +110,25 @@ class CampaignController {
             sortOrder = "desc",
         } = req.query;
         try {
-            const donors = await this._donationRepository.findWithPagination(
-                { campaignId: campaignId },
-                page,
-                limit,
-                {
-                    populate: "donor",
-                    sort: { [sortBy]: sortOrder === "asc" ? 1 : -1 },
-                }
-            );
-            const total = await this._donationRepository.count({
-                campaignId: campaignId,
-            });
+            // const donors = await this._donationRepository.findWithPagination(
+            //     { campaignId: campaignId },
+            //     page,
+            //     limit,
+            //     {
+            //         populate: "donor",
+            //         sort: { [sortBy]: sortOrder === "asc" ? 1 : -1 },
+            //     }
+            // );
+            // const total = await this._donationRepository.count({
+            //     campaignId: campaignId,
+            // });
+            // const donors = await this._donationRepository.getDonorsByCampaignId(
+            //     campaignId
+            // );
             res.status(200).json({
                 success: true,
-                data: donors,
-                total,
+                data: [],
+                total: 0,
                 page,
                 limit,
             });

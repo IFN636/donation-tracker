@@ -1,6 +1,7 @@
 class DonationRepositoryProxy {
+    #donationRepository;
     constructor(donationRepository, currentUser = null) {
-        this.donationRepository = donationRepository;
+        this.#donationRepository = donationRepository;
         this.user = currentUser;
     }
 
@@ -11,7 +12,7 @@ class DonationRepositoryProxy {
         } else {
             throw new Error("User must be authenticated to create a donation.");
         }
-        return await this.donationRepository.create(insertData);
+        return await this.#donationRepository.create(insertData);
     }
 
     async update(filter, update) {
@@ -21,7 +22,7 @@ class DonationRepositoryProxy {
         } else {
             throw new Error("User must be authenticated to update a donation.");
         }
-        return await this.donationRepository.updateOne(filter, updateData);
+        return await this.#donationRepository.updateOne(filter, updateData);
     }
 }
 export default DonationRepositoryProxy;
