@@ -44,6 +44,7 @@ class User {
         return this.#address;
     }
 
+    // Abstract method
     getRole() {
         throw new Error("Method not implemented.");
     }
