@@ -4,7 +4,6 @@ class Transaction {
     #campaignId;
     #checkoutSessionId;
     #chargeId;
-    #customerId;
     #paymentMethod;
     #status;
     #amount;
@@ -21,7 +20,6 @@ class Transaction {
         campaignId = null,
         checkoutSessionId,
         chargeId = null,
-        customerId = null,
         paymentMethod = null,
         status,
         amount,
@@ -37,7 +35,6 @@ class Transaction {
         this.campaignId = campaignId;
         this.checkoutSessionId = checkoutSessionId;
         this.chargeId = chargeId;
-        this.customerId = customerId;
         this.paymentMethod = paymentMethod;
         this.status = status;
         this.amount = amount;
@@ -63,9 +60,6 @@ class Transaction {
     }
     get chargeId() {
         return this.#chargeId;
-    }
-    get customerId() {
-        return this.#customerId;
     }
     get paymentMethod() {
         return this.#paymentMethod;
@@ -112,10 +106,6 @@ class Transaction {
 
     set chargeId(v) {
         this.#chargeId = v ? String(v).trim() : null;
-        this.#touch();
-    }
-    set customerId(v) {
-        this.#customerId = v ? String(v).trim() : null;
         this.#touch();
     }
     set paymentMethod(v) {
@@ -186,7 +176,6 @@ class Transaction {
             campaignId: this.#campaignId,
             checkoutSessionId: this.#checkoutSessionId,
             chargeId: this.#chargeId,
-            customerId: this.#customerId,
             paymentMethod: this.#paymentMethod,
             status: this.#status,
             amount: this.#amount,
@@ -206,7 +195,6 @@ class Transaction {
             campaignId: this.#campaignId,
             checkoutSessionId: this.#checkoutSessionId,
             chargeId: this.#chargeId,
-            customerId: this.#customerId,
             paymentMethod: this.#paymentMethod,
             status: this.#status,
             amount: this.#amount,
@@ -226,7 +214,6 @@ class Transaction {
                 campaignId: this.#campaignId,
                 checkoutSessionId: this.#checkoutSessionId,
                 chargeId: this.#chargeId,
-                customerId: this.#customerId,
                 paymentMethod: this.#paymentMethod,
                 status: this.#status,
                 amount: this.#amount,

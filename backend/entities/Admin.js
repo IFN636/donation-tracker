@@ -16,12 +16,8 @@ class Admin extends User {
         this.#isSuperAdmin = isSuperAdmin;
     }
 
-    isSuperAdmin() {
+    get isSuperAdmin() {
         return this.#isSuperAdmin;
-    }
-
-    getRole() {
-        return ROLE.ADMIN;
     }
 
     toJSON() {
@@ -29,7 +25,7 @@ class Admin extends User {
             id: this.getId(),
             name: this.getFullName(),
             email: this.getEmail(),
-            role: ROLE.ADMIN,
+            role: this.role,
             isSuperAdmin: this.#isSuperAdmin,
         };
     }

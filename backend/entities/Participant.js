@@ -48,17 +48,13 @@ class Participant extends User {
         return this.#donations;
     }
 
-    getRole() {
-        return ROLE.PARTICIPANT;
-    }
-
     toJSON() {
         return {
-            id: this.getId(),
-            name: this.getFullName(),
-            email: this.getEmail(),
-            address: this.getAddress(),
-            role: this.getRole(),
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            address: this.address,
+            role: this.role,
             campaigns: this.#campaigns,
             donations: this.#donations,
         };

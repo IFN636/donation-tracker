@@ -1,5 +1,6 @@
 import { compare } from "bcrypt";
 import UserFactory from "../factories/UserFactory.js";
+import eventSubject from "../observers/subject.js";
 import UserRepository from "../repositories/userRepository.js";
 import { JwtUtils } from "../utils/security.js";
 class AuthController {
@@ -20,7 +21,11 @@ class AuthController {
             if (userExists)
                 return res.status(400).json({ message: "User already exists" });
 
-            const user = await this._userRepository.create(userData.toJSON());
+            const user = await this._userRepository.create(
+                userData.toInsertDB()
+            );
+
+            eventSubject.notify("USER_CREATED", user.toJSON());
 
             res.status(201).json({
                 id: user.id,
@@ -29,6 +34,7 @@ class AuthController {
                 token: JwtUtils.generateToken(user.id),
             });
         } catch (error) {
+            console.log("registerUser error", error);
             res.status(500).json({ message: error.message });
         }
     }
