@@ -24,6 +24,7 @@ class CampaignController {
             );
 
             const campaign = await campaignRepositoryProxy.create(campaignData);
+
             res.status(201).json({
                 success: true,
                 message: "Campaign created successfully",
@@ -105,30 +106,25 @@ class CampaignController {
         const { campaignId } = req.params;
         const {
             page = 1,
-            limit = 10,
+            limit = 5,
             sortBy = "amount",
             sortOrder = "desc",
         } = req.query;
         try {
-            // const donors = await this._donationRepository.findWithPagination(
-            //     { campaignId: campaignId },
-            //     page,
-            //     limit,
-            //     {
-            //         populate: "donor",
-            //         sort: { [sortBy]: sortOrder === "asc" ? 1 : -1 },
-            //     }
-            // );
-            // const total = await this._donationRepository.count({
-            //     campaignId: campaignId,
-            // });
-            // const donors = await this._donationRepository.getDonorsByCampaignId(
-            //     campaignId
-            // );
+            const [donors, total] = await Promise.all([
+                this._donationRepository.getDonorsLeaderboardByCampaignId({
+                    campaignId,
+                    limit,
+                    page,
+                    sortBy,
+                    sortOrder,
+                }),
+                this._donationRepository.count({ campaignId: campaignId }),
+            ]);
             res.status(200).json({
                 success: true,
-                data: [],
-                total: 0,
+                data: donors,
+                total: total,
                 page,
                 limit,
             });

@@ -186,6 +186,8 @@ const CampaignDetail = () => {
                                             borderRadius: "12px",
                                             backgroundColor: "#059669",
                                             borderColor: "#059669",
+                                            color: "#fff",
+                                            fontWeight: "bold",
                                         }}
                                         disabled={
                                             progressPercentage(
@@ -198,8 +200,8 @@ const CampaignDetail = () => {
                                             campaign?.currentAmount,
                                             campaign?.goalAmount
                                         ) < 100
-                                            ? "Donate Now"
-                                            : "Funded"}
+                                            ? "🌱 Join Us in Helping"
+                                            : "Goal Achieved!🌸"}
                                     </Button>
                                     <DonationInputModal
                                         campaignId={id}

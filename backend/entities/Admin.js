@@ -1,29 +1,18 @@
-import User from "./User.js";
+import User, { ROLE } from "./User.js";
 
 class Admin extends User {
     #isSuperAdmin;
-    #role;
 
-    constructor({
-        id,
-        name,
-        email,
-        password,
-        address,
-        stripeCustomerId,
-        paymentMethods,
-        isSuperAdmin = false,
-    }) {
+    constructor({ id, name, email, password, address, isSuperAdmin = false }) {
         super({
             id,
             name,
             email,
             password,
             address,
-            stripeCustomerId,
-            paymentMethods,
+            role: ROLE.ADMIN,
+            isSuperAdmin,
         });
-        this.#role = "admin";
         this.#isSuperAdmin = isSuperAdmin;
     }
 
@@ -32,7 +21,7 @@ class Admin extends User {
     }
 
     getRole() {
-        return this.#role;
+        return ROLE.ADMIN;
     }
 
     toJSON() {
@@ -40,7 +29,7 @@ class Admin extends User {
             id: this.getId(),
             name: this.getFullName(),
             email: this.getEmail(),
-            role: this.#role,
+            role: ROLE.ADMIN,
             isSuperAdmin: this.#isSuperAdmin,
         };
     }

@@ -12,12 +12,10 @@ const transactionSchema = new Schema(
             ref: "Campaign",
             index: true,
         },
-
         checkoutSessionId: { type: String, required: true, unique: true },
         chargeId: { type: String },
         customerId: { type: String },
         paymentMethod: { type: String },
-
         status: {
             type: String,
             enum: [
@@ -38,8 +36,6 @@ const transactionSchema = new Schema(
             uppercase: true,
         },
         paidAt: { type: Date },
-        reason: { type: String },
-
         cardBrand: String,
         cardLast4: String,
     },

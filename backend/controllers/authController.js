@@ -9,7 +9,7 @@ class AuthController {
     async registerUser(req, res) {
         const { name, email, password } = req.body;
         try {
-            const userData = UserFactory.createUser("participant", {
+            const userData = UserFactory.create("participant", {
                 name,
                 email,
                 password,
