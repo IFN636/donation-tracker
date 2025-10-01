@@ -1,4 +1,10 @@
-export class StripeStrategy {
+class PaymentStrategy {
+    pay({ campaign, amount, user, isAnonymous = false, currency = "aud" }) {
+        throw new Error("This method should be overridden!");
+    }
+}
+
+export class StripeStrategy extends PaymentStrategy {
     constructor(stripe) {
         this.stripe = stripe;
     }
@@ -49,7 +55,7 @@ export class StripeStrategy {
     }
 }
 
-export class PayPalStrategy {
+export class PayPalStrategy extends PaymentStrategy {
     pay({ campaign, amount, user, isAnonymous = false, currency = "aud" }) {
         throw new Error("PayPal payment not implemented yet.");
     }

@@ -4,36 +4,40 @@ class User {
     #email;
     #password;
     #address;
-    #role;
     #stripeCustomerId;
     #paymentMethods;
+    #_id;
 
     constructor({
+        id,
         name,
         lastName,
         email,
         password,
         address = "",
-        role = "participant",
         stripeCustomerId = "",
         paymentMethods = [],
     }) {
+        this.#_id = id;
         this.#name = name;
         this.#lastName = lastName;
         this.#email = email.toLowerCase().trim();
         this.#password = password;
         this.#address = address;
-        this.#role = role.toLowerCase().trim();
         this.#stripeCustomerId = stripeCustomerId;
         this.#paymentMethods = paymentMethods;
     }
 
-    getFullName() {
-        return `${this.#name} ${this.#lastName || ""}`.trim();
+    getId() {
+        return this.#_id;
     }
 
     getEmail() {
         return this.#email;
+    }
+
+    getFullName() {
+        return `${this.#name} ${this.#lastName || ""}`.trim();
     }
 
     getAddress() {
@@ -41,7 +45,7 @@ class User {
     }
 
     getRole() {
-        return this.#role;
+        throw new Error("Method not implemented.");
     }
 
     getPaymentMethods() {
@@ -56,21 +60,9 @@ class User {
         this.#address = newAddress;
     }
 
-    changeRole(newRole) {
-        this.#role = newRole;
-    }
-
+    // Abstract method
     toJSON() {
-        return {
-            name: this.#name,
-            lastName: this.#lastName,
-            email: this.#email,
-            address: this.#address,
-            role: this.#role,
-            stripeCustomerId: this.#stripeCustomerId,
-            paymentMethods: this.#paymentMethods,
-            password: this.#password,
-        };
+        throw new Error("Method not implemented.");
     }
 }
 

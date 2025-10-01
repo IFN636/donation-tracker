@@ -2,6 +2,7 @@ import User from "./User.js";
 
 class Admin extends User {
     #isSuperAdmin;
+    #role;
 
     constructor({
         id,
@@ -19,16 +20,29 @@ class Admin extends User {
             email,
             password,
             address,
-            role: "admin",
             stripeCustomerId,
             paymentMethods,
         });
-
+        this.#role = "admin";
         this.#isSuperAdmin = isSuperAdmin;
     }
 
     isSuperAdmin() {
         return this.#isSuperAdmin;
+    }
+
+    getRole() {
+        return this.#role;
+    }
+
+    toJSON() {
+        return {
+            id: this.getId(),
+            name: this.getFullName(),
+            email: this.getEmail(),
+            role: this.#role,
+            isSuperAdmin: this.#isSuperAdmin,
+        };
     }
 }
 
