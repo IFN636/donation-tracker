@@ -1,5 +1,3 @@
-import { EventEmitter } from "events";
-
 const bus = new EventEmitter();
 
 export const initEventSubscribers = () => {

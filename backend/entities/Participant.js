@@ -22,6 +22,7 @@ class Participant extends User {
     getCampaigns() {
         return this.#campaigns;
     }
+
     getDonations() {
         return this.#donations;
     }
