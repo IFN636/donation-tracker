@@ -43,6 +43,10 @@ class EmailFacade {
         const text = `Click the link to reset your password: ${resetLink}`;
         return this.sendEmail(to, subject, text);
     }
+
+    async sendMailWithTemplate(to, subject, template) {
+        return this.sendEmail(to, subject, template);
+    }
 }
 
 export default new EmailFacade();

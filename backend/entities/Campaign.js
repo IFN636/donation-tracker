@@ -1,5 +1,18 @@
 class Campaign {
-    constructor(
+    #id;
+    #title;
+    #description;
+    #goalAmount;
+    #currency;
+    #deadline;
+    #imageUrl;
+    #createdBy;
+    #createdAt;
+    #updatedAt;
+    #currentAmount;
+    #backers;
+
+    constructor({
         id,
         title,
         description,
@@ -8,49 +21,81 @@ class Campaign {
         deadline,
         imageUrl,
         createdBy,
-        createdAt,
-        updatedAt
-    ) {
-        this._id = id;
-        this._title = title;
-        this._description = description;
-        this._goalAmount = goalAmount;
-        this._currency = currency;
-        this._deadline = deadline;
-        this._imageUrl = imageUrl;
-        this._createdBy = createdBy;
-        this._createdAt = createdAt;
-        this._updatedAt = updatedAt;
+        createdAt = new Date(),
+        updatedAt = new Date(),
+        currentAmount = 0,
+        backers = 0,
+    }) {
+        this.#id = id;
+        this.#title = title;
+        this.#description = description;
+        this.#goalAmount = goalAmount;
+        this.#currency = currency;
+        this.#deadline = deadline;
+        this.#imageUrl = imageUrl;
+        this.#createdBy = createdBy;
+        this.#createdAt = createdAt;
+        this.#updatedAt = updatedAt;
+        this.#currentAmount = currentAmount;
+        this.#backers = backers;
+    }
+
+    getId() {
+        return this.#id;
+    }
+
+    getTitle() {
+        return this.#title;
     }
 
     getProgressPercent() {
-        if (this._goalAmount === 0) return 0;
-        return Math.min((this._currentAmount / this._goalAmount) * 100, 100);
+        if (this.#goalAmount === 0) return 0;
+        return Math.min((this.#currentAmount / this.#goalAmount) * 100, 100);
     }
 
-    _getDaysLeft() {
+    getDaysLeft() {
         return Math.ceil(
-            (new Date(this._deadline) - new Date()) / (1000 * 60 * 60 * 24)
+            (new Date(this.#deadline) - new Date()) / (1000 * 60 * 60 * 24)
         );
     }
 
-    _isExpired() {
-        return this._getDaysLeft() < 0;
+    isExpired() {
+        return this.getDaysLeft() < 0;
     }
 
     getStatus() {
-        if (this._isExpired()) return "expired";
-        if (this._getDaysLeft() <= 7) return "closing soon";
+        if (this.isExpired()) return "expired";
+        if (this.getDaysLeft() <= 7) return "closing soon";
         return "active";
     }
 
     setCurrentAmount(amount) {
-        this._currentAmount = amount;
-        this._updatedAt = new Date();
+        this.#currentAmount = amount;
+        this.#updatedAt = new Date();
     }
 
     setBackers(backers) {
-        this._backers = backers;
+        this.#backers = backers;
+    }
+
+    toJSON() {
+        return {
+            id: this.#id,
+            title: this.#title,
+            description: this.#description,
+            goalAmount: this.#goalAmount,
+            currency: this.#currency,
+            deadline: this.#deadline,
+            imageUrl: this.#imageUrl,
+            createdBy: this.#createdBy,
+            createdAt: this.#createdAt,
+            updatedAt: this.#updatedAt,
+            currentAmount: this.#currentAmount,
+            backers: this.#backers,
+            progressPercent: this.getProgressPercent(),
+            status: this.getStatus(),
+            daysLeft: this.getDaysLeft(),
+        };
     }
 }
 
