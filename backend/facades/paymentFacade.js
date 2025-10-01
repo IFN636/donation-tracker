@@ -1,18 +1,24 @@
-import Stripe from "stripe";
+import StripeAdapter from "../adapters/stripeAdapter.js";
 import {
     PaymentProcessor,
     PayPalStrategy,
     StripeStrategy,
 } from "../strategies/paymentStrategy.js";
 
+export const PAYMENT_METHODS = {
+    STRIPE: "stripe",
+    PAYPAL: "paypal",
+};
+
 class PaymentFacade {
     constructor() {
         this.processor = new PaymentProcessor();
-        this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        this.stripeAdapter = new StripeAdapter(process.env.STRIPE_SECRET_KEY);
+        this.paypal = null; // Init PayPal Adapter later
     }
 
     async payWithStripe({ campaign, amount, user, isAnonymous, currency }) {
-        this.processor.setStrategy(new StripeStrategy(this.stripe));
+        this.processor.setStrategy(new StripeStrategy(this.stripeAdapter));
         return this.processor.pay({
             campaign,
             amount,
@@ -23,7 +29,7 @@ class PaymentFacade {
     }
 
     async payWithPayPal({ campaign, amount, user, isAnonymous, currency }) {
-        this.processor.setStrategy(new PayPalStrategy());
+        this.processor.setStrategy(new PayPalStrategy(this.paypal));
         return this.processor.pay({
             campaign,
             amount,

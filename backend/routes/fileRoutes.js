@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import FileController from "../controllers/fileController.js";
+import FileController from "../controllers/FileController.js";
 import validationMiddleware from "../middlewares/validationMiddleware.js";
 import { uploadMultipleFilesValidation } from "../utils/validation.js";
 
@@ -12,7 +12,7 @@ router.post(
     "/upload",
     upload.array("files", 10),
     uploadMultipleFilesValidation,
-    validationMiddleware.handler,
+    validationMiddleware,
     FileController.uploadFiles.bind(FileController)
 );
 

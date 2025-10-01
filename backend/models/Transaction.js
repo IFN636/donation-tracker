@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 const transactionSchema = new Schema(
     {
-        donation: {
+        donationId: {
             type: Schema.Types.ObjectId,
             ref: "Donation",
             index: true,
@@ -16,7 +16,7 @@ const transactionSchema = new Schema(
         checkoutSessionId: { type: String, required: true, unique: true },
         chargeId: { type: String },
         customerId: { type: String },
-        paymentMethodId: { type: String },
+        paymentMethod: { type: String },
 
         status: {
             type: String,

@@ -11,6 +11,7 @@ class Campaign {
     #updatedAt;
     #currentAmount;
     #backers;
+    #status;
 
     constructor({
         id,
@@ -25,6 +26,7 @@ class Campaign {
         updatedAt = new Date(),
         currentAmount = 0,
         backers = 0,
+        status = "active",
     }) {
         this.#id = id;
         this.#title = title;
@@ -38,6 +40,7 @@ class Campaign {
         this.#updatedAt = updatedAt;
         this.#currentAmount = currentAmount;
         this.#backers = backers;
+        this.#status = status;
     }
 
     getId() {
@@ -70,12 +73,18 @@ class Campaign {
     }
 
     setCurrentAmount(amount) {
-        this.#currentAmount = amount;
+        this.#currentAmount += amount;
         this.#updatedAt = new Date();
+        if (this.#currentAmount >= this.#goalAmount) {
+            this.#status = "completed";
+        }
     }
 
     setBackers(backers) {
         this.#backers = backers;
+    }
+    setStatus(status) {
+        this.#status = status;
     }
 
     toJSON() {
@@ -95,6 +104,24 @@ class Campaign {
             progressPercent: this.getProgressPercent(),
             status: this.getStatus(),
             daysLeft: this.getDaysLeft(),
+        };
+    }
+
+    toInsertDB() {
+        return {
+            _id: this.#id,
+            title: this.#title,
+            description: this.#description,
+            goalAmount: this.#goalAmount,
+            currentAmount: this.#currentAmount,
+            backers: this.#backers,
+            currency: this.#currency,
+            deadline: this.#deadline,
+            imageUrl: this.#imageUrl,
+            status: this.getStatus(),
+            createdBy: this.#createdBy,
+            createdAt: this.#createdAt,
+            updatedAt: this.#updatedAt,
         };
     }
 }

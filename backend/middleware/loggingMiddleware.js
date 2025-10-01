@@ -1,6 +1,5 @@
 import logger from "../utils/logger.js";
-
-function loggingMiddleware(req, res, next) {
+const loggingMiddleware = async (req, res, next) => {
     const start = Date.now();
 
     logger.info(`Incoming request: ${req.method} ${req.originalUrl}`);
@@ -12,7 +11,7 @@ function loggingMiddleware(req, res, next) {
         );
     });
 
-    next();
-}
+    return await next();
+};
 
 export default loggingMiddleware;

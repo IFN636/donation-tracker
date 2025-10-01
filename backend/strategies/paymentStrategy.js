@@ -1,18 +1,32 @@
 class PaymentStrategy {
-    pay({ campaign, amount, user, isAnonymous = false, currency = "aud" }) {
+    pay({
+        campaign,
+        amount,
+        user,
+        successUrl,
+        cancelUrl,
+        isAnonymous = false,
+        currency = "aud",
+    }) {
         throw new Error("This method should be overridden!");
     }
 }
 
 export class StripeStrategy extends PaymentStrategy {
-    constructor(stripe) {
-        this.stripe = stripe;
+    constructor(stripeAdapter) {
+        if (!stripeAdapter) {
+            throw new Error("Stripe adapter is required");
+        }
+        super();
+        this.stripeAdapter = stripeAdapter;
     }
 
     async pay({
         campaign,
         amount,
         user,
+        successUrl,
+        cancelUrl,
         isAnonymous = false,
         currency = "aud",
     }) {
@@ -29,34 +43,37 @@ export class StripeStrategy extends PaymentStrategy {
             currency: currency,
         };
 
-        const checkoutSession = await this.stripe.checkout.sessions.create({
-            payment_method_types: ["card"],
-            mode: "payment",
-            line_items: [
-                {
-                    price_data: {
-                        currency,
-                        product_data: {
-                            name: "Donation",
-                            description: "Thank you for your support",
-                        },
-                        unit_amount: amount * 100,
-                    },
-                    quantity: 1,
-                },
-            ],
-            metadata: metadata,
-            customer_email: user.email || undefined,
-            success_url: redirectUrl,
-            cancel_url: redirectUrl,
+        return this.stripeAdapter.createCheckoutSession({
+            amount,
+            currency,
+            customerEmail: user.email,
+            successUrl: successUrl || redirectUrl,
+            cancelUrl: cancelUrl || redirectUrl,
+            metadata,
+            description: `Donation to ${campaign.title}`,
+            productName: "Donation",
         });
-
-        return { sessionId: checkoutSession.id, url: checkoutSession.url };
     }
 }
 
 export class PayPalStrategy extends PaymentStrategy {
-    pay({ campaign, amount, user, isAnonymous = false, currency = "aud" }) {
+    constructor(paypalAdapter) {
+        if (!paypalAdapter) {
+            throw new Error("PayPal adapter is required");
+        }
+        super();
+        this.paypalAdapter = paypalAdapter;
+    }
+
+    pay({
+        campaign,
+        amount,
+        user,
+        successUrl,
+        cancelUrl,
+        currency = "aud",
+        isAnonymous = false,
+    }) {
         throw new Error("PayPal payment not implemented yet.");
     }
 }
@@ -66,13 +83,23 @@ export class PaymentProcessor {
         this.strategy = strategy;
     }
 
-    pay({ campaign, amount, user, isAnonymous = false, currency = "aud" }) {
+    pay({
+        campaign,
+        amount,
+        user,
+        successUrl,
+        cancelUrl,
+        currency = "aud",
+        isAnonymous = false,
+    }) {
         return this.strategy.pay({
             campaign,
             amount,
             user,
             isAnonymous,
             currency,
+            successUrl,
+            cancelUrl,
         });
     }
 }

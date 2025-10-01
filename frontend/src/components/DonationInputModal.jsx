@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import axiosInstance from "../axiosConfig";
 import { useAuth } from "../context/AuthContext";
 
-const DonationInputModal = ({ open, onCancel, fundingNeedId }) => {
+const DonationInputModal = ({ open, onCancel, campaignId }) => {
     const [form] = Form.useForm();
     const { getAccessToken } = useAuth();
 
@@ -13,7 +13,7 @@ const DonationInputModal = ({ open, onCancel, fundingNeedId }) => {
             amount,
             paymentMethod,
             anonymous,
-            fundingNeedId,
+            campaignId,
         };
 
         try {

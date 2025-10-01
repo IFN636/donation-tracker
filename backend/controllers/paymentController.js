@@ -1,62 +1,60 @@
-import Stripe from "stripe";
-import Campaign from "../models/Campaign.js";
-import Donation from "../models/Donation.js";
-import Transaction from "../models/Transaction.js";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import { stripeAdapter } from "../adapters/stripeAdapter.js";
+import PaymentFacade from "../facades/paymentFacade.js";
+import CampaignFactory from "../factories/CampaignFactory.js";
+import CampaignRepository from "../repositories/campaignRepository.js";
 
 class PaymentController {
+    constructor() {
+        this.campaignRepository = new CampaignRepository();
+    }
+
     async createCheckoutSession(req, res) {
         const {
             amount,
             currency = "aud",
-            fundingNeedId,
+            campaignId,
             isAnonymous,
+            paymentMethod = "creadit-card",
         } = req.body;
         const user = req.user;
         try {
-            const metadata = {
-                fundingNeedId: fundingNeedId,
-                userId: user._id.toString(),
-                name: user.name,
-                email: user.email,
-                phone: user.phone,
-                amount: amount,
-                isAnonymous: isAnonymous,
-                currency: currency,
-            };
+            const campaign = await this.campaignRepository.findOneById(
+                campaignId
+            );
 
-            const redirectUrl = `${process.env.CLIENT_URL}/fundraisers/${fundingNeedId}`;
+            if (!campaign) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Campaign not found",
+                });
+            }
 
-            const checkoutSession = await stripe.checkout.sessions.create({
-                payment_method_types: ["card"],
-                mode: "payment",
-                line_items: [
-                    {
-                        price_data: {
-                            currency,
-                            product_data: {
-                                name: "Donation",
-                                description: "Thank you for your support",
-                            },
-                            unit_amount: amount * 100,
-                        },
-                        quantity: 1,
-                    },
-                ],
-                metadata: metadata,
-                customer_email: user.email || undefined,
-                success_url: redirectUrl,
-                cancel_url: redirectUrl,
-            });
+            const redirectUrl = `${process.env.CLIENT_URL}/fundraisers/${campaignId}`;
+            let checkoutSession;
+
+            if (paymentMethod === "credit-card") {
+                checkoutSession = await PaymentFacade.payWithStripe({
+                    campaign,
+                    amount,
+                    user,
+                    isAnonymous,
+                    currency,
+                    successUrl: redirectUrl,
+                    cancelUrl: redirectUrl,
+                });
+            } else if (paymentMethod === "paypal") {
+                throw new Error("PayPal payment not implemented yet.");
+            }
 
             await Transaction.create({
-                fundingNeedId: fundingNeedId,
+                campaignId: campaignId,
                 checkoutSessionId: checkoutSession.id,
                 status: "pending",
                 currency: currency,
                 amount: amount,
             });
+
+            console.log(checkoutSession);
 
             res.status(200).json({
                 success: true,
@@ -77,7 +75,7 @@ class PaymentController {
         if (endpointSecret) {
             const signature = req.headers["stripe-signature"];
             try {
-                event = stripe.webhooks.constructEvent(
+                event = stripeAdapter.constructWebhookEvent(
                     req.body,
                     signature,
                     endpointSecret
@@ -95,30 +93,40 @@ class PaymentController {
                     const session = event.data.object;
                     const amount = session.amount_total / 100;
                     const metadata = session.metadata;
-                    const fundingNeedId = metadata.fundingNeedId;
+                    const campaignId = metadata.campaignId;
                     const checkoutSessionId = session.id;
                     const isAnonymous = metadata.isAnonymous;
+                    const paymentMethod = metadata.paymentMethod;
                     const userId = metadata.userId;
                     const name = metadata.name;
                     const email = metadata.email;
                     const currency = metadata.currency;
 
-                    console.log(amount);
+                    let campaign = await this.campaignRepository.findOneById(
+                        campaignId
+                    );
 
-                    const fundingNeed = await Campaign.findById(fundingNeedId);
-                    fundingNeed.currentAmount += amount;
-                    fundingNeed.backers += 1;
-                    if (fundingNeed.currentAmount >= fundingNeed.goalAmount) {
-                        fundingNeed.status = "completed";
+                    if (!campaign) {
+                        return res.status(404).json({
+                            success: false,
+                            message: "Campaign not found",
+                        });
                     }
-                    if (fundingNeed.currentAmount < fundingNeed.goalAmount) {
-                        fundingNeed.status = "active";
-                    }
-                    await fundingNeed.save();
+
+                    //Update campaign current amount and backers
+                    campaign = CampaignFactory.create(campaign);
+                    campaign.setCurrentAmount(
+                        amount + campaign.getCurrentAmount()
+                    );
+                    campaign.setBackers(campaign.getBackers() + 1);
 
                     const transaction = await Transaction.findOneAndUpdate(
                         { checkoutSessionId: checkoutSessionId },
-                        { status: "completed", amount: amount }
+                        {
+                            status: "completed",
+                            amount: amount,
+                            paymentMethod: paymentMethod,
+                        }
                     );
 
                     await Donation.create({
