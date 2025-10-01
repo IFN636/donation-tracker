@@ -1,8 +1,8 @@
 import { Router } from "express";
 import CampaignController from "../controllers/campaignController.js";
-import authRequiredMiddleware from "../middleware/authRequiredMiddleware.js";
-import requiredRolesMiddleware from "../middleware/requiredRolesMiddleware.js";
-import validationMiddleware from "../middleware/validationMiddleware.js";
+import authRequiredMiddleware from "../middlewares/authRequiredMiddleware.js";
+import requiredRolesMiddleware from "../middlewares/requiredRolesMiddleware.js";
+import validationMiddleware from "../middlewares/validationMiddleware.js";
 import { createCampaignValidation } from "../utils/validation.js";
 
 const router = Router();
