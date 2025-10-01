@@ -1,23 +1,21 @@
 import { Schema, model } from "mongoose";
 
-const TransactionSchema = new Schema(
+const transactionSchema = new Schema(
     {
-        donation: {
+        donationId: {
             type: Schema.Types.ObjectId,
             ref: "Donation",
             index: true,
         },
-        fundingNeedId: {
+        campaignId: {
             type: Schema.Types.ObjectId,
-            ref: "FundingNeed",
+            ref: "Campaign",
             index: true,
         },
-
         checkoutSessionId: { type: String, required: true, unique: true },
         chargeId: { type: String },
         customerId: { type: String },
-        paymentMethodId: { type: String },
-
+        paymentMethod: { type: String },
         status: {
             type: String,
             enum: [
@@ -38,16 +36,14 @@ const TransactionSchema = new Schema(
             uppercase: true,
         },
         paidAt: { type: Date },
-        reason: { type: String },
-
         cardBrand: String,
         cardLast4: String,
     },
     { timestamps: true }
 );
 
-TransactionSchema.index({ paymentIntentId: 1 });
-TransactionSchema.index({ fundingNeed: 1, createdAt: -1 });
+transactionSchema.index({ paymentIntentId: 1 });
+transactionSchema.index({ fundingNeed: 1, createdAt: -1 });
 
-const Transaction = model("Transaction", TransactionSchema);
+const Transaction = model("Transaction", transactionSchema);
 export default Transaction;

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import multer from "multer";
-import { uploadFiles } from "../controllers/fileController.js";
+import FileController from "../controllers/FileController.js";
+import validationMiddleware from "../middlewares/validationMiddleware.js";
 import { uploadMultipleFilesValidation } from "../utils/validation.js";
-import { validationMiddleware } from "../middleware/validationMiddleware.js";
 
 const router = Router();
 
@@ -13,7 +13,7 @@ router.post(
     upload.array("files", 10),
     uploadMultipleFilesValidation,
     validationMiddleware,
-    uploadFiles
+    FileController.uploadFiles.bind(FileController)
 );
 
 export default router;
