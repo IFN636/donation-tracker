@@ -1,13 +1,4 @@
-class UserRepositoryProxy {
-    constructor(userRepository, currentUser = null) {
-        this.userRepository = userRepository;
-        this.user = currentUser;
-    }
-
-    // TODO: Add proxy methods as needed
-}
-
-export default UserRepositoryProxy;import User from "../models/User.js";
+import User from "../models/User.js";
 import BaseRepository from "./baseRepository.js";
 
 class UserRepository extends BaseRepository {
