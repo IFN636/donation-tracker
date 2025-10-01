@@ -5,6 +5,7 @@ import express from "express";
 import morgan from "morgan";
 import { connectDB } from "./config/db.js";
 import PaymentController from "./controllers/paymentController.js";
+import loggingMiddleware from "./middlewares/loggingMiddleware.js";
 import subject from "./observers/subject.js";
 import { initEventSubscribers } from "./observers/subscriber.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -18,6 +19,7 @@ const app = express();
 connectDB();
 initEventSubscribers(subject);
 
+app.use(loggingMiddleware);
 app.use(cors());
 
 app.post(
