@@ -11,17 +11,35 @@ class DonationFactory {
             paidAt,
             transactionId,
         } = body;
-        return {
+        return this.create({
             amount: Number(amount),
-            currency: currency,
-            campaignId: campaignId,
-            userId: userId,
-            name: name,
-            email: email,
-            isAnonymous: isAnonymous,
+            currency: String(currency),
+            campaignId: String(campaignId),
+            userId: String(userId),
+            name: String(name),
+            email: String(email),
+            isAnonymous: Boolean(isAnonymous),
             paidAt: paidAt,
-            transactionId: transactionId,
+            transactionId: String(transactionId),
+        });
+    }
+
+    static create(data) {
+        return new Donation(data);
+    }
+
+    static toObject(donation) {
+        return {
+            _id: donation._id,
+            campaignId: donation.campaignId,
+            userId: donation.userId,
+            name: donation.name,
+            email: donation.email,
         };
+    }
+
+    static toObjects(donations) {
+        return donations.map((donation) => this.toObject(donation));
     }
 }
 

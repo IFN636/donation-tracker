@@ -9,7 +9,7 @@ class AuthController {
     async registerUser(req, res) {
         const { name, email, password } = req.body;
         try {
-            const userData = UserFactory.createUser("participant", {
+            const userData = UserFactory.create("participant", {
                 name,
                 email,
                 password,
@@ -20,7 +20,11 @@ class AuthController {
             if (userExists)
                 return res.status(400).json({ message: "User already exists" });
 
-            const user = await this._userRepository.create(userData.toJSON());
+            const user = await this._userRepository.create(
+                userData.toInsertDB()
+            );
+
+            // eventSubject.notify("USER_CREATED", user.toObject());
 
             res.status(201).json({
                 id: user.id,
@@ -29,6 +33,7 @@ class AuthController {
                 token: JwtUtils.generateToken(user.id),
             });
         } catch (error) {
+            console.log("registerUser error", error);
             res.status(500).json({ message: error.message });
         }
     }

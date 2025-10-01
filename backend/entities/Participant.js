@@ -1,20 +1,10 @@
-import User from "./User.js";
+import User, { ROLE } from "./User.js";
 
 class Participant extends User {
     #campaigns;
     #donations;
-    #role;
 
-    constructor({
-        id,
-        name,
-        lastName,
-        email,
-        password,
-        address = "",
-        stripeCustomerId = "",
-        paymentMethods = [],
-    }) {
+    constructor({ id, name, lastName, email, password, address = "" }) {
         super({
             id,
             name,
@@ -22,10 +12,8 @@ class Participant extends User {
             email,
             password,
             address,
-            stripeCustomerId,
-            paymentMethods,
+            role: ROLE.PARTICIPANT,
         });
-        this.#role = "participant";
         this.#campaigns = [];
         this.#donations = [];
     }
@@ -60,20 +48,15 @@ class Participant extends User {
         return this.#donations;
     }
 
-    getRole() {
-        return this.#role;
-    }
-
     toJSON() {
         return {
-            id: this.getId(),
-            name: this.getFullName(),
-            email: this.getEmail(),
-            address: this.getAddress(),
-            role: this.getRole(),
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            address: this.address,
+            role: this.role,
             campaigns: this.#campaigns,
             donations: this.#donations,
-            paymentMethods: this.getPaymentMethods(),
         };
     }
 }

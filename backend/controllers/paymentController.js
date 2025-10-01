@@ -2,10 +2,14 @@ import { stripeAdapter } from "../adapters/stripeAdapter.js";
 import PaymentFacade from "../facades/paymentFacade.js";
 import CampaignFactory from "../factories/CampaignFactory.js";
 import CampaignRepository from "../repositories/campaignRepository.js";
+import DonationRepository from "../repositories/donationRepository.js";
+import TransactionRepository from "../repositories/transactionRepository.js";
 
 class PaymentController {
     constructor() {
         this.campaignRepository = new CampaignRepository();
+        this.transactionRepository = new TransactionRepository();
+        this.donationRepository = new DonationRepository();
     }
 
     async createCheckoutSession(req, res) {
@@ -46,7 +50,7 @@ class PaymentController {
                 throw new Error("PayPal payment not implemented yet.");
             }
 
-            await Transaction.create({
+            const transaction = TransactionFactory.create({
                 campaignId: campaignId,
                 checkoutSessionId: checkoutSession.id,
                 status: "pending",
@@ -54,7 +58,7 @@ class PaymentController {
                 amount: amount,
             });
 
-            console.log(checkoutSession);
+            await this.transactionRepository.create(transaction);
 
             res.status(200).json({
                 success: true,
@@ -80,11 +84,8 @@ class PaymentController {
                     signature,
                     endpointSecret
                 );
+                console.log(event);
             } catch (err) {
-                console.log(
-                    `⚠️  Webhook signature verification failed.`,
-                    err.message
-                );
                 return res.sendStatus(400);
             }
 
@@ -113,24 +114,24 @@ class PaymentController {
                         });
                     }
 
-                    //Update campaign current amount and backers
                     campaign = CampaignFactory.create(campaign);
                     campaign.setCurrentAmount(
                         amount + campaign.getCurrentAmount()
                     );
                     campaign.setBackers(campaign.getBackers() + 1);
 
-                    const transaction = await Transaction.findOneAndUpdate(
-                        { checkoutSessionId: checkoutSessionId },
-                        {
-                            status: "completed",
-                            amount: amount,
-                            paymentMethod: paymentMethod,
-                        }
-                    );
+                    const transaction =
+                        await this.transactionRepository.updateOne(
+                            { checkoutSessionId: checkoutSessionId },
+                            {
+                                status: "completed",
+                                amount: amount,
+                                paymentMethod: paymentMethod,
+                            }
+                        );
 
-                    await Donation.create({
-                        fundingNeedId: fundingNeedId,
+                    await this.donationRepository.create({
+                        campaignId: campaignId,
                         userId: userId,
                         name: name,
                         email: email,
@@ -139,19 +140,14 @@ class PaymentController {
                         transactionId: transaction._id,
                         isAnonymous: isAnonymous,
                     });
-
                     break;
-
                 case "payment_intent.succeeded":
-                    const intent = event.data.object;
-                    const amountPI = intent.amount_received;
+                    // TODO: Handle payment intent succeeded
                     break;
-
                 default:
                     console.log(`Unhandled event type ${event.type}`);
             }
 
-            // Return a response to acknowledge receipt of the event
             res.json({ received: true });
         }
     }

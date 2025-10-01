@@ -2,9 +2,9 @@ import { Schema, model } from "mongoose";
 
 const donationSchema = new Schema(
     {
-        fundingNeedId: {
+        campaignId: {
             type: Schema.Types.ObjectId,
-            ref: "FundingNeed",
+            ref: "Campaign",
             index: true,
             required: true,
         },
@@ -20,7 +20,7 @@ const donationSchema = new Schema(
     { timestamps: true }
 );
 
-donationSchema.index({ fundingNeedId: 1, paidAt: -1 });
+donationSchema.index({ campaignId: 1, paidAt: -1 });
 const Donation = model("Donation", donationSchema);
 
 export default Donation;
