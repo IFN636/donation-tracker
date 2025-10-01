@@ -1,5 +1,5 @@
 import NodemailerAdapter from "../adapters/nodeMailAdapter.js";
-import UserFactory from "../factories/UserFactory.js";
+import EmailFacade from "../facades/emailFacade.js";
 
 export function subscribeToEvent(subject, eventType, fn) {
     subject.subscribe(eventType, fn);
@@ -10,15 +10,10 @@ export function initEventSubscribers(subject) {
         console.log("Global event triggered", data);
     });
 
-    subscribeToEvent(subject, "USER_CREATED", (data) => {
-        const user = UserFactory.userToDomain(data);
-
-        // TODO: Add to Facade Pattern
-        const mailAdapter = new NodemailerAdapter();
-        mailAdapter.sendEmail(
-            user.email,
-            "Welcome to our platform",
-            "Welcome to our platform"
-        );
+    subscribeToEvent(subject, "USER_CREATED", (user) => {
+        if (!user.email) return;
+        const emailFacade = new EmailFacade(new NodemailerAdapter());
+        console.log("Sending welcome email to:", user.email);
+        emailFacade.sendWelcomeEmail(user.email, user);
     });
 }

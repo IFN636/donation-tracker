@@ -202,7 +202,6 @@ class Campaign {
             currency: this.#currency,
             deadline: this.#deadline,
             imageUrl: this.#imageUrl,
-            status: this.getStatus(),
             createdBy: this.#createdBy,
             createdAt: this.#createdAt,
             updatedAt: this.#updatedAt,

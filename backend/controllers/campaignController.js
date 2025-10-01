@@ -23,7 +23,9 @@ class CampaignController {
                 req.user
             );
 
-            const campaign = await campaignRepositoryProxy.create(campaignData);
+            const campaign = await campaignRepositoryProxy.create(
+                campaignData.toInsertDB()
+            );
 
             res.status(201).json({
                 success: true,
@@ -61,12 +63,13 @@ class CampaignController {
                         sort: { [sortBy]: sortOrder === "asc" ? 1 : -1 },
                     }
                 ),
+                this._campaignRepository.count(),
             ]);
             res.status(200).json({
                 success: true,
-                total,
-                page,
-                limit,
+                total: Number(total),
+                page: Number(page),
+                limit: Number(limit),
                 data: campaigns,
             });
         } catch (error) {

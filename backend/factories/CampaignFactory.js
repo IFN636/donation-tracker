@@ -13,6 +13,7 @@ class CampaignFactory {
             createdAt = new Date(),
             updatedAt = new Date(),
         } = body;
+        console.log("CampaignFactory body", body);
         return this.create({
             title: title.trim(),
             description: description.trim(),
