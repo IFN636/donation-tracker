@@ -1,6 +1,7 @@
 import { stripeAdapter } from "../adapters/stripeAdapter.js";
 import PaymentFacade from "../facades/paymentFacade.js";
 import CampaignFactory from "../factories/CampaignFactory.js";
+import TransactionFactory from "../factories/TransactionFactory.js";
 import CampaignRepository from "../repositories/campaignRepository.js";
 import DonationRepository from "../repositories/donationRepository.js";
 import TransactionRepository from "../repositories/transactionRepository.js";
@@ -52,13 +53,13 @@ class PaymentController {
 
             const transaction = TransactionFactory.create({
                 campaignId: campaignId,
-                checkoutSessionId: checkoutSession.id,
+                checkoutSessionId: checkoutSession.sessionId,
                 status: "pending",
                 currency: currency,
                 amount: amount,
             });
 
-            await this.transactionRepository.create(transaction);
+            await this.transactionRepository.create(transaction.toInsertDB());
 
             res.status(200).json({
                 success: true,
@@ -84,7 +85,6 @@ class PaymentController {
                     signature,
                     endpointSecret
                 );
-                console.log(event);
             } catch (err) {
                 return res.sendStatus(400);
             }
@@ -110,7 +110,7 @@ class PaymentController {
                     if (!campaign) {
                         return res.status(404).json({
                             success: false,
-                            message: "Campaign not found",
+                            message: "Failed to find campaign",
                         });
                     }
 

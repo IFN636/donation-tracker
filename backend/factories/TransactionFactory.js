@@ -1,12 +1,12 @@
 import Transaction from "../entities/Transaction.js";
 
 class TransactionFactory {
-    static fromRequest(body) {
-        return new Transaction({ ...body });
-    }
-
     static create(transaction) {
         return new Transaction({ ...transaction });
+    }
+
+    static fromRequest(body) {
+        return this.create({ ...body });
     }
 
     static toObject(transaction) {

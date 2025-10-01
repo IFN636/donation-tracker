@@ -1,4 +1,8 @@
 class DonationFactory {
+    static create(data) {
+        return new Donation(data);
+    }
+
     static fromRequest(body) {
         const {
             amount,
@@ -22,10 +26,6 @@ class DonationFactory {
             paidAt: paidAt,
             transactionId: String(transactionId),
         });
-    }
-
-    static create(data) {
-        return new Donation(data);
     }
 
     static toObject(donation) {
