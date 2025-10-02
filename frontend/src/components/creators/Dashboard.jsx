@@ -32,7 +32,7 @@ const Dashboard = () => {
                     <h1>Creator Dashboard</h1>
                     <p>Welcome to the Creator Dashboard!</p>
                 </div>
-                <Link to="/creators/campaigns/new">
+                <Link to="/creators/campaigns/create">
                     <Button type="primary">Create New Campaign</Button>
                 </Link>
             </div>

@@ -76,7 +76,7 @@ const CampaignsPage = () => {
                     <h1 className="text-2xl font-bold">Creator Dashboard</h1>
                     <p>Welcome to the Creator Dashboard! {user.name}</p>
                 </div>
-                <Link to="/creators/campaigns/new">
+                <Link to="/creators/campaigns/create">
                     <Button type="primary">Create New Campaign</Button>
                 </Link>
             </div>

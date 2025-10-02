@@ -209,6 +209,37 @@ class CampaignController {
             });
         }
     }
+
+    async deleteCampaign(req, res) {
+        const { campaignId } = req.params;
+        try {
+            const campaign = await this._campaignRepository.findOneById(
+                campaignId
+            );
+            if (!campaign) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Campaign not found",
+                });
+            }
+            await this._campaignRepository.deleteById(campaignId);
+            res.status(200).json({
+                success: true,
+                message: "Campaign deleted successfully",
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Failed to delete campaign",
+                error: error.message,
+            });
+        }
+    }
+
+    async updateCampaign(req, res) {
+        const { id } = req.params;
+        const { title, description, goalAmount, startDate, endDate } = req.body;
+    }
 }
 
 export default new CampaignController();
