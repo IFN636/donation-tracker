@@ -1,3 +1,5 @@
+import Donation from "../entities/Donation.js";
+
 class DonationFactory {
     static create(data) {
         return new Donation(data);

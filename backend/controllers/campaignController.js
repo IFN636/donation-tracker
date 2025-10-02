@@ -138,6 +138,38 @@ class CampaignController {
             });
         }
     }
+
+    async getCampaignStats(req, res) {
+        const { id } = req.params;
+        try {
+            const campaign = await Campaign.findById(id);
+            if (!campaign) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Campaign not found",
+                });
+            }
+            const totalDonations =
+                await this._donationRepository.getTotalDonationsByCampaignId(
+                    id
+                );
+            const totalDonors =
+                await this._donationRepository.getTotalDonorsByCampaignId(id);
+            res.status(200).json({
+                success: true,
+                data: {
+                    totalDonations,
+                    totalDonors,
+                },
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Failed to get campaign stats",
+                error: error.message,
+            });
+        }
+    }
 }
 
 export default new CampaignController();

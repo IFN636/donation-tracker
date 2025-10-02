@@ -34,6 +34,7 @@ export class StripeStrategy extends PaymentStrategy {
 
         const metadata = {
             campaignId: campaign._id.toString(),
+            receiverId: campaign.createdBy.toString(),
             userId: user._id.toString(),
             name: user.name,
             email: user.email,
