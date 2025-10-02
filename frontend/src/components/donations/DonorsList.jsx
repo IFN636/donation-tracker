@@ -1,7 +1,7 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Empty, Typography } from "antd";
 import { useEffect, useState } from "react";
-import axiosInstance from "../axiosConfig";
+import axiosInstance from "../../axiosConfig";
 
 const { Text } = Typography;
 

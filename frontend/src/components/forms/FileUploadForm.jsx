@@ -1,7 +1,7 @@
 import { Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
-import axiosInstance from "../axiosConfig";
+import axiosInstance from "../../axiosConfig";
 
 const FileUploadForm = ({ onUploadSuccess, onUploadError }) => {
     const [files, setFiles] = useState(null);

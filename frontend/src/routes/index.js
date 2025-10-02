@@ -1,10 +1,9 @@
 import CreatorLayout from "../components/layout/CreatorLayout";
 import DefaultLayout from "../components/layout/DefautlLayout";
-import CampaignCreationPage from "../pages/creators/CampaignCreationPage";
-import CampaignEditPage from "../pages/creators/CampaignEditPage";
 import CampaignsPage from "../pages/creators/CampaignsPage";
+import CreateCampaignPage from "../pages/creators/CreateCampaignPage";
 import DashboardPage from "../pages/creators/DashboardPage";
-import CampaignCreation from "../pages/fundraisers/CampaignCreation";
+import EditCampaignPage from "../pages/creators/EditCampaignPage";
 import CampaignDetail from "../pages/fundraisers/CampaignDetail";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/Login";
@@ -28,11 +27,6 @@ export const publicRoutes = [
         layout: DefaultLayout,
     },
     {
-        path: "/fundraisers/creation",
-        element: CampaignCreation,
-        layout: DefaultLayout,
-    },
-    {
         path: "/",
         element: HomePage,
         layout: DefaultLayout,
@@ -48,8 +42,8 @@ export const publicRoutes = [
         layout: CreatorLayout,
     },
     {
-        path: "/creators/campaigns/creation",
-        element: CampaignCreationPage,
+        path: "/creators/campaigns/create",
+        element: CreateCampaignPage,
         layout: CreatorLayout,
     },
     {
@@ -59,7 +53,7 @@ export const publicRoutes = [
     },
     {
         path: "/creators/campaigns/:id/edit",
-        element: CampaignEditPage,
+        element: EditCampaignPage,
         layout: CreatorLayout,
     },
 ];

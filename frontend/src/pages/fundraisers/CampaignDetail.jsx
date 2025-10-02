@@ -18,8 +18,8 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../axiosConfig";
-import DonationInputModal from "../../components/DonationInputModal";
-import DonorsList from "../../components/DonorsList";
+import DonationInputModal from "../../components/donations/DonationInputModal";
+import DonorsList from "../../components/donations/DonorsList";
 import { formatAmount, progressPercentage } from "../../utils";
 import { beautifyDate } from "../../utils/datetime";
 
