@@ -73,7 +73,6 @@ const HomePage = () => {
                         value={searchTerm}
                         onChange={handleSearchChange}
                         prefix={<SearchOutlined className="text-green-400" />}
-                        size="large"
                     />
                 </div>
 
@@ -84,7 +83,6 @@ const HomePage = () => {
                     <Select
                         value={`${sortBy}-${sortOrder}`}
                         onChange={handleSortChange}
-                        size="large"
                         className="w-48"
                     >
                         <Option value="createdAt-desc">Newest First</Option>

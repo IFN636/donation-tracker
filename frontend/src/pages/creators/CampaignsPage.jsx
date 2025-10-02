@@ -69,6 +69,11 @@ const CampaignsPage = () => {
         setSearchParams({ sortBy: field, sortOrder: order });
     };
 
+    const handleDelete = (id) => {
+        setCampaigns(campaigns.filter((campaign) => campaign._id !== id));
+        setTotal(total - 1);
+    };
+
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
@@ -76,7 +81,7 @@ const CampaignsPage = () => {
                     <h1 className="text-2xl font-bold">Creator Dashboard</h1>
                     <p>Welcome to the Creator Dashboard! {user.name}</p>
                 </div>
-                <Link to="/creators/campaigns/new">
+                <Link to="/creators/campaigns/create">
                     <Button type="primary">Create New Campaign</Button>
                 </Link>
             </div>
@@ -96,6 +101,7 @@ const CampaignsPage = () => {
                 sortBy={pagination.sortBy}
                 sortOrder={pagination.sortOrder}
                 handleSortChange={handleSortChange}
+                handleDelete={handleDelete}
             />
         </div>
     );

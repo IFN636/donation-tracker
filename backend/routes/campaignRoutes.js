@@ -24,5 +24,9 @@ router.get(
     authRequired,
     CampaignController.getOwnedCampaigns.bind(CampaignController)
 );
-
+router.delete(
+    "/:campaignId",
+    authRequired,
+    CampaignController.deleteCampaign.bind(CampaignController)
+);
 export default router;
