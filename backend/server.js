@@ -10,6 +10,7 @@ import subject from "./observers/subject.js";
 import { initEventSubscribers } from "./observers/subscriber.js";
 import authRoutes from "./routes/authRoutes.js";
 import campaignRoutes from "./routes/campaignRoutes.js";
+import donationRoutes from "./routes/donationRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 
@@ -38,6 +39,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/campaigns", campaignRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/donations", donationRoutes);
 
 // Export the app object for testing
 // If the file is run directly, start the server

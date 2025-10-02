@@ -6,6 +6,16 @@ import { useAuth } from "../context/AuthContext";
 const { Header } = Layout;
 const { Title } = Typography;
 
+const navItems = [
+    { label: "Contact", path: "#", loginRequired: false },
+    { label: "How It works", path: "#", loginRequired: false },
+    {
+        label: "Creator Dashboard",
+        path: "/creators/dashboard",
+        loginRequired: true,
+    },
+];
+
 const Navbar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -25,6 +35,9 @@ const Navbar = () => {
                 borderBottom: "1px solid #10b981",
                 padding: "0 24px",
                 height: "64px",
+                position: "sticky",
+                top: 0,
+                zIndex: 100,
             }}
         >
             <Link to="/">
@@ -33,30 +46,37 @@ const Navbar = () => {
                 </Title>
             </Link>
             <Space size="middle">
-                <Button
-                    type="primary"
-                    color="cyan"
-                    variant="outlined"
-                    onClick={() => {
-                        if (!user) {
-                            toast.error(
-                                "Please login to create a funding need"
-                            );
-                            navigate("/login");
-                            return;
-                        }
-                        navigate("/fundraisers/creation");
-                    }}
-                >
-                    Launch a Fundraiser
-                </Button>
+                {navItems.map((item) => {
+                    if (item.loginRequired && !user) return null;
+                    return (
+                        <Link key={item.path} to={item.path}>
+                            <Button type="link" style={{ color: "#000000" }}>
+                                {item.label}
+                            </Button>
+                        </Link>
+                    );
+                })}
 
                 {user !== null ? (
                     <>
+                        <Button
+                            type="link"
+                            style={{ color: "#10b981", fontWeight: "bold" }}
+                            onClick={() => {
+                                if (!user) {
+                                    toast.error(
+                                        "Please login to create a fundraiser"
+                                    );
+                                    navigate("/login");
+                                    return;
+                                }
+                                navigate("/creators/campaigns/creation");
+                            }}
+                        >
+                            Start a Fundraiser
+                        </Button>
                         <Link to="/profile">
-                            <Button type="text" style={{ color: "#059669" }}>
-                                Profile
-                            </Button>
+                            <Button type="primary">Profile</Button>
                         </Link>
                         <Button
                             onClick={handleLogout}
