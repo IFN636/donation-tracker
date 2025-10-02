@@ -4,7 +4,7 @@ import campaignController from "../controllers/campaignController.js";
 import CampaignFactory from "../factories/CampaignFactory.js";
 import Campaign from "../models/Campaign.js";
 import Donation from "../models/Donation.js";
-import CampaignRepositoryProxy from "../proxies/CampaignRepositoryProxy.js";
+import CampaignRepositoryProxy from "../proxies/campaignRepositoryProxy.js";
 
 describe("Campaign Controllers", () => {
     let req, res, sandbox;
