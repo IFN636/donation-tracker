@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import FileController from "../controllers/FileController.js";
+import FileController from "../controllers/fileController.js";
 import validationMiddleware from "../middlewares/validationMiddleware.js";
 import { uploadMultipleFilesValidation } from "../utils/validation.js";
 

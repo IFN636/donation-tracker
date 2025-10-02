@@ -1,6 +1,6 @@
 import CampaignFactory from "../factories/CampaignFactory.js";
 import Campaign from "../models/Campaign.js";
-import CampaignRepositoryProxy from "../proxies/CampaignRepositoryProxy.js";
+import CampaignRepositoryProxy from "../proxies/campaignRepositoryProxy.js";
 import CampaignRepository from "../repositories/campaignRepository.js";
 import DonationRepository from "../repositories/donationRepository.js";
 
