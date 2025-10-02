@@ -2,7 +2,7 @@ import { FolderOpenOutlined, HomeOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import { Link } from "react-router-dom";
 import Navbar from "../Navbar";
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 const items = [
     {
         key: "1",
