@@ -1,7 +1,7 @@
 import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import { toast } from "react-toastify";
-import axiosInstance from "../axiosConfig";
-import { useAuth } from "../context/AuthContext";
+import axiosInstance from "../../axiosConfig";
+import { useAuth } from "../../context/AuthContext";
 
 const DonationInputModal = ({ open, onCancel, campaignId }) => {
     const [form] = Form.useForm();
@@ -12,7 +12,7 @@ const DonationInputModal = ({ open, onCancel, campaignId }) => {
         const donation = {
             amount,
             paymentMethod,
-            anonymous,
+            isAnonymous: anonymous,
             campaignId,
         };
 

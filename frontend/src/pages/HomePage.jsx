@@ -2,7 +2,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Input, Pagination, Select, Spin } from "antd";
 import { useEffect, useState } from "react";
 import axiosInstance from "../axiosConfig";
-import CampaignList from "../components/CampaignList";
+import CampaignList from "../components/campaigns/CampaignList";
 import useDebounce from "../hooks/useDebounce.js";
 
 const { Option } = Select;
@@ -74,11 +74,6 @@ const HomePage = () => {
                         onChange={handleSearchChange}
                         prefix={<SearchOutlined className="text-green-400" />}
                         size="large"
-                        className="rounded-xl"
-                        style={{
-                            borderColor: "#10b981",
-                            borderWidth: "2px",
-                        }}
                     />
                 </div>
 
@@ -91,9 +86,6 @@ const HomePage = () => {
                         onChange={handleSortChange}
                         size="large"
                         className="w-48"
-                        style={{
-                            borderRadius: "12px",
-                        }}
                     >
                         <Option value="createdAt-desc">Newest First</Option>
                         <Option value="createdAt-asc">Oldest First</Option>

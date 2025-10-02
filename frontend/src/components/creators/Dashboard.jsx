@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosInstance from "../../axiosConfig";
 import { useAuth } from "../../context/AuthContext";
-import RecentDonations from "../RecentDonations";
+import RecentDonations from "../donations/RecentDonations";
 import StatCard from "../StatCard";
 
 const Dashboard = () => {
