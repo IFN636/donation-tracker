@@ -1,38 +1,35 @@
 import User from "../models/User.js";
 import { JwtUtils } from "../utils/security.js";
-export const authRequired = async (req, res, next) => {
+
+const authRequired = async (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization;
-        const token = authHeader && authHeader.startsWith('Bearer ') 
-            ? authHeader.slice(7) 
-            : req.cookies.token;
-        
+        const auth = req.headers.authorization || "";
+        const hasBearer = auth.startsWith("Bearer ");
+        const token = hasBearer ? auth.split(" ")[1] : null;
+
         if (!token) {
-            return res.status(401).json({ 
-                success: false, 
-                error: 'Authentication required' 
-            });
+            return res
+                .status(401)
+                .json({ message: "Not authorized, no token" });
         }
-        
-        const decoded = JwtUtils.verifyToken(token);
-        const user = await User.findById(decoded.userId).select('-password');
-        
-        if (!user || !user.isActive) {
-            return res.status(403).json({ 
-                success: false, 
-                error: 'Account not found or inactive' 
-            });
+
+        try {
+            const decoded = JwtUtils.verifyToken(token);
+            const user = await User.findById(decoded.id).select("-password");
+            if (!user) {
+                return res
+                    .status(401)
+                    .json({ message: "Not authorized, user not found" });
+            }
+            req.user = user;
+            return await next();
+        } catch (e) {
+            return res
+                .status(401)
+                .json({ message: "Not authorized, token failed" });
         }
-        
-        req.user = { id: user._id, email: user.email, role: user.role };
-        next();
     } catch (error) {
-        console.error('Auth middleware error:', error);
-        res.status(401).json({ 
-            success: false, 
-            error: 'Authentication failed',
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
+        return res.status(500).json({ message: error.message });
     }
 };
 
