@@ -27,6 +27,30 @@ class DonationRepository extends BaseRepository {
             .skip((page - 1) * limit)
             .limit(limit);
     }
+
+    async getRecentDonationsByCampaignId({ campaignId, limit }) {
+        return this._model
+            .find({ campaignId })
+            .sort({ createdAt: -1 })
+            .limit(limit)
+            .toJSON();
+    }
+
+    async getRecentDonationsByDonorId({ user, limit = 5 }) {
+        return await this._model
+            .find({ user })
+            .populate("campaign")
+            .sort({ createdAt: -1 })
+            .limit(limit);
+    }
+
+    async getRecentDonationsByCreatorId({ receiver, limit = 5 }) {
+        return await this._model
+            .find({ receiver })
+            .populate("campaign")
+            .sort({ createdAt: -1 })
+            .limit(limit);
+    }
 }
 
 export default DonationRepository;

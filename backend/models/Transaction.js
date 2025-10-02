@@ -2,12 +2,12 @@ import { Schema, model } from "mongoose";
 
 const transactionSchema = new Schema(
     {
-        donationId: {
+        donation: {
             type: Schema.Types.ObjectId,
             ref: "Donation",
             index: true,
         },
-        campaignId: {
+        campaign: {
             type: Schema.Types.ObjectId,
             ref: "Campaign",
             index: true,

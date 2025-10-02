@@ -1,6 +1,7 @@
 import { stripeAdapter } from "../adapters/stripeAdapter.js";
 import PaymentFacade from "../facades/paymentFacade.js";
 import CampaignFactory from "../factories/CampaignFactory.js";
+import DonationFactory from "../factories/DonationFactory.js";
 import TransactionFactory from "../factories/TransactionFactory.js";
 import CampaignRepository from "../repositories/campaignRepository.js";
 import DonationRepository from "../repositories/donationRepository.js";
@@ -52,7 +53,7 @@ class PaymentController {
             }
 
             const transaction = TransactionFactory.create({
-                campaignId: campaignId,
+                campaign: campaignId,
                 checkoutSessionId: checkoutSession.sessionId,
                 status: "pending",
                 currency: currency,
@@ -102,6 +103,7 @@ class PaymentController {
                     const name = metadata.name;
                     const email = metadata.email;
                     const currency = metadata.currency;
+                    const receiverId = metadata.receiverId;
 
                     let campaign = await this.campaignRepository.findOneById(
                         campaignId
@@ -136,16 +138,18 @@ class PaymentController {
                             }
                         );
 
-                    await this.donationRepository.create({
-                        campaignId: campaignId,
-                        userId: userId,
+                    const donation = DonationFactory.create({
+                        campaign: campaignId,
+                        donor: userId,
                         name: name,
                         email: email,
                         amount: amount,
                         currency: currency,
-                        transactionId: transaction._id,
+                        transaction: transaction._id,
+                        receiver: receiverId,
                         isAnonymous: isAnonymous,
                     });
+                    await this.donationRepository.create(donation.toInsertDB());
                     break;
                 case "payment_intent.succeeded":
                     // TODO: Handle payment intent succeeded

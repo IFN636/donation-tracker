@@ -1,7 +1,7 @@
 class Transaction {
     #_id;
-    #donationId;
-    #campaignId;
+    #donation;
+    #campaign;
     #checkoutSessionId;
     #chargeId;
     #paymentMethod;
@@ -16,8 +16,8 @@ class Transaction {
 
     constructor({
         _id = null,
-        donationId = null,
-        campaignId = null,
+        donation = null,
+        campaign = null,
         checkoutSessionId,
         chargeId = null,
         paymentMethod = null,
@@ -31,8 +31,8 @@ class Transaction {
         updatedAt = new Date(),
     }) {
         this.#_id = _id;
-        this.donationId = donationId;
-        this.campaignId = campaignId;
+        this.donation = donation;
+        this.campaign = campaign;
         this.checkoutSessionId = checkoutSessionId;
         this.chargeId = chargeId;
         this.paymentMethod = paymentMethod;
@@ -49,11 +49,11 @@ class Transaction {
     get id() {
         return this.#_id?.toString() ?? null;
     }
-    get donationId() {
-        return this.#donationId;
+    get donation() {
+        return this.#donation;
     }
-    get campaignId() {
-        return this.#campaignId;
+    get campaign() {
+        return this.#campaign;
     }
     get checkoutSessionId() {
         return this.#checkoutSessionId;
@@ -89,12 +89,12 @@ class Transaction {
         return this.#updatedAt;
     }
 
-    set donationId(v) {
-        this.#donationId = v ?? null;
+    set donation(v) {
+        this.#donation = v ?? null;
         this.#touch();
     }
-    set campaignId(v) {
-        this.#campaignId = v ?? null;
+    set campaign(v) {
+        this.#campaign = v ?? null;
         this.#touch();
     }
 
@@ -172,8 +172,8 @@ class Transaction {
     toJSON() {
         return {
             id: this.id,
-            donationId: this.#donationId,
-            campaignId: this.#campaignId,
+            donation: this.#donation,
+            campaign: this.#campaign,
             checkoutSessionId: this.#checkoutSessionId,
             chargeId: this.#chargeId,
             paymentMethod: this.#paymentMethod,
@@ -191,8 +191,8 @@ class Transaction {
     toInsertDB() {
         return {
             _id: this.#_id ?? undefined,
-            donationId: this.#donationId,
-            campaignId: this.#campaignId,
+            donation: this.#donation,
+            campaign: this.#campaign,
             checkoutSessionId: this.#checkoutSessionId,
             chargeId: this.#chargeId,
             paymentMethod: this.#paymentMethod,
@@ -210,8 +210,8 @@ class Transaction {
     toUpdateDB() {
         return {
             $set: {
-                donationId: this.#donationId,
-                campaignId: this.#campaignId,
+                donation: this.#donation,
+                campaign: this.#campaign,
                 checkoutSessionId: this.#checkoutSessionId,
                 chargeId: this.#chargeId,
                 paymentMethod: this.#paymentMethod,

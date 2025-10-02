@@ -1,7 +1,8 @@
 class Donation {
     #_id;
-    #campaignId;
-    #userId;
+    #campaign;
+    #donor;
+    #receiver;
     #name;
     #email;
     #amount;
@@ -14,8 +15,9 @@ class Donation {
 
     constructor({
         _id,
-        campaignId,
-        userId = null,
+        campaign,
+        donor = null,
+        receiver = null,
         name = null,
         email = null,
         amount,
@@ -27,8 +29,9 @@ class Donation {
         updatedAt = new Date(),
     }) {
         this.#_id = _id ?? null;
-        this.campaignId = campaignId;
-        this.userId = userId;
+        this.campaign = campaign;
+        this.#donor = donor;
+        this.receiver = receiver;
         this.name = name;
         this.email = email;
         this.amount = amount;
@@ -48,20 +51,29 @@ class Donation {
         this.#touch();
     }
 
-    get campaignId() {
-        return this.#campaignId;
+    get campaign() {
+        return this.#campaign;
     }
-    set campaignId(value) {
-        if (!value) throw new Error("campaignId is required");
-        this.#campaignId = value;
+    set campaign(value) {
+        if (!value) throw new Error("campaign is required");
+        this.#campaign = value;
         this.#touch();
     }
 
-    get userId() {
-        return this.#userId;
+    get donor() {
+        return this.#donor;
     }
-    set userId(value) {
-        this.#userId = value ?? null;
+    set donor(value) {
+        this.#donor = value ?? null;
+        this.#touch();
+    }
+
+    get receiver() {
+        return this.#receiver;
+    }
+
+    set receiver(value) {
+        this.#receiver = value ?? null;
         this.#touch();
     }
 
@@ -122,8 +134,13 @@ class Donation {
         this.#touch();
     }
 
-    get transactionId() {
+    get transaction() {
         return this.#transactionId;
+    }
+
+    set transaction(value) {
+        this.#transactionId = value ?? null;
+        this.#touch();
     }
 
     get createdAt() {
@@ -183,8 +200,8 @@ class Donation {
     toJSON() {
         return {
             _id: this.#_id,
-            campaignId: this.#campaignId,
-            userId: this.#userId,
+            campaign: this.#campaign,
+            donor: this.#donor,
             name: this.#name,
             email: this.#email,
             amount: this.#amount,
@@ -202,8 +219,9 @@ class Donation {
     toInsertDB() {
         return {
             _id: this.#_id ?? undefined,
-            campaignId: this.#campaignId,
-            userId: this.#userId,
+            campaign: this.#campaign,
+            receiver: this.#receiver,
+            donor: this.#donor,
             name: this.#name,
             email: this.#email,
             amount: this.#amount,
@@ -219,8 +237,8 @@ class Donation {
     toUpdateDB() {
         return {
             $set: {
-                campaignId: this.#campaignId,
-                userId: this.#userId,
+                campaign: this.#campaign,
+                donor: this.#donor,
                 name: this.#name,
                 email: this.#email,
                 amount: this.#amount,
