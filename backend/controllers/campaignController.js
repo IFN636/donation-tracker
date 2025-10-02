@@ -170,6 +170,45 @@ class CampaignController {
             });
         }
     }
+
+    async getOwnedCampaigns(req, res) {
+        const {
+            page = 1,
+            limit = 8,
+            search = "",
+            sortBy = "createdAt",
+            sortOrder = "desc",
+        } = req.query;
+        try {
+            const userId = req.user.id;
+            const paginatedCampaigns =
+                await this._campaignRepository.findWithPagination(
+                    {
+                        createdBy: userId,
+                        title: { $regex: search, $options: "i" },
+                    },
+                    page,
+                    limit,
+                    {
+                        populate: {
+                            path: "createdBy",
+                            select: "email name",
+                        },
+                        sort: { [sortBy]: sortOrder === "asc" ? 1 : -1 },
+                    }
+                );
+            res.status(200).json({
+                success: true,
+                ...paginatedCampaigns,
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Failed to get campaigns by user",
+                error: error.message,
+            });
+        }
+    }
 }
 
 export default new CampaignController();

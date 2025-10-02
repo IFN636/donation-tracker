@@ -1,7 +1,7 @@
-import CampaignForm from "../../components/CampaignForm";
+// import CampaignForm from "../../components/CampaignForm";
 
-const CampaignCreationPage = () => {
-    return <CampaignForm />;
-};
+// const CampaignCreationPage = () => {
+//     return <CampaignForm />;
+// };
 
-export default CampaignCreationPage;
+// export default CampaignCreationPage;

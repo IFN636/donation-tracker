@@ -19,5 +19,10 @@ router.get(
     "/:campaignId/donors",
     CampaignController.getDonorsByCampaignId.bind(CampaignController)
 );
+router.get(
+    "/owned/by-user",
+    authRequired,
+    CampaignController.getOwnedCampaigns.bind(CampaignController)
+);
 
 export default router;
