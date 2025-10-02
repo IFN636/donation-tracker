@@ -69,6 +69,11 @@ const CampaignsPage = () => {
         setSearchParams({ sortBy: field, sortOrder: order });
     };
 
+    const handleDelete = (id) => {
+        setCampaigns(campaigns.filter((campaign) => campaign._id !== id));
+        setTotal(total - 1);
+    };
+
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
@@ -96,6 +101,7 @@ const CampaignsPage = () => {
                 sortBy={pagination.sortBy}
                 sortOrder={pagination.sortOrder}
                 handleSortChange={handleSortChange}
+                handleDelete={handleDelete}
             />
         </div>
     );

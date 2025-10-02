@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import axiosInstance from "../../axiosConfig";
 import { useAuth } from "../../context/AuthContext";
 
-const CampaignQuickAction = ({ campaign }) => {
+const CampaignQuickAction = ({ campaign, onDeleted }) => {
     const { getAccessToken } = useAuth();
     const confirmDelete = async () => {
         try {
@@ -16,6 +16,7 @@ const CampaignQuickAction = ({ campaign }) => {
                 }
             );
             toast.success(response.data.message);
+            onDeleted(campaign._id);
         } catch (error) {
             toast.error(error?.response?.data?.message);
         }
@@ -31,8 +32,8 @@ const CampaignQuickAction = ({ campaign }) => {
                 </Button>
             </Link>
             <Popconfirm
-                title="Delete the task"
-                description="Are you sure to delete this task?"
+                title="Delete the campaign"
+                description={`Are you sure to delete this ${campaign.title}?`}
                 onConfirm={confirmDelete}
                 onCancel={cancelDelete}
                 okText="Yes"
