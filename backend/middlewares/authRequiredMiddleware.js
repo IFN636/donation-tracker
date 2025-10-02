@@ -1,24 +1,35 @@
 import User from "../models/User.js";
 import { JwtUtils } from "../utils/security.js";
-export const authRequired = async (req, res, next) => {
+
+const authRequired = async (req, res, next) => {
     try {
-        const token = req.header("Authorization")?.replace("Bearer ", "");
+        const auth = req.headers.authorization || "";
+        const hasBearer = auth.startsWith("Bearer ");
+        const token = hasBearer ? auth.split(" ")[1] : null;
 
         if (!token) {
-            return res.status(401).json({ message: "Access denied" });
+            return res
+                .status(401)
+                .json({ message: "Not authorized, no token" });
         }
 
-        const decoded = JwtUtils.verifyToken(token);
-        const user = await User.findById(decoded.userId);
-
-        if (!user) {
-            return res.status(401).json({ message: "Invalid token" });
+        try {
+            const decoded = JwtUtils.verifyToken(token);
+            const user = await User.findById(decoded.id).select("-password");
+            if (!user) {
+                return res
+                    .status(401)
+                    .json({ message: "Not authorized, user not found" });
+            }
+            req.user = user;
+            return await next();
+        } catch (e) {
+            return res
+                .status(401)
+                .json({ message: "Not authorized, token failed" });
         }
-
-        req.user = user;
-        next();
     } catch (error) {
-        res.status(401).json({ message: "Invalid token" });
+        return res.status(500).json({ message: error.message });
     }
 };
 
