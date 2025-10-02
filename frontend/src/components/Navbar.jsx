@@ -70,7 +70,7 @@ const Navbar = () => {
                                     navigate("/login");
                                     return;
                                 }
-                                navigate("/fundraisers/creation");
+                                navigate("/creators/campaigns/creation");
                             }}
                         >
                             Start a Fundraiser
