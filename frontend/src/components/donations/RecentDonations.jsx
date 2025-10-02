@@ -66,7 +66,9 @@ const columns = [
 ];
 
 const RecentDonations = ({ dataSource }) => {
-    return <Table dataSource={dataSource} columns={columns} />;
+    return (
+        <Table pagination={false} dataSource={dataSource} columns={columns} />
+    );
 };
 
 export default RecentDonations;
