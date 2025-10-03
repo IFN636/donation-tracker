@@ -14,6 +14,15 @@ class DonationRepository extends BaseRepository {
         return this._model.find({ campaignId });
     }
 
+    async getTotalDonors(userId) {
+        const docs = await this._model.find({
+            receiver: userId,
+            donor: { $ne: null },
+        });
+        const uniqueDonors = new Set(docs.map((doc) => String(doc.donor)));
+        return uniqueDonors.size;
+    }
+
     async getDonorsLeaderboardByCampaignId({
         campaignId,
         limit,

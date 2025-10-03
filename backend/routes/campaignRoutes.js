@@ -24,9 +24,22 @@ router.get(
     authRequired,
     CampaignController.getOwnedCampaigns.bind(CampaignController)
 );
+router.get(
+    "/owned/by-user/stats",
+    authRequired,
+    CampaignController.getCampaignStats.bind(CampaignController)
+);
 router.delete(
     "/:campaignId",
     authRequired,
     CampaignController.deleteCampaign.bind(CampaignController)
+);
+
+router.patch(
+    "/:campaignId",
+    authRequired,
+    createCampaignValidation,
+    validationMiddleware,
+    CampaignController.updateCampaign.bind(CampaignController)
 );
 export default router;

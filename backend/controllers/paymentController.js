@@ -117,8 +117,8 @@ class PaymentController {
                     }
 
                     campaign = CampaignFactory.create(campaign);
-                    campaign.currentAmount = amount + campaign.currentAmount;
-                    campaign.backers = campaign.backers + 1;
+                    campaign.setCurrentAmount(amount + campaign.currentAmount);
+                    campaign.setBackers(campaign.backers + 1);
 
                     await this.campaignRepository.updateOne(
                         { _id: campaignId },

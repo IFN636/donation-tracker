@@ -33,13 +33,13 @@ class User {
         updatedAt = new Date(),
     }) {
         this.#_id = _id ?? null;
-        this.name = name;
-        this.email = email;
+        this.setName(name);
+        this.setEmail(email);
         this.#password = password ?? null;
-        this.address = address;
-        this.role = role;
-        this.isSuperAdmin = isSuperAdmin;
-        this.status = status;
+        this.setAddress(address);
+        this.setRole(role);
+        this.setIsSuperAdmin(isSuperAdmin);
+        this.setStatus(status);
         this.#createdAt = createdAt;
         this.#updatedAt = updatedAt;
     }
@@ -47,15 +47,44 @@ class User {
     get id() {
         return this.#_id?.toString() ?? null;
     }
-    set _id(v) {
+    get name() {
+        return this.#name;
+    }
+    get email() {
+        return this.#email;
+    }
+    get hasPassword() {
+        return Boolean(this.#password);
+    }
+    get passwordHash() {
+        return this.#password;
+    }
+    get address() {
+        return this.#address;
+    }
+    get role() {
+        return this.#role;
+    }
+    get isSuperAdmin() {
+        return this.#isSuperAdmin;
+    }
+    get status() {
+        return this.#status;
+    }
+    get createdAt() {
+        return this.#createdAt;
+    }
+    get updatedAt() {
+        return this.#updatedAt;
+    }
+
+    // ---- Setter -> method ----
+    setId(v) {
         this.#_id = v ?? null;
         this.#touch();
     }
 
-    get name() {
-        return this.#name;
-    }
-    set name(v) {
+    setName(v) {
         if (!v) throw new Error("name is required");
         const t = String(v).trim();
         if (!t) throw new Error("name cannot be empty");
@@ -63,69 +92,42 @@ class User {
         this.#touch();
     }
 
-    get email() {
-        return this.#email;
-    }
-    set email(v) {
+    setEmail(v) {
         if (!v) throw new Error("email is required");
         const t = String(v).trim().toLowerCase();
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t))
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)) {
             throw new Error("Invalid email");
+        }
         this.#email = t;
         this.#touch();
     }
 
-    get hasPassword() {
-        return Boolean(this.#password);
-    }
-    get passwordHash() {
-        return this.#password;
-    }
-
-    get address() {
-        return this.#address;
-    }
-    set address(v) {
+    setAddress(v) {
         this.#address = v == null ? null : String(v).trim();
         this.#touch();
     }
 
-    get role() {
-        return this.#role;
-    }
-    set role(v) {
+    setRole(v) {
         const val = String(v);
-        if (![ROLE.ADMIN, ROLE.PARTICIPANT].includes(val))
+        if (![ROLE.ADMIN, ROLE.PARTICIPANT].includes(val)) {
             throw new Error("Invalid role");
+        }
         this.#role = val;
         this.#touch();
     }
 
-    get isSuperAdmin() {
-        return this.#isSuperAdmin;
-    }
-    set isSuperAdmin(v) {
+    setIsSuperAdmin(v) {
         this.#isSuperAdmin = Boolean(v);
         this.#touch();
     }
 
-    get status() {
-        return this.#status;
-    }
-    set status(v) {
+    setStatus(v) {
         const val = String(v);
         if (![STATUS.ACTIVE, STATUS.BLOCKED, STATUS.PENDING].includes(val)) {
             throw new Error("Invalid status");
         }
         this.#status = val;
         this.#touch();
-    }
-
-    get createdAt() {
-        return this.#createdAt;
-    }
-    get updatedAt() {
-        return this.#updatedAt;
     }
 
     async setPasswordPlain(plain, saltRounds = 10) {
@@ -147,38 +149,6 @@ class User {
     }
     isParticipant() {
         return this.#role === ROLE.PARTICIPANT;
-    }
-
-    static fromRequest(body) {
-        return new this({
-            _id: body._id ?? null,
-            name: body.name,
-            email: body.email,
-            password: body.password ?? null,
-            address: body.address ?? null,
-            role: body.role ?? ROLE.PARTICIPANT,
-            isSuperAdmin: body.isSuperAdmin ?? false,
-            status: body.status ?? STATUS.ACTIVE,
-            createdAt: body.createdAt ?? new Date(),
-            updatedAt: body.updatedAt ?? new Date(),
-        });
-    }
-
-    static fromDocument(doc) {
-        if (!doc) return null;
-        const o = typeof doc.toObject === "function" ? doc.toObject() : doc;
-        return new this({
-            _id: o._id,
-            name: o.name,
-            email: o.email,
-            password: o.password,
-            address: o.address ?? null,
-            role: o.role ?? ROLE.PARTICIPANT,
-            isSuperAdmin: o.isSuperAdmin ?? false,
-            status: o.status ?? STATUS.ACTIVE,
-            createdAt: o.createdAt ?? new Date(),
-            updatedAt: o.updatedAt ?? new Date(),
-        });
     }
 
     toJSON({ includeSensitive = false } = {}) {

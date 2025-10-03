@@ -31,21 +31,22 @@ class Transaction {
         updatedAt = new Date(),
     }) {
         this.#_id = _id;
-        this.donation = donation;
-        this.campaign = campaign;
-        this.checkoutSessionId = checkoutSessionId;
-        this.chargeId = chargeId;
-        this.paymentMethod = paymentMethod;
-        this.status = status;
-        this.amount = amount;
-        this.currency = currency;
-        this.paidAt = paidAt;
-        this.cardBrand = cardBrand;
-        this.cardLast4 = cardLast4;
+        this.setDonation(donation);
+        this.setCampaign(campaign);
+        this.setCheckoutSessionId(checkoutSessionId);
+        this.setChargeId(chargeId);
+        this.setPaymentMethod(paymentMethod);
+        this.setStatus(status);
+        this.setAmount(amount);
+        this.setCurrency(currency);
+        this.setPaidAt(paidAt);
+        this.setCardBrand(cardBrand);
+        this.setCardLast4(cardLast4);
         this.#createdAt = createdAt;
         this.#updatedAt = updatedAt;
     }
 
+    // --- Getters giữ nguyên ---
     get id() {
         return this.#_id?.toString() ?? null;
     }
@@ -89,31 +90,33 @@ class Transaction {
         return this.#updatedAt;
     }
 
-    set donation(v) {
+    // --- Setter -> method ---
+    setId(v) {
+        this.#_id = v ?? null;
+        this.#touch();
+    }
+    setDonation(v) {
         this.#donation = v ?? null;
         this.#touch();
     }
-    set campaign(v) {
+    setCampaign(v) {
         this.#campaign = v ?? null;
         this.#touch();
     }
-
-    set checkoutSessionId(v) {
+    setCheckoutSessionId(v) {
         if (!v) throw new Error("checkoutSessionId required");
         this.#checkoutSessionId = String(v).trim();
         this.#touch();
     }
-
-    set chargeId(v) {
+    setChargeId(v) {
         this.#chargeId = v ? String(v).trim() : null;
         this.#touch();
     }
-    set paymentMethod(v) {
+    setPaymentMethod(v) {
         this.#paymentMethod = v ? String(v).trim() : null;
         this.#touch();
     }
-
-    set status(v) {
+    setStatus(v) {
         const allowed = [
             "pending",
             "requires_action",
@@ -126,33 +129,31 @@ class Transaction {
         this.#status = v;
         this.#touch();
     }
-
-    set amount(v) {
+    setAmount(v) {
         const n = Number(v);
         if (!Number.isFinite(n) || n < 0)
             throw new Error("amount must be non-negative");
         this.#amount = n;
         this.#touch();
     }
-
-    set currency(v) {
+    setCurrency(v) {
         this.#currency = (v ?? "AUD").toString().toUpperCase();
         this.#touch();
     }
-
-    set paidAt(v) {
+    setPaidAt(v) {
         this.#paidAt = v ? new Date(v) : null;
         this.#touch();
     }
-    set cardBrand(v) {
+    setCardBrand(v) {
         this.#cardBrand = v ? String(v).trim() : null;
         this.#touch();
     }
-    set cardLast4(v) {
+    setCardLast4(v) {
         this.#cardLast4 = v ? String(v).trim() : null;
         this.#touch();
     }
 
+    // --- Domain helpers ---
     isSuccessful() {
         return this.#status === "succeeded";
     }

@@ -140,26 +140,23 @@ class CampaignController {
     }
 
     async getCampaignStats(req, res) {
-        const { id } = req.params;
         try {
-            const campaign = await Campaign.findById(id);
-            if (!campaign) {
-                return res.status(404).json({
-                    success: false,
-                    message: "Campaign not found",
-                });
-            }
-            const totalDonations =
-                await this._donationRepository.getTotalDonationsByCampaignId(
-                    id
-                );
-            const totalDonors =
-                await this._donationRepository.getTotalDonorsByCampaignId(id);
+            const userId = req.user.id;
+            const [totalDonations, totalDonors, activeCampaigns] =
+                await Promise.all([
+                    this._campaignRepository.sumCurrentAmount(userId),
+                    this._donationRepository.getTotalDonors(userId),
+                    this._campaignRepository.count({
+                        createdBy: userId,
+                        deadline: { $gt: new Date() },
+                    }),
+                ]);
             res.status(200).json({
                 success: true,
                 data: {
                     totalDonations,
                     totalDonors,
+                    activeCampaigns,
                 },
             });
         } catch (error) {
@@ -213,6 +210,11 @@ class CampaignController {
     async deleteCampaign(req, res) {
         const { campaignId } = req.params;
         try {
+            const campaignRepositoryProxy = new CampaignRepositoryProxy(
+                this._campaignRepository,
+                req.user
+            );
+            // Check if campaign exists
             const campaign = await this._campaignRepository.findOneById(
                 campaignId
             );
@@ -222,7 +224,8 @@ class CampaignController {
                     message: "Campaign not found",
                 });
             }
-            await this._campaignRepository.deleteById(campaignId);
+            // Use proxy to enforce business rules
+            await campaignRepositoryProxy.deleteById(campaignId);
             res.status(200).json({
                 success: true,
                 message: "Campaign deleted successfully",
@@ -237,8 +240,47 @@ class CampaignController {
     }
 
     async updateCampaign(req, res) {
-        const { id } = req.params;
-        const { title, description, goalAmount, startDate, endDate } = req.body;
+        const { campaignId } = req.params;
+        const { title, description, goalAmount, deadline, imageUrl } = req.body;
+
+        try {
+            const campaignRepositoryProxy = new CampaignRepositoryProxy(
+                this._campaignRepository,
+                req.user
+            );
+            let campaign = await this._campaignRepository.findOneById(
+                campaignId
+            );
+            if (!campaign) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Campaign not found",
+                });
+            }
+            const updateData = {
+                ...(title && { title }),
+                ...(description && { description }),
+                ...(goalAmount && { goalAmount }),
+                ...(deadline && { deadline }),
+                ...(imageUrl && { imageUrl }),
+            };
+            const updatedCampaign = await campaignRepositoryProxy.updateOne(
+                { _id: campaignId },
+                updateData
+            );
+            res.status(200).json({
+                success: true,
+                message: "Campaign updated successfully",
+                campaign: updatedCampaign,
+            });
+        } catch (error) {
+            console.error("Error updating campaign:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to update campaign",
+                error: error.message,
+            });
+        }
     }
 }
 

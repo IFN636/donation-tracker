@@ -52,7 +52,7 @@ export const publicRoutes = [
         layout: CreatorLayout,
     },
     {
-        path: "/creators/campaigns/:id/edit",
+        path: "/creators/campaigns/:campaignId/edit",
         element: EditCampaignPage,
         layout: CreatorLayout,
     },

@@ -29,67 +29,101 @@ class Donation {
         updatedAt = new Date(),
     }) {
         this.#_id = _id ?? null;
-        this.campaign = campaign;
-        this.#donor = donor;
-        this.receiver = receiver;
-        this.name = name;
-        this.email = email;
-        this.amount = amount;
-        this.currency = currency;
-        this.isAnonymous = isAnonymous;
-        this.paidAt = paidAt;
-        this.transactionId = transactionId;
+        this.setCampaign(campaign);
+        this.setDonor(donor);
+        this.setReceiver(receiver);
+        this.setName(name);
+        this.setEmail(email);
+        this.setAmount(amount);
+        this.setCurrency(currency);
+        this.setIsAnonymous(isAnonymous);
+        this.setPaidAt(paidAt);
+        this.setTransaction(transactionId);
         this.#createdAt = createdAt;
         this.#updatedAt = updatedAt;
     }
 
+    // --- Getters giữ nguyên ---
     get id() {
         return this.#_id?.toString() ?? null;
-    }
-    set id(value) {
-        this.#_id = value ?? null;
-        this.#touch();
     }
 
     get campaign() {
         return this.#campaign;
     }
-    set campaign(value) {
-        if (!value) throw new Error("campaign is required");
-        this.#campaign = value;
-        this.#touch();
-    }
 
     get donor() {
         return this.#donor;
-    }
-    set donor(value) {
-        this.#donor = value ?? null;
-        this.#touch();
     }
 
     get receiver() {
         return this.#receiver;
     }
 
-    set receiver(value) {
-        this.#receiver = value ?? null;
-        this.#touch();
-    }
-
     get name() {
         return this.#name;
-    }
-    set name(value) {
-        const v = value == null ? null : String(value).trim();
-        this.#name = v === "" ? null : v;
-        this.#touch();
     }
 
     get email() {
         return this.#email;
     }
-    set email(value) {
+
+    get amount() {
+        return this.#amount;
+    }
+
+    get currency() {
+        return this.#currency;
+    }
+
+    get isAnonymous() {
+        return this.#isAnonymous;
+    }
+
+    get paidAt() {
+        return this.#paidAt;
+    }
+
+    get transaction() {
+        return this.#transactionId;
+    }
+
+    get createdAt() {
+        return this.#createdAt;
+    }
+
+    get updatedAt() {
+        return this.#updatedAt;
+    }
+
+    setId(value) {
+        this.#_id = value ?? null;
+        this.#touch();
+    }
+
+    setCampaign(value) {
+        if (!value) throw new Error("campaign is required");
+        this.#campaign = value;
+        this.#touch();
+    }
+
+    setDonor(value) {
+        this.#donor = value ?? null;
+        this.#touch();
+    }
+
+    setReceiver(value) {
+        this.#receiver = value ?? null;
+        this.#touch();
+    }
+
+    setName(value) {
+        const v = value == null ? null : String(value).trim();
+        this.#name = v === "" ? null : v;
+        this.#touch();
+    }
+
+    setEmail(value) {
         const v = value == null ? null : String(value).trim();
         if (v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
             throw new Error("Invalid email");
@@ -98,10 +132,7 @@ class Donation {
         this.#touch();
     }
 
-    get amount() {
-        return this.#amount;
-    }
-    set amount(value) {
+    setAmount(value) {
         const n = Number(value);
         if (!Number.isFinite(n) || n < 0)
             throw new Error("amount must be a non-negative number");
@@ -109,47 +140,28 @@ class Donation {
         this.#touch();
     }
 
-    get currency() {
-        return this.#currency;
-    }
-    set currency(value) {
+    setCurrency(value) {
         const v = (value ?? "AUD").toString().toUpperCase();
         this.#currency = v;
         this.#touch();
     }
 
-    get isAnonymous() {
-        return this.#isAnonymous;
-    }
-    set isAnonymous(value) {
+    setIsAnonymous(value) {
         this.#isAnonymous = Boolean(value);
         this.#touch();
     }
 
-    get paidAt() {
-        return this.#paidAt;
-    }
-    set paidAt(value) {
+    setPaidAt(value) {
         this.#paidAt = value ? new Date(value) : new Date();
         this.#touch();
     }
 
-    get transaction() {
-        return this.#transactionId;
-    }
-
-    set transaction(value) {
+    setTransaction(value) {
         this.#transactionId = value ?? null;
         this.#touch();
     }
 
-    get createdAt() {
-        return this.#createdAt;
-    }
-    get updatedAt() {
-        return this.#updatedAt;
-    }
-
+    // --- Domain logic ---
     getDisplayName() {
         if (this.#isAnonymous) return "Anonymous";
         return this.#name || this.#email || "Supporter";
@@ -164,8 +176,8 @@ class Donation {
     static fromRequest(body) {
         return new Donation({
             _id: body._id ?? null,
-            campaignId: body.campaignId,
-            userId: body.userId ?? null,
+            campaign: body.campaignId,
+            donor: body.userId ?? null,
             name: body.name ?? null,
             email: body.email ?? null,
             amount: body.amount,
@@ -183,8 +195,8 @@ class Donation {
         const plain = typeof doc.toObject === "function" ? doc.toObject() : doc;
         return new Donation({
             _id: plain._id,
-            campaignId: plain.campaignId,
-            userId: plain.userId ?? null,
+            campaign: plain.campaignId,
+            donor: plain.userId ?? null,
             name: plain.name ?? null,
             email: plain.email ?? null,
             amount: plain.amount,

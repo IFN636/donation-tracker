@@ -29,18 +29,18 @@ class Campaign {
         status = "active",
     }) {
         this.#_id = _id;
-        this.title = title;
-        this.description = description;
-        this.goalAmount = goalAmount;
-        this.currency = currency;
-        this.deadline = deadline;
-        this.imageUrl = imageUrl;
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setGoalAmount(goalAmount);
+        this.setCurrency(currency);
+        this.setDeadline(deadline);
+        this.setImageUrl(imageUrl);
         this.#createdBy = createdBy;
         this.#createdAt = createdAt;
         this.#updatedAt = updatedAt;
-        this.currentAmount = currentAmount;
-        this.backers = backers;
-        this.status = status;
+        this.setCurrentAmount(currentAmount);
+        this.setBackers(backers);
+        this.setStatus(status);
     }
 
     get _id() {
@@ -50,81 +50,37 @@ class Campaign {
     get title() {
         return this.#title;
     }
-    set title(value) {
-        this.#title = value?.trim();
-        this.#touch();
-    }
 
     get description() {
         return this.#description;
-    }
-    set description(value) {
-        this.#description = value?.trim();
-        this.#touch();
     }
 
     get goalAmount() {
         return this.#goalAmount;
     }
-    set goalAmount(value) {
-        if (value < 0) throw new Error("goalAmount cannot be negative");
-        this.#goalAmount = Number(value);
-        this.#touch();
-    }
 
     get currentAmount() {
         return this.#currentAmount;
-    }
-    set currentAmount(value) {
-        if (value < 0) throw new Error("currentAmount cannot be negative");
-        this.#currentAmount = Number(value);
-        if (this.#currentAmount >= this.#goalAmount) {
-            this.#status = "completed";
-        }
-        this.#touch();
     }
 
     get backers() {
         return this.#backers;
     }
-    set backers(value) {
-        if (value < 0) throw new Error("backers cannot be negative");
-        this.#backers = Number(value);
-        this.#touch();
-    }
 
     get currency() {
         return this.#currency;
-    }
-    set currency(value) {
-        this.#currency = value.toUpperCase();
-        this.#touch();
     }
 
     get deadline() {
         return this.#deadline;
     }
-    set deadline(value) {
-        this.#deadline = value ? new Date(value) : null;
-        this.#touch();
-    }
 
     get imageUrl() {
         return this.#imageUrl;
     }
-    set imageUrl(value) {
-        this.#imageUrl = value || "https://via.placeholder.com/150";
-        this.#touch();
-    }
 
     get status() {
         return this.#status;
-    }
-    set status(value) {
-        const valid = ["active", "completed", "cancelled"];
-        if (!valid.includes(value)) throw new Error(`Invalid status: ${value}`);
-        this.#status = value;
-        this.#touch();
     }
 
     get createdBy() {
@@ -137,6 +93,59 @@ class Campaign {
 
     get updatedAt() {
         return this.#updatedAt;
+    }
+
+    setTitle(value) {
+        this.#title = value?.trim();
+        this.#touch();
+    }
+
+    setDescription(value) {
+        this.#description = value?.trim();
+        this.#touch();
+    }
+
+    setGoalAmount(value) {
+        if (value < 0) throw new Error("goalAmount cannot be negative");
+        this.#goalAmount = Number(value);
+        this.#touch();
+    }
+
+    setCurrentAmount(value) {
+        if (value < 0) throw new Error("currentAmount cannot be negative");
+        this.#currentAmount = Number(value);
+        if (this.#currentAmount >= this.#goalAmount) {
+            this.#status = "completed";
+        }
+        this.#touch();
+    }
+
+    setBackers(value) {
+        if (value < 0) throw new Error("backers cannot be negative");
+        this.#backers = Number(value);
+        this.#touch();
+    }
+
+    setCurrency(value) {
+        this.#currency = value.toUpperCase();
+        this.#touch();
+    }
+
+    setDeadline(value) {
+        this.#deadline = value ? new Date(value) : null;
+        this.#touch();
+    }
+
+    setImageUrl(value) {
+        this.#imageUrl = value || "https://via.placeholder.com/150";
+        this.#touch();
+    }
+
+    setStatus(value) {
+        const valid = ["active", "completed", "cancelled"];
+        if (!valid.includes(value)) throw new Error(`Invalid status: ${value}`);
+        this.#status = value;
+        this.#touch();
     }
 
     getProgressPercent() {
@@ -164,7 +173,7 @@ class Campaign {
 
     addContribution(amount) {
         if (amount <= 0) throw new Error("Contribution must be positive");
-        this.currentAmount = this.#currentAmount + amount; // uses setter
+        this.setCurrentAmount(this.#currentAmount + amount);
     }
 
     #touch() {

@@ -10,6 +10,7 @@ import StatCard from "../StatCard";
 const Dashboard = () => {
     const { getAccessToken } = useAuth();
     const [currentDonations, setCurrentDonations] = useState([]);
+    const [campaignStats, setCampaignStats] = useState({});
 
     useEffect(() => {
         const fetchRecentDonations = async () => {
@@ -22,7 +23,18 @@ const Dashboard = () => {
             setCurrentDonations(response.data.data);
         };
 
+        const fetchCampaignStats = async () => {
+            const response = await axiosInstance.get(
+                `/api/campaigns/owned/by-user/stats`,
+                {
+                    headers: { Authorization: `Bearer ${getAccessToken()}` },
+                }
+            );
+            setCampaignStats(response.data.data);
+        };
+
         fetchRecentDonations();
+        fetchCampaignStats();
     }, [getAccessToken]);
 
     return (
@@ -36,10 +48,10 @@ const Dashboard = () => {
                     <Button type="primary">Create New Campaign</Button>
                 </Link>
             </div>
-            <div className="flex w-full gap-4">
+            <div className="flex w-full gap-4 mb-10">
                 <StatCard
                     title="Total Donations"
-                    value={12847}
+                    value={campaignStats.totalDonations}
                     prefix="$"
                     percent={12.5}
                     positive={true}
@@ -52,7 +64,7 @@ const Dashboard = () => {
 
                 <StatCard
                     title="Active Campaigns"
-                    value={520}
+                    value={campaignStats.activeCampaigns}
                     percent={4.3}
                     positive={false}
                     icon={
@@ -63,7 +75,7 @@ const Dashboard = () => {
                 />
                 <StatCard
                     title="Supporters"
-                    value={520}
+                    value={campaignStats.totalDonors}
                     percent={4.3}
                     positive={false}
                     icon={
@@ -74,7 +86,7 @@ const Dashboard = () => {
                 />
                 <StatCard
                     title="Monthly Growth"
-                    value={520}
+                    value={campaignStats.monthlyGrowth || 0}
                     percent={4.3}
                     positive={false}
                     icon={
