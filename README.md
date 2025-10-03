@@ -81,7 +81,6 @@ This application extends a starter authentication project to include comprehensi
 
 **Project Management:**
 
--   JIRA
 -   SysML Diagrams
 
 ---
@@ -186,22 +185,9 @@ _Note: These are test credentials created specifically for assessment purposes._
 
 ## Project Management
 
-### JIRA Board
-
-**JIRA Project URL:** https://ifn636-ses2.atlassian.net/jira/software/projects/ODT/boards/34
-
-The project is organized into:
-
--   **Epics:** Major feature groups
--   **User Stories:** Individual features and requirements
--   **Subtasks:** Detailed development tasks
--   **Sprints:** Organized development cycles
-
 ### SysML Diagrams
 
--   Requirements Diagram
--   Block Definition Diagram (BDD)
--   Parametric Diagram
+-   Complete System Diagram
 
 ## CI/CD Pipeline
 
@@ -217,7 +203,7 @@ The project implements automated CI/CD using GitHub Actions:
     - Backend deployment to AWS EC2
     - Environment-specific configurations
 
-**Pipeline Status:** [![CI/CD Pipeline](https://github.com/khangdev20/donation-tracker/workflows/CI-CD/badge.svg)](https://github.com/khangdev20/donation-tracker/actions)
+**Pipeline Status:** https://github.com/IFN636/donation-tracker/actions
 
 ## Architecture
 
