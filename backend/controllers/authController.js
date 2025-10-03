@@ -47,7 +47,7 @@ class AuthController {
             res.status(200).json({
                 name: user.name,
                 email: user.email,
-                university: user.university,
+                phone: user.phone,
                 address: user.address,
             });
         } catch (error) {
@@ -79,6 +79,7 @@ class AuthController {
 
     async updateProfile(req, res) {
         try {
+            console.log("req.user", req.user);
             const user = await this._userRepository.findOneById(req.user.id);
             if (!user)
                 return res.status(404).json({ message: "User not found" });
@@ -89,16 +90,22 @@ class AuthController {
             user.phone = phone || user.phone;
             user.address = address || user.address;
 
-            await this._userRepository.updateOne(user.id, user);
+            await this._userRepository.updateOne(
+                {
+                    _id: user.id,
+                },
+                user
+            );
             res.json({
                 id: user.id,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                university: updatedUser.university,
-                address: updatedUser.address,
-                token: generateToken(user.id),
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                address: user.address,
+                token: JwtUtils.generateToken(user.id),
             });
         } catch (error) {
+            console.log("updateProfile error", error);
             res.status(500).json({ message: error.message });
         }
     }

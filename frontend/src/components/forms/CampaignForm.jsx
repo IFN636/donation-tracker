@@ -218,7 +218,6 @@ const FundingNeedForm = ({ updatingCampaignData }) => {
                             validationErrors={validationErrors}
                         />
                     </div>
-                    <div>{formData.deadline}</div>
                     <DateTimeSelector
                         value={formData.deadline}
                         onChange={(e) => {

@@ -24,17 +24,17 @@ export class StripeStrategy extends PaymentStrategy {
     async pay({
         campaign,
         amount,
+        donationId,
         user,
         successUrl,
         cancelUrl,
         isAnonymous = false,
         currency = "aud",
     }) {
-        const redirectUrl = `${process.env.CLIENT_URL}/fundraisers/${campaign._id}`;
-
         const metadata = {
             campaignId: campaign._id.toString(),
             receiverId: campaign.createdBy.toString(),
+            donationId: donationId,
             userId: user._id.toString(),
             name: user.name,
             email: user.email,
@@ -69,6 +69,7 @@ export class PayPalStrategy extends PaymentStrategy {
     pay({
         campaign,
         amount,
+        donationId,
         user,
         successUrl,
         cancelUrl,
@@ -87,6 +88,7 @@ export class PaymentProcessor {
     pay({
         campaign,
         amount,
+        donationId,
         user,
         successUrl,
         cancelUrl,
@@ -96,6 +98,7 @@ export class PaymentProcessor {
         return this.strategy.pay({
             campaign,
             amount,
+            donationId,
             user,
             isAnonymous,
             currency,

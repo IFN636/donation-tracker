@@ -4,11 +4,6 @@ import authRequired from "../middlewares/authRequiredMiddleware.js";
 
 const router = Router();
 
-// router.get(
-//     "/:campaignId/recent",
-//     DonationController.getRecentDonationsByCampaignId.bind(DonationController)
-// );
-
 // Your recent donations as a donor
 router.get(
     "/donors/recent",
@@ -20,6 +15,12 @@ router.get(
     "/creators/recent",
     authRequired,
     DonationController.getRecentDonationsByCreatorId.bind(DonationController)
+);
+
+router.get(
+    "/:donationId",
+    authRequired,
+    DonationController.getDonationById.bind(DonationController)
 );
 
 export default router;

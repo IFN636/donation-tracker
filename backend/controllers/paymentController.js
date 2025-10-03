@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { stripeAdapter } from "../adapters/stripeAdapter.js";
 import PaymentFacade from "../facades/paymentFacade.js";
 import CampaignFactory from "../factories/CampaignFactory.js";
@@ -34,14 +35,16 @@ class PaymentController {
                     message: "Campaign not found",
                 });
             }
+            const donationId = new ObjectId().toString();
 
-            const redirectUrl = `${process.env.CLIENT_URL}/fundraisers/${campaignId}`;
+            const redirectUrl = `${process.env.CLIENT_URL}/donations/completed/${donationId}`;
             let checkoutSession;
 
             if (paymentMethod === "credit-card") {
                 checkoutSession = await PaymentFacade.payWithStripe({
                     campaign,
                     amount,
+                    donationId,
                     user,
                     isAnonymous,
                     currency,
@@ -96,6 +99,7 @@ class PaymentController {
                     const amount = session.amount_total / 100;
                     const metadata = session.metadata;
                     const campaignId = metadata.campaignId;
+                    const donationId = metadata.donationId;
                     const checkoutSessionId = session.id;
                     const isAnonymous = metadata.isAnonymous;
                     const paymentMethod = metadata.paymentMethod;
@@ -139,6 +143,7 @@ class PaymentController {
                         );
 
                     const donation = DonationFactory.create({
+                        _id: donationId,
                         campaign: campaignId,
                         donor: userId,
                         name: name,

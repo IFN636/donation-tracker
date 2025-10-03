@@ -31,7 +31,7 @@ class DonationRepository extends BaseRepository {
         sortOrder,
     }) {
         return this._model
-            .find({ campaignId })
+            .find({ campaign: campaignId })
             .sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 })
             .skip((page - 1) * limit)
             .limit(limit);
