@@ -114,19 +114,31 @@ This application extends a starter authentication project to include comprehensi
 3.  **Environment Configuration**
     Create a `.env` file in the backend directory:
 
+    > 🔐 **Environment Variables**  
+    > For security reasons, environment variables are stored in a secure vault.  
+    > Access the complete `.env` configuration from: **[1Password Shared Vault](https://share.1password.com/s#ba90MVxL8_GwF9mApadVBNZpSruogFcWrE1Kf6gi6WI)**
+
     > ⚠️ **Warning** ⚠️  
-    > The **Secret Keys / Credentials** in this repository are for **testing purposes only**.  
+    > The **Secret Keys / Credentials** are for **testing purposes only**.  
     > ❌ Do **NOT** use them in a **production** environment.
 
-        ```env
-        MONGO_URI=mongodb+srv://lenhutkhangvo:mongodbpassword@ifn636-qut.vuzlwj6.mongodb.net/donation-tracker?retryWrites=true&w=majority&appName=ifn636-qut
-        JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
-        BLOB_READ_WRITE_TOKEN=vercel_blob_rw_AqdIitkxZXaMO31W_nlgGg8mr2zuc2alUVNKbGTC3ckacRh
-        STRIPE_SECRET_KEY=sk_test_51Qq3GpQejYquv8g2ofjABASW3PoOIg3v0DQnEoLVOa31Lj8ATfQP5XJReR7zduFhXnAOL6RZ6rtRDS23W8PPbO2700OTerfU0J
-        STRIPE_WEBHOOK_SECRET=whsec_NFlGB7kqv21VjSdPCncwDamrwNGZmCwK
-        CLIENT_URL=http://localhost:3000
-        PORT=5001
-        ```
+    **Required Environment Variables:**
+
+    ```env
+    MONGO_URI=<MongoDB Atlas Connection String>
+    JWT_SECRET=<JSON Web Token Secret Key>
+    BLOB_READ_WRITE_TOKEN=<Vercel Blob Storage Token>
+    STRIPE_SECRET_KEY=<Stripe Test Secret Key>
+    STRIPE_WEBHOOK_SECRET=<Stripe Webhook Secret>
+    CLIENT_URL=http://localhost:3000
+    PORT=5001
+
+    # SMTP Configuration
+    SMTP_HOST=<SMTP Server Host>
+    SMTP_USER=<SMTP Username/Email>
+    SMTP_PASS=<SMTP Password/App Password>
+    SMTP_PORT=<SMTP Port Number>
+    ```
 
 4.  **Database Setup**
 
@@ -159,7 +171,7 @@ The application is automatically deployed via GitHub Actions CI/CD pipeline when
 
 ## Live Application
 
-🌐 **Public URL:** http://3.24.15.154/
+🌐 **Public URL:** https://ifn636-donation.khangvo.dev/
 
 ### Test Credentials
 
