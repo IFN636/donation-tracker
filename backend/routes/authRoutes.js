@@ -1,6 +1,7 @@
 import { Router } from "express";
 import AuthController from "../controllers/authController.js";
 import authRequired from "../middlewares/authRequiredMiddleware.js";
+import validationMiddleware from "../middlewares/validationMiddleware.js";
 import { loginValidation, registerValidation } from "../utils/validation.js";
 
 const router = Router();
@@ -19,13 +20,13 @@ router.put(
 router.post(
     "/register",
     registerValidation,
-    authRequired,
+    validationMiddleware,
     AuthController.registerUser.bind(AuthController)
 );
 router.post(
     "/login",
     loginValidation,
-    authRequired,
+    validationMiddleware,
     AuthController.loginUser.bind(AuthController)
 );
 
