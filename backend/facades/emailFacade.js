@@ -43,6 +43,7 @@ class EmailFacade {
             </body>
         `;
 
+
         this.sendMailWithTemplate({
             to,
             subject,
