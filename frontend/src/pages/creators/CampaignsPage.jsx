@@ -11,23 +11,22 @@ const CampaignsPage = () => {
     const [campaigns, setCampaigns] = useState([]);
     const [total, setTotal] = useState(0);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [pagination, setPagination] = useState({
         page: 1,
         limit: 8,
         sortBy: "createdAt",
         sortOrder: "desc",
-        search: "",
     });
 
-    const debouncedSearchTerm = useDebounce(pagination.search, 500);
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
     useEffect(() => {
         setPagination((prev) => ({
             ...prev,
             page: parseInt(searchParams.get("page") || "1", 10),
             limit: parseInt(searchParams.get("limit") || "8", 10),
-            search: searchParams.get("search") || "",
             sortBy: searchParams.get("sortBy") || "createdAt",
             sortOrder: searchParams.get("sortOrder") || "desc",
         }));
@@ -35,9 +34,10 @@ const CampaignsPage = () => {
     }, [searchParams]);
 
     useEffect(() => {
-        const params = new URLSearchParams();
         if (debouncedSearchTerm.trim()) {
-            params.append("search", debouncedSearchTerm.trim());
+            searchParams.set("search", debouncedSearchTerm.trim());
+        } else {
+            searchParams.delete("search");
         }
 
         const fetchCampaigns = async () => {
@@ -91,13 +91,8 @@ const CampaignsPage = () => {
                 currentPage={currentPage}
                 total={total}
                 handlePageChange={handlePageChange}
-                setSearchTerm={(e) =>
-                    setPagination((prev) => ({
-                        ...prev,
-                        search: e.target.value,
-                    }))
-                }
-                searchTerm={pagination.search}
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
                 sortBy={pagination.sortBy}
                 sortOrder={pagination.sortOrder}
                 handleSortChange={handleSortChange}
