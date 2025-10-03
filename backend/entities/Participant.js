@@ -18,17 +18,6 @@ class Participant extends User {
         this.#donations = [];
     }
 
-    createCampaign(campaignData) {
-        const campaign = {
-            id: campaignData.id,
-            title: campaignData.title,
-            goalAmount: campaignData.goalAmount,
-            createdAt: new Date(),
-        };
-        this.#campaigns.push(campaign);
-        return campaign;
-    }
-
     getCampaigns() {
         return this.#campaigns;
     }

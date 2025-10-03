@@ -28,22 +28,20 @@ export const createFundingNeedSchema = z.object({
     imageUrl: z.string().url({ message: "Invalid image URL" }),
 });
 
-const FundingNeedForm = () => {
+const FundingNeedForm = ({ updatingCampaignData }) => {
     const [errors, setErrors] = useState({});
     const [validationErrors, setValidationErrors] = useState([]);
 
     const { isAuthenticated, getAccessToken } = useAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        title: "",
-        description: "",
-        goalAmount: 0,
-        currency: "AUD",
-        deadline: "",
-        status: "active",
-        currentAmount: 0,
-        category: "",
-        imageUrl: "",
+        title: updatingCampaignData?.title || "",
+        description: updatingCampaignData?.description || "",
+        goalAmount: updatingCampaignData?.goalAmount || 0,
+        currency: updatingCampaignData?.currency || "AUD",
+        deadline: updatingCampaignData?.deadline || "",
+        status: updatingCampaignData?.status || "active",
+        imageUrl: updatingCampaignData?.imageUrl || "",
     });
 
     const handleSubmit = async (e) => {
@@ -59,15 +57,28 @@ const FundingNeedForm = () => {
                 });
                 return;
             }
-            await axiosInstance.post("/api/campaigns", formData, {
-                headers: { Authorization: `Bearer ${getAccessToken()}` },
-            });
-
-            toast.success("Campaign created successfully.");
-            navigate("/");
+            if (updatingCampaignData) {
+                await axiosInstance.patch(
+                    `/api/campaigns/${updatingCampaignData._id}`,
+                    formData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${getAccessToken()}`,
+                        },
+                    }
+                );
+                toast.success("Campaign updated successfully.");
+                navigate("/creators/campaigns");
+            } else {
+                await axiosInstance.post("/api/campaigns", formData, {
+                    headers: { Authorization: `Bearer ${getAccessToken()}` },
+                });
+                toast.success("Campaign created successfully.");
+                navigate("/creators/campaigns");
+            }
         } catch (error) {
             if (error?.response?.data?.errorType === "validation") {
-                toast.error("Campaign creation failed.");
+                toast.error("Campaign update/creation failed.");
                 setValidationErrors(error?.response?.data?.validationErrors);
                 return;
             } else {
@@ -77,10 +88,21 @@ const FundingNeedForm = () => {
     };
 
     useEffect(() => {
+        if (updatingCampaignData) {
+            setFormData({
+                title: updatingCampaignData.title,
+                description: updatingCampaignData.description,
+                goalAmount: updatingCampaignData.goalAmount,
+                currency: updatingCampaignData.currency,
+                deadline: updatingCampaignData.deadline,
+                imageUrl: updatingCampaignData.imageUrl,
+            });
+            return;
+        }
         if (!isAuthenticated) {
             navigate("/login");
         }
-    }, [isAuthenticated, navigate]);
+    }, [isAuthenticated, navigate, updatingCampaignData]);
 
     return (
         <div className="max-w-md mx-auto mt-20">
@@ -196,7 +218,9 @@ const FundingNeedForm = () => {
                             validationErrors={validationErrors}
                         />
                     </div>
+                    <div>{formData.deadline}</div>
                     <DateTimeSelector
+                        value={formData.deadline}
                         onChange={(e) => {
                             setFormData((prev) => ({
                                 ...prev,
@@ -220,6 +244,7 @@ const FundingNeedForm = () => {
                                 imageUrl: images.data[0],
                             }));
                         }}
+                        updatingImages={[formData.imageUrl]}
                     />
                     <ShowInputError
                         name="imageUrl"

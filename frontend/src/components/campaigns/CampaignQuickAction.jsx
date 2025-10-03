@@ -26,7 +26,7 @@ const CampaignQuickAction = ({ campaign, onDeleted }) => {
     };
     return (
         <div>
-            <Link to={`/creators/campaigns/${campaign.id}/edit`}>
+            <Link to={`/creators/campaigns/${campaign._id}/edit`}>
                 <Button className="mr-2">
                     <EditOutlined />
                 </Button>

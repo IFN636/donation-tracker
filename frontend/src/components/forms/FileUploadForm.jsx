@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import axiosInstance from "../../axiosConfig";
 
-const FileUploadForm = ({ onUploadSuccess, onUploadError }) => {
+const FileUploadForm = ({ onUploadSuccess, onUploadError, updatingImages }) => {
     const [files, setFiles] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -151,6 +151,21 @@ const FileUploadForm = ({ onUploadSuccess, onUploadError }) => {
                         </button>
                     </div>
                 </div>
+            )}
+            {updatingImages && (
+                <>
+                    {(files != null && files.length > 0) || (
+                        <div className="flex flex-col gap-2">
+                            {updatingImages.map((image) => (
+                                <img
+                                    src={image}
+                                    alt={image}
+                                    className="w-20 h-20 object-cover rounded-lg shadow-md border border-gray-200"
+                                />
+                            ))}
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
