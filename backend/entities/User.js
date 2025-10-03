@@ -78,7 +78,6 @@ class User {
         return this.#updatedAt;
     }
 
-    // ---- Setter -> method ----
     setId(v) {
         this.#_id = v ?? null;
         this.#touch();

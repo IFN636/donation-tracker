@@ -13,12 +13,12 @@ class NodemailerAdapter {
         });
     }
 
-    sendEmail(to, subject, text) {
+    sendEmail({ to, subject, content }) {
         return this.transporter.sendMail({
             from: process.env.SMTP_USER,
             to,
             subject,
-            text,
+            html: content,
         });
     }
 }

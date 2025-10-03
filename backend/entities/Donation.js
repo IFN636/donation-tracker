@@ -43,7 +43,6 @@ class Donation {
         this.#updatedAt = updatedAt;
     }
 
-    // --- Getters giữ nguyên ---
     get id() {
         return this.#_id?.toString() ?? null;
     }
@@ -161,7 +160,6 @@ class Donation {
         this.#touch();
     }
 
-    // --- Domain logic ---
     getDisplayName() {
         if (this.#isAnonymous) return "Anonymous";
         return this.#name || this.#email || "Supporter";

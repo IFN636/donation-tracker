@@ -1,16 +1,16 @@
+import NodemailerAdapter from "../adapters/nodeMailAdapter.js";
+
 class EmailFacade {
-    constructor(mailAdapter) {
-        if (!mailAdapter) {
-            throw new Error("Mail adapter is required");
-        }
-        this.mailAdapter = mailAdapter;
+    constructor() {
+        this.mailAdapter = new NodemailerAdapter();
     }
 
     sendMailWithTemplate({ to, subject, template }) {
+        console.log("Sending email to:", to);
         this.mailAdapter.sendEmail({
             to,
             subject,
-            html: template,
+            content: template,
         });
     }
 
@@ -47,21 +47,25 @@ class EmailFacade {
         this.sendMailWithTemplate({
             to,
             subject,
-            welcomeEmailHtml,
+            template: welcomeEmailHtml,
         });
     }
 
-    sendMailThankYou(to) {
+    sendMailThankYou(donation) {
         const subject = "Thank You for Your Donation!";
         const thankYouEmailHtml = `
             <body style="font-family: Arial, sans-serif; line-height: 1.5; color: rgb(51, 51, 51);">
-                <p>Hi there,</p>
+                <p>Hi there, ${donation.name}</p>
                 <p>Thank you so much for your generous donation! Your support means a lot to us and will help make a difference.</p>
                 <p>We truly appreciate your kindness and willingness to contribute to our cause. Every donation, big or small, helps us get closer to our goals.</p>
                 <p>Thanks again for your support! If you have any questions or would like to learn more about how your donation is making an impact, please don&rsquo;t hesitate to reach out.</p>
             </body>
         `;
-        this.sendMailWithTemplate(to, subject, thankYouEmailHtml);
+        this.sendMailWithTemplate({
+            to: donation.email,
+            subject,
+            template: thankYouEmailHtml,
+        });
     }
 }
 

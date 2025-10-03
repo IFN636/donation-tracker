@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "79687fcf-ad53-402d-8330-b30fc8479731",
+		"name": "Donations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48241488",
+		"_collection_link": "https://www.postman.com/khangdev20-6242397/workspace/ifn636/collection/48241488-79687fcf-ad53-402d-8330-b30fc8479731?action=share&source=collection_link&creator=48241488"
+	},
+	"item": [
+		{
+			"name": "Get Donors' Recent Donations",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/donations/donors/recent",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"donations",
+						"donors",
+						"recent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Creators' Recent Donations",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/donations/creators/recent",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"donations",
+						"creators",
+						"recent"
+					]
+				},
+				"description": "Get recent donations made by donors to your campaign"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Donations by Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/donations/:donationId",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"donations",
+						":donationId"
+					],
+					"variable": [
+						{
+							"key": "donationId",
+							"value": "68df564798511ac3fed02c71"
+						}
+					]
+				},
+				"description": "Get recent donations made by donors to your campaign"
+			},
+			"response": []
+		}
+	]
+}

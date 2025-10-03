@@ -1,5 +1,6 @@
 import { compare } from "bcrypt";
 import UserFactory from "../factories/UserFactory.js";
+import eventSubject from "../observers/subject.js";
 import UserRepository from "../repositories/userRepository.js";
 import { JwtUtils } from "../utils/security.js";
 class AuthController {
@@ -24,7 +25,7 @@ class AuthController {
                 userData.toInsertDB()
             );
 
-            // eventSubject.notify("USER_CREATED", user.toObject());
+            eventSubject.notify("USER_CREATED", user.toObject());
 
             res.status(201).json({
                 id: user.id,

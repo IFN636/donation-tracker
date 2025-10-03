@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "9b3580ec-bff4-4f56-9195-88b2bcd0ab64",
+		"name": "File",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48241488",
+		"_collection_link": "https://www.postman.com/khangdev20-6242397/workspace/ifn636/collection/48893990-9b3580ec-bff4-4f56-9195-88b2bcd0ab64?action=share&source=collection_link&creator=48241488"
+	},
+	"item": [
+		{
+			"name": "Upload Files to Blob",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"type": "file",
+							"src": "/C:/Users/volen/Downloads/screen.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/files/upload",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"files",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
