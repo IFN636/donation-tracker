@@ -13,6 +13,7 @@ const userSchema = new Schema(
         },
         password: { type: String, required: true },
         address: { type: String, trim: true },
+        phone: { type: String, trim: true },
         role: {
             type: String,
             enum: ["admin", "participant"],

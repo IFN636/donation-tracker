@@ -1,5 +1,6 @@
 import CreatorLayout from "../components/layout/CreatorLayout";
 import DefaultLayout from "../components/layout/DefautlLayout";
+import CompletedDonationPage from "../pages/CompletedDonationPage";
 import CampaignsPage from "../pages/creators/CampaignsPage";
 import CreateCampaignPage from "../pages/creators/CreateCampaignPage";
 import DashboardPage from "../pages/creators/DashboardPage";
@@ -27,12 +28,17 @@ export const publicRoutes = [
         layout: DefaultLayout,
     },
     {
+        path: "/donations/completed/:donationId",
+        element: CompletedDonationPage,
+        layout: DefaultLayout,
+    },
+    {
         path: "/",
         element: HomePage,
         layout: DefaultLayout,
     },
     {
-        path: "/fundraisers/:id",
+        path: "/fundraisers/:campaignId",
         element: CampaignDetail,
         layout: DefaultLayout,
     },

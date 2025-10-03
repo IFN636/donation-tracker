@@ -122,8 +122,9 @@ class CampaignController {
                     sortBy,
                     sortOrder,
                 }),
-                this._donationRepository.count({ campaignId: campaignId }),
+                this._donationRepository.count({ campaign: campaignId }),
             ]);
+            console.log(donors);
             res.status(200).json({
                 success: true,
                 data: donors,

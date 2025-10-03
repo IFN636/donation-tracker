@@ -13,6 +13,7 @@ const DonorsList = ({ campaignId }) => {
             const response = await axiosInstance.get(
                 `/api/campaigns/${campaignId}/donors?limit=10`
             );
+            console.log(response.data.data);
             setDonors(response.data.data);
         };
         fetchDonors();

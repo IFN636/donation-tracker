@@ -74,5 +74,33 @@ class DonationController {
             });
         }
     }
+
+    async getDonationById(req, res) {
+        const { donationId } = req.params;
+        try {
+            if (!donationId) {
+                return res.status(400).json({
+                    success: false,
+                    message: "donationId parameter is required",
+                });
+            }
+            const donation = await this._donationRepository.findOneById(
+                donationId
+            );
+            if (!donation) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Donation not found",
+                });
+            }
+            res.status(200).json(donation);
+        } catch (error) {
+            console.error("Error fetching donation:", error);
+            res.status(500).json({
+                success: false,
+                message: error.message,
+            });
+        }
+    }
 }
 export default new DonationController();

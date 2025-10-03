@@ -17,22 +17,38 @@ class PaymentFacade {
         this.paypal = null; // Init PayPal Adapter later
     }
 
-    async payWithStripe({ campaign, amount, user, isAnonymous, currency }) {
+    async payWithStripe({
+        campaign,
+        amount,
+        donationId,
+        user,
+        isAnonymous,
+        currency,
+    }) {
         this.processor.setStrategy(new StripeStrategy(this.stripeAdapter));
         return this.processor.pay({
             campaign,
             amount,
+            donationId,
             user,
             isAnonymous,
             currency,
         });
     }
 
-    async payWithPayPal({ campaign, amount, user, isAnonymous, currency }) {
+    async payWithPayPal({
+        campaign,
+        amount,
+        donationId,
+        user,
+        isAnonymous,
+        currency,
+    }) {
         this.processor.setStrategy(new PayPalStrategy(this.paypal));
         return this.processor.pay({
             campaign,
             amount,
+            donationId,
             user,
             isAnonymous,
             currency,

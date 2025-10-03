@@ -26,7 +26,7 @@ import { beautifyDate } from "../../utils/datetime";
 const { Title, Text, Paragraph } = Typography;
 
 const CampaignDetail = () => {
-    const { id } = useParams();
+    const { campaignId } = useParams();
     const [campaign, setCampaign] = useState(null);
     const [donationModalOpen, setDonationModalOpen] = useState(false);
 
@@ -36,11 +36,13 @@ const CampaignDetail = () => {
 
     useEffect(() => {
         const fetchCampaign = async () => {
-            const response = await axiosInstance.get(`/api/campaigns/${id}`);
+            const response = await axiosInstance.get(
+                `/api/campaigns/${campaignId}`
+            );
             setCampaign(response.data.data);
         };
         fetchCampaign();
-    }, [id]);
+    }, [campaignId]);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -204,7 +206,7 @@ const CampaignDetail = () => {
                                             : "Goal Achieved!🌸"}
                                     </Button>
                                     <DonationInputModal
-                                        campaignId={id}
+                                        campaignId={campaignId}
                                         open={donationModalOpen}
                                         onCancel={() =>
                                             setDonationModalOpen(false)
@@ -356,7 +358,7 @@ const CampaignDetail = () => {
                                 className="w-full"
                                 size="large"
                             >
-                                <DonorsList campaignId={id} />
+                                <DonorsList campaignId={campaignId} />
                             </Space>
                             <Divider />
                             <Text
