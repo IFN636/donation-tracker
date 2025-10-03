@@ -56,10 +56,13 @@ class EmailFacade {
         const thankYouEmailHtml = `
             <body style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
                 <p>Hi ${donation.name},</p>
-                <p>Thank you for your donation! Your support makes a real difference, and we’re very grateful.</p>
-                <p>With appreciation,<br>The Team</p>
+                <p>Thank you for your generous donation! Your support means a lot and helps us move closer to our goals.</p>
+                <p>We’re truly grateful for your kindness.</p>
+                <p>If you’d like to learn more about the impact of your gift, feel free to reach out.</p>
+                <p>Thanks again!</p>
             </body>
         `;
+
         this.sendMailWithTemplate({
             to: donation.email,
             subject,
