@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "3e625bcb-11b4-4aa2-baaa-94f59110bed8",
+		"name": "Campaigns",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48241488",
+		"_collection_link": "https://www.postman.com/khangdev20-6242397/workspace/ifn636/collection/48893990-3e625bcb-11b4-4aa2-baaa-94f59110bed8?action=share&source=collection_link&creator=48241488"
+	},
+	"item": [
+		{
+			"name": "Get Campaigns",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/campaigns?search=test",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"campaigns"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Campaign by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/campaigns/:campaignId",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"campaigns",
+						":campaignId"
+					],
+					"variable": [
+						{
+							"key": "campaignId",
+							"value": "689df81f5fa037be9f99b666"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Campaign by Id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/campaigns/:campaignId",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"campaigns",
+						":campaignId"
+					],
+					"variable": [
+						{
+							"key": "campaignId",
+							"value": "68db591e7a563716c5a08d2b"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Donors by CampaignId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/campaigns/68ac1251fcec222f27544d25/donors",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"campaigns",
+						"68ac1251fcec222f27544d25",
+						"donors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Campagin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"TestH\",\r\n    \"description\": \"Test\",\r\n    \"goalAmount\": 70000,\r\n    \"currency\": \"AUD\",\r\n    \"deadline\": \"2025-08-30T07:35:00.000Z\",\r\n    \"imageUrl\": \"https://aqdiitkxzxamo31w.public.blob.vercel-storage.com/d9d33b56-2e09-4e53-b2c7-ee7e43406c8b-0qjFCk4e4YK99taMR7Ics3HHOCAbKW.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/campaigns",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"campaigns"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,48 @@
+{
+	"info": {
+		"_postman_id": "c8a5ea3d-84e0-4e07-9797-4312c6cf2921",
+		"name": "Payment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48241488",
+		"_collection_link": "https://www.postman.com/khangdev20-6242397/workspace/ifn636/collection/48893990-c8a5ea3d-84e0-4e07-9797-4312c6cf2921?action=share&source=collection_link&creator=48241488"
+	},
+	"item": [
+		{
+			"name": "Create Checkout Session with Stripe",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 20,\r\n    \"paymentMethod\": \"credit-card\",\r\n    \"anonymous\": true,\r\n    \"campaignId\": \"689df9d35fa037be9f99b6d5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/payment/create-checkout-session",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"payment",
+						"create-checkout-session"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,4 +1,3 @@
-import NodemailerAdapter from "../adapters/nodeMailAdapter.js";
 import EmailFacade from "../facades/emailFacade.js";
 
 export function subscribeToEvent(subject, eventType, fn) {
@@ -12,8 +11,13 @@ export function initEventSubscribers(subject) {
 
     subscribeToEvent(subject, "USER_CREATED", (user) => {
         if (!user.email) return;
-        const emailFacade = new EmailFacade(new NodemailerAdapter());
-        console.log("Sending welcome email to:", user.email);
+        const emailFacade = new EmailFacade();
         emailFacade.sendWelcomeEmail(user.email, user);
+    });
+
+    subscribeToEvent(subject, "DONATION_SUCCESS", (donation) => {
+        if (!donation.email) return;
+        const emailFacade = new EmailFacade();
+        emailFacade.sendMailThankYou(donation);
     });
 }

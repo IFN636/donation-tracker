@@ -4,6 +4,7 @@ import PaymentFacade from "../facades/paymentFacade.js";
 import CampaignFactory from "../factories/CampaignFactory.js";
 import DonationFactory from "../factories/DonationFactory.js";
 import TransactionFactory from "../factories/TransactionFactory.js";
+import eventSubject from "../observers/subject.js";
 import CampaignRepository from "../repositories/campaignRepository.js";
 import DonationRepository from "../repositories/donationRepository.js";
 import TransactionRepository from "../repositories/transactionRepository.js";
@@ -154,6 +155,9 @@ class PaymentController {
                         receiver: receiverId,
                         isAnonymous: isAnonymous,
                     });
+
+                    eventSubject.notify("DONATION_SUCCESS", donation);
+
                     await this.donationRepository.create(donation.toInsertDB());
                     break;
                 case "payment_intent.succeeded":
