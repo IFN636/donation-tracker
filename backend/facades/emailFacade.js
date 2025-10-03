@@ -27,24 +27,19 @@ class EmailFacade {
     sendWelcomeEmail(to, user) {
         const subject = `Welcome to Online Donation Tracker App, ${user.name}!`;
         const welcomeEmailHtml = `
-            <body style="font-family: Arial, sans-serif; line-height: 1.5; color: #333333; margin: 0; padding: 20px;">
-            <p>Hi <strong>${user.name}</strong>,</p>
-            
-            <p>Welcome to <strong>Online Donation Tracker App</strong>! We’re happy to have you with us.</p>
-            
-            <p>With our app, you can easily track and manage all your donations in one place.</p>
-            
-            <p>
-                👉 
-                <a href="#" style="display: inline-block; padding: 10px 15px; background-color: #4CAF50; color: #ffffff; text-decoration: none; border-radius: 5px;">
-                Log in to get started
+            <body style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
+                <p>Hi <strong>${user.name}</strong>,</p>
+                <p>Welcome to <strong>Online Donation Tracker App</strong>! We’re happy to have you here.</p>
+                <p>With our app, you can easily track and manage all your donations in one place.</p>
+                <p>
+                👉 <a href="#" style="display: inline-block; padding: 10px 15px; background: #4CAF50; color: #fff; text-decoration: none; border-radius: 5px;">
+                    Log in to get started
                 </a>
-            </p>
-            <p>If you have any questions, we’re always here to help at 
+                </p>
+                <p>If you have any questions, we’re always here to help at
                 <a href="mailto:support@donationtracker.com">support@donationtracker.com</a>.
-            </p>
-            <p>Thanks for joining us!<br>
-            <strong>The Online Donation Tracker App Team</strong></p>
+                </p>
+                <p>Thanks for joining us!<br>The Online Donation Tracker Team</p>
             </body>
         `;
 
