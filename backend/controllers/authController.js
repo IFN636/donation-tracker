@@ -83,20 +83,20 @@ class AuthController {
             if (!user)
                 return res.status(404).json({ message: "User not found" });
 
-            const { name, email, university, address } = req.body;
+            const { name, email, phone, address } = req.body;
             user.name = name || user.name;
             user.email = email || user.email;
-            user.university = university || user.university;
+            user.phone = phone || user.phone;
             user.address = address || user.address;
 
-            const updatedUser = await user.save();
+            await this._userRepository.updateOne(user.id, user);
             res.json({
-                id: updatedUser.id,
+                id: user.id,
                 name: updatedUser.name,
                 email: updatedUser.email,
                 university: updatedUser.university,
                 address: updatedUser.address,
-                token: generateToken(updatedUser.id),
+                token: generateToken(user.id),
             });
         } catch (error) {
             res.status(500).json({ message: error.message });

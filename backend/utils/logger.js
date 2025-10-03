@@ -5,6 +5,13 @@ class Logger {
         Logger.instance = this;
     }
 
+    static getInstance() {
+        if (!Logger.instance) {
+            Logger.instance = new Logger();
+        }
+        return Logger.instance;
+    }
+
     info(message) {
         console.log(`\x1b[32m${this.prefix} INFO:\x1b[0m ${message}`);
     }
@@ -18,4 +25,4 @@ class Logger {
     }
 }
 
-export default new Logger();
+export default Logger.getInstance();
