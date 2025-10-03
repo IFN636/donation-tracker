@@ -99,7 +99,7 @@ This application extends a starter authentication project to include comprehensi
 1.  **Clone the Repository**
 
     ```bash
-    git clone https://github.com/khangdev20/donation-tracker.git
+    git clone https://github.com/IFN636/donation-tracker.git
     cd ./donation-tracker
     ```
 
