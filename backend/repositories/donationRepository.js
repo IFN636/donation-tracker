@@ -45,9 +45,9 @@ class DonationRepository extends BaseRepository {
             .toJSON();
     }
 
-    async getRecentDonationsByDonorId({ user, limit = 5 }) {
+    async getRecentDonationsByDonorId({ donorId, limit = 5 }) {
         return await this._model
-            .find({ user })
+            .find({ donor: donorId })
             .populate("campaign")
             .sort({ createdAt: -1 })
             .limit(limit);

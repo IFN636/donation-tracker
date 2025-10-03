@@ -39,7 +39,7 @@ class DonationController {
         try {
             const donations =
                 await this._donationRepository.getRecentDonationsByDonorId({
-                    userId: req.user.id,
+                    donorId: req.user.id,
                     limit,
                 });
             res.status(200).json({
