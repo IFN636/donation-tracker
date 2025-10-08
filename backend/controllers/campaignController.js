@@ -124,7 +124,6 @@ class CampaignController {
                 }),
                 this._donationRepository.count({ campaign: campaignId }),
             ]);
-            console.log(donors);
             res.status(200).json({
                 success: true,
                 data: donors,
